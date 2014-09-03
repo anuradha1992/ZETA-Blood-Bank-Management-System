@@ -54,9 +54,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
 
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jLabel3 = new javax.swing.JLabel();
-        jButton14 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
@@ -92,26 +91,21 @@ public class MedicalOfficer extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Blood Bank Management System");
 
-        jDesktopPane1.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images/red-blood-cells.png")))); // NOI18N
+        jDesktopPane1.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/gui/drop.png")))); // NOI18N
 
-        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel3.setFont(new java.awt.Font("Vijaya", 1, 36));
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Medical Officer");
-        jLabel3.setBounds(360, 0, 290, 50);
-        jDesktopPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
-        jDesktopPane1.setBounds(200, 60, 1170, 650);
-        jLayeredPane1.add(jDesktopPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jButton14.setText("Donors");
-        jButton14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton14ActionPerformed(evt);
-            }
-        });
-        jButton14.setBounds(0, 390, 200, 30);
-        jLayeredPane1.add(jButton14, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.add(jDesktopPane1);
+        jDesktopPane1.setBounds(200, 60, 1170, 630);
 
         jButton15.setText("Blood Request");
         jButton15.addActionListener(new java.awt.event.ActionListener() {
@@ -119,12 +113,21 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton15ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton15);
         jButton15.setBounds(0, 270, 200, 30);
-        jLayeredPane1.add(jButton15, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton14.setText("Donors");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(jButton14);
+        jButton14.setBounds(0, 390, 200, 30);
 
         jButton16.setText("Blood Categories");
+        jLayeredPane1.add(jButton16);
         jButton16.setBounds(0, 360, 200, 30);
-        jLayeredPane1.add(jButton16, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton18.setText("Blood Stock");
         jButton18.addActionListener(new java.awt.event.ActionListener() {
@@ -132,8 +135,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton18ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton18);
         jButton18.setBounds(0, 330, 200, 30);
-        jLayeredPane1.add(jButton18, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton25.setText("Antibody Screening");
         jButton25.addActionListener(new java.awt.event.ActionListener() {
@@ -141,8 +144,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton25ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton25);
         jButton25.setBounds(0, 150, 200, 30);
-        jLayeredPane1.add(jButton25, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton32.setText("TTI");
         jButton32.addActionListener(new java.awt.event.ActionListener() {
@@ -150,8 +153,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton32ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton32);
         jButton32.setBounds(0, 120, 200, 30);
-        jLayeredPane1.add(jButton32, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton33.setText("Adverse Events");
         jButton33.addActionListener(new java.awt.event.ActionListener() {
@@ -159,8 +162,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton33ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton33);
         jButton33.setBounds(0, 90, 200, 30);
-        jLayeredPane1.add(jButton33, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton34.setText("Compatibility");
         jButton34.addActionListener(new java.awt.event.ActionListener() {
@@ -168,8 +171,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton34ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton34);
         jButton34.setBounds(0, 60, 200, 30);
-        jLayeredPane1.add(jButton34, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton26.setText("Blood Issue");
         jButton26.addActionListener(new java.awt.event.ActionListener() {
@@ -177,8 +180,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton26ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton26);
         jButton26.setBounds(0, 180, 200, 30);
-        jLayeredPane1.add(jButton26, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 08.png"))); // NOI18N
         jButton19.addActionListener(new java.awt.event.ActionListener() {
@@ -186,8 +189,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton19ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton19);
         jButton19.setBounds(1010, 0, 60, 60);
-        jLayeredPane1.add(jButton19, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 05.png"))); // NOI18N
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -195,8 +198,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton9ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton9);
         jButton9.setBounds(1070, 0, 60, 60);
-        jLayeredPane1.add(jButton9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 04.png"))); // NOI18N
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -204,8 +207,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton8ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton8);
         jButton8.setBounds(1130, 0, 60, 60);
-        jLayeredPane1.add(jButton8, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 09.png"))); // NOI18N
         jButton13.addActionListener(new java.awt.event.ActionListener() {
@@ -213,8 +216,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton13ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton13);
         jButton13.setBounds(1190, 0, 60, 60);
-        jLayeredPane1.add(jButton13, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 07.png"))); // NOI18N
         jButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -222,8 +225,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton11ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton11);
         jButton11.setBounds(1250, 0, 60, 60);
-        jLayeredPane1.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 11.png"))); // NOI18N
         jButton20.addActionListener(new java.awt.event.ActionListener() {
@@ -231,8 +234,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton20ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton20);
         jButton20.setBounds(1310, 0, 60, 60);
-        jLayeredPane1.add(jButton20, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 01.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -240,8 +243,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton4);
         jButton4.setBounds(0, 0, 60, 60);
-        jLayeredPane1.add(jButton4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 02.png"))); // NOI18N
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -249,8 +252,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton6);
         jButton6.setBounds(60, 0, 60, 60);
-        jLayeredPane1.add(jButton6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 06.png"))); // NOI18N
         jButton10.addActionListener(new java.awt.event.ActionListener() {
@@ -258,8 +261,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton10ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton10);
         jButton10.setBounds(120, 0, 60, 60);
-        jLayeredPane1.add(jButton10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 08.png"))); // NOI18N
         jButton12.addActionListener(new java.awt.event.ActionListener() {
@@ -267,8 +270,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton12ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton12);
         jButton12.setBounds(180, 0, 60, 60);
-        jLayeredPane1.add(jButton12, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 03.png"))); // NOI18N
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -276,8 +279,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton7ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton7);
         jButton7.setBounds(240, 0, 60, 60);
-        jLayeredPane1.add(jButton7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 13.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -285,19 +288,19 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton3);
         jButton3.setBounds(300, 0, 60, 60);
-        jLayeredPane1.add(jButton3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel2.setFont(new java.awt.Font("Vijaya", 1, 36));
+        jLabel2.setFont(new java.awt.Font("Vijaya", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Karapitiya Blood Bank Management System");
+        jLayeredPane1.add(jLabel2);
         jLabel2.setBounds(420, 0, 530, 50);
-        jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton21.setText("Blood Grouping");
+        jLayeredPane1.add(jButton21);
         jButton21.setBounds(0, 300, 200, 30);
-        jLayeredPane1.add(jButton21, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton17.setText("Blood Report");
         jButton17.addActionListener(new java.awt.event.ActionListener() {
@@ -305,8 +308,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton17ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton17);
         jButton17.setBounds(0, 210, 200, 30);
-        jLayeredPane1.add(jButton17, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton22.setText("Compatability Report");
         jButton22.addActionListener(new java.awt.event.ActionListener() {
@@ -314,8 +317,8 @@ public class MedicalOfficer extends javax.swing.JFrame {
                 jButton22ActionPerformed(evt);
             }
         });
+        jLayeredPane1.add(jButton22);
         jButton22.setBounds(0, 240, 200, 30);
-        jLayeredPane1.add(jButton22, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("File");
 
@@ -538,7 +541,6 @@ public class MedicalOfficer extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
