@@ -76,9 +76,10 @@ public class MedicalOfficer extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton21 = new javax.swing.JButton();
+        BloodGroupButton = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
+        testingButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -298,9 +299,14 @@ public class MedicalOfficer extends javax.swing.JFrame {
         jLayeredPane1.add(jLabel2);
         jLabel2.setBounds(420, 0, 530, 50);
 
-        jButton21.setText("Blood Grouping");
-        jLayeredPane1.add(jButton21);
-        jButton21.setBounds(0, 300, 200, 30);
+        BloodGroupButton.setText("Blood Grouping");
+        BloodGroupButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BloodGroupButtonActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(BloodGroupButton);
+        BloodGroupButton.setBounds(0, 300, 200, 30);
 
         jButton17.setText("Blood Report");
         jButton17.addActionListener(new java.awt.event.ActionListener() {
@@ -319,6 +325,15 @@ public class MedicalOfficer extends javax.swing.JFrame {
         });
         jLayeredPane1.add(jButton22);
         jButton22.setBounds(0, 240, 200, 30);
+
+        testingButton.setText("Blood ");
+        testingButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testingButtonActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(testingButton);
+        testingButton.setBounds(0, 420, 200, 30);
 
         jMenu1.setText("File");
 
@@ -499,6 +514,19 @@ public class MedicalOfficer extends javax.swing.JFrame {
         reportC.show();
     }//GEN-LAST:event_jButton22ActionPerformed
 
+    private void BloodGroupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BloodGroupButtonActionPerformed
+        BloodGroupingAndTTI groupform = new BloodGroupingAndTTI();
+        groupform.setClosable(true);
+        groupform.setMaximizable(true);
+        jDesktopPane1.add(groupform);
+        jDesktopPane1.setRequestFocusEnabled(true);
+        groupform.show();
+    }//GEN-LAST:event_BloodGroupButtonActionPerformed
+
+    private void testingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testingButtonActionPerformed
+
+    }//GEN-LAST:event_testingButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -515,6 +543,7 @@ public class MedicalOfficer extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BloodGroupButton;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
@@ -526,7 +555,6 @@ public class MedicalOfficer extends javax.swing.JFrame {
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton25;
     private javax.swing.JButton jButton26;
@@ -550,5 +578,6 @@ public class MedicalOfficer extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JButton testingButton;
     // End of variables declaration//GEN-END:variables
 }
