@@ -11,7 +11,13 @@
 
 package gui;
 
+import gui.Pubudu.PHI;
+import gui.Upekka.RegistrationOfficer;
+import gui.Ruchi.MedicalOfficer;
+import gui.Anu.Nurse;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -31,7 +37,8 @@ public class Login extends javax.swing.JFrame {
     public Login() throws IOException {
         initComponents();
 
-        InputStream imgStream = this.getClass().getResourceAsStream("./drop.png");
+        File imgfile = new File("..\\BBMS\\src\\images\\drop.png");
+        FileInputStream imgStream = new FileInputStream(imgfile);
         BufferedImage bi = ImageIO.read(imgStream);
         ImageIcon myImg = new ImageIcon(bi);
         this.setIconImage(myImg.getImage());

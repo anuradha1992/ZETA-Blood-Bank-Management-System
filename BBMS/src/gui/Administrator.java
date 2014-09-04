@@ -11,9 +11,16 @@
 
 package gui;
 
+import gui.Ruchi.MedicalOfficer;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -22,8 +29,24 @@ import java.util.logging.Logger;
 public class Administrator extends javax.swing.JFrame {
 
     /** Creates new form Administrator */
-    public Administrator() {
-        initComponents();
+    public Administrator() throws IOException {
+        FileInputStream imgStream= null;
+        try {
+            initComponents();
+            File imgfile= new File("..\\BBMS\\src\\images\\drop.png");
+            imgStream = new FileInputStream(imgfile);
+            BufferedImage bi = ImageIO.read(imgStream);
+            ImageIcon myImg = new ImageIcon(bi);
+            this.setIconImage(myImg.getImage());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Administrator.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                imgStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Administrator.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /** This method is called from within the constructor to
@@ -433,7 +456,11 @@ public class Administrator extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Administrator().setVisible(true);
+                try {
+                    new Administrator().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Administrator.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

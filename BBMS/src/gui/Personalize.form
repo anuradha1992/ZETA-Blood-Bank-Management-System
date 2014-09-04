@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
@@ -22,7 +22,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane1" alignment="0" pref="783" max="32767" attributes="0"/>
+          <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -267,7 +267,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel10" min="-2" pref="145" max="-2" attributes="0"/>
-                          <EmptySpace pref="138" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -405,10 +405,10 @@
                           <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="OrangeMetallicOpt" alignment="0" max="32767" attributes="1"/>
-                              <Component id="blackStarOpt" alignment="0" pref="113" max="32767" attributes="1"/>
-                              <Component id="blackMoonOpt" alignment="0" pref="113" max="32767" attributes="1"/>
-                              <Component id="blueMoonOpt" alignment="0" pref="113" max="32767" attributes="1"/>
-                              <Component id="silverMoonOpt" alignment="0" pref="113" max="32767" attributes="0"/>
+                              <Component id="blackStarOpt" alignment="0" max="32767" attributes="1"/>
+                              <Component id="blackMoonOpt" alignment="0" max="32767" attributes="1"/>
+                              <Component id="blueMoonOpt" alignment="0" max="32767" attributes="1"/>
+                              <Component id="silverMoonOpt" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -421,7 +421,7 @@
                           <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="89" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="jLabel11" min="-2" pref="174" max="-2" attributes="1"/>
                           <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                       </Group>

@@ -12,6 +12,8 @@
 package gui;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -29,10 +31,14 @@ public class CampMap extends javax.swing.JInternalFrame {
     public CampMap() {
         try {
             initComponents();
-            InputStream imgStream = this.getClass().getResourceAsStream("./drop.png");
+            
+            File imgfile= new File("..\\BBMS\\src\\images\\drop.png");
+            FileInputStream imgStream = new FileInputStream(imgfile);
             BufferedImage bi = ImageIO.read(imgStream);
             ImageIcon myImg = new ImageIcon(bi);
             this.setFrameIcon(myImg);
+            
+    
         } catch (IOException ex) {
             Logger.getLogger(CampMap.class.getName()).log(Level.SEVERE, null, ex);
         }
