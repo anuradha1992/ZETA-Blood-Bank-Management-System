@@ -68,8 +68,15 @@ public class Nurse extends javax.swing.JFrame {
         jButton33 = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
+<<<<<<< HEAD
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+=======
+        jButton36 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jButton37 = new javax.swing.JButton();
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
         jButton38 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -79,9 +86,12 @@ public class Nurse extends javax.swing.JFrame {
         jButton11 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
+<<<<<<< HEAD
         jButton36 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
         jButton37 = new javax.swing.JButton();
+=======
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -163,7 +173,11 @@ public class Nurse extends javax.swing.JFrame {
 
         jPanel1.setBounds(870, 160, 300, 470);
         jDesktopPane1.add(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+<<<<<<< HEAD
         jCalendar1.setBounds(870, 0, 315, 160);
+=======
+        jCalendar1.setBounds(870, 0, 301, 160);
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
         jDesktopPane1.add(jCalendar1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jDesktopPane1.setBounds(200, 60, 1170, 650);
@@ -183,6 +197,7 @@ public class Nurse extends javax.swing.JFrame {
                 jButton35ActionPerformed(evt);
             }
         });
+<<<<<<< HEAD
         jButton35.setBounds(0, 180, 200, 30);
         jLayeredPane1.add(jButton35, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -194,6 +209,13 @@ public class Nurse extends javax.swing.JFrame {
         });
         jButton33.setBounds(0, 90, 200, 30);
         jLayeredPane1.add(jButton33, javax.swing.JLayeredPane.DEFAULT_LAYER);
+=======
+        jButton35.setBounds(0, 240, 200, 30);
+        jLayeredPane1.add(jButton35, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton33.setText("Blood Discard");
+        jButton33.setBounds(0, 120, 200, 30);
+        jLayeredPane1.add(jButton33, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton22.setText("Blood Packet Details");
         jButton22.addActionListener(new java.awt.event.ActionListener() {
@@ -201,8 +223,23 @@ public class Nurse extends javax.swing.JFrame {
                 jButton22ActionPerformed(evt);
             }
         });
+        jButton22.setBounds(0, 150, 200, 30);
+        jLayeredPane1.add(jButton22, javax.swing.JLayeredPane.DEFAULT_LAYER);
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
+
+        jButton22.setText("Blood Packet Details");
+        jButton22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton22ActionPerformed(evt);
+            }
+        });
+<<<<<<< HEAD
         jButton22.setBounds(0, 120, 200, 30);
         jLayeredPane1.add(jButton22, javax.swing.JLayeredPane.DEFAULT_LAYER);
+=======
+        jButton25.setBounds(0, 90, 200, 30);
+        jLayeredPane1.add(jButton25, javax.swing.JLayeredPane.DEFAULT_LAYER);
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
 
         jButton18.setText("Blood Stock");
         jButton18.addActionListener(new java.awt.event.ActionListener() {
@@ -213,6 +250,7 @@ public class Nurse extends javax.swing.JFrame {
         jButton18.setBounds(0, 60, 200, 30);
         jLayeredPane1.add(jButton18, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+<<<<<<< HEAD
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bb1.png"))); // NOI18N
         jLabel2.setBounds(0, 490, 200, 198);
         jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -264,10 +302,51 @@ public class Nurse extends javax.swing.JFrame {
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I04.png"))); // NOI18N
         jButton6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
+=======
+        jButton36.setText("Item Stock");
+        jButton36.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                jButton36ActionPerformed(evt);
             }
         });
+        jButton36.setBounds(0, 210, 200, 30);
+        jLayeredPane1.add(jButton36, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bb1.png"))); // NOI18N
+        jLabel2.setBounds(0, 490, 200, 198);
+        jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nurse.jpg"))); // NOI18N
+        jLabel4.setBounds(-10, 290, 240, 210);
+        jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton37.setText("Donor Details");
+        jButton37.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton37ActionPerformed(evt);
+            }
+        });
+        jButton37.setBounds(0, 180, 200, 30);
+        jLayeredPane1.add(jButton37, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton38.setText("Donor Details");
+        jButton38.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton38ActionPerformed(evt);
+            }
+        });
+        jButton38.setBounds(0, 270, 200, 30);
+        jLayeredPane1.add(jButton38, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I03.png"))); // NOI18N
+        jButton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+<<<<<<< HEAD
         jButton6.setBounds(180, 0, 60, 60);
         jLayeredPane1.add(jButton6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -284,10 +363,50 @@ public class Nurse extends javax.swing.JFrame {
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I08.png"))); // NOI18N
         jButton9.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
         jButton9.addActionListener(new java.awt.event.ActionListener() {
+=======
+        jButton4.setBounds(300, 0, 60, 60);
+        jLayeredPane1.add(jButton4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel5.setFont(new java.awt.Font("Monotype Corsiva", 1, 28)); // NOI18N
+        jLabel5.setText("Zeta trouble shoot");
+        jLabel5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(102, 255, 255), new java.awt.Color(51, 102, 255)));
+        jLabel5.setBounds(1070, 0, 240, 60);
+        jLayeredPane1.add(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/final1.png"))); // NOI18N
+        jLabel6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(102, 255, 255), new java.awt.Color(51, 153, 255)));
+        jLabel6.setBounds(1310, 0, 60, 76);
+        jLayeredPane1.add(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I05.jpg"))); // NOI18N
+        jButton8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        jButton8.setBounds(240, 0, 60, 60);
+        jLayeredPane1.add(jButton8, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I04.png"))); // NOI18N
+        jButton6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jButton6.setBounds(180, 0, 60, 60);
+        jLayeredPane1.add(jButton6, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I07.jpg"))); // NOI18N
+        jButton11.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
             }
         });
+<<<<<<< HEAD
         jButton9.setBounds(60, 0, 60, 60);
         jLayeredPane1.add(jButton9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -312,10 +431,19 @@ public class Nurse extends javax.swing.JFrame {
 
         jButton25.setText("Blood Issue");
         jButton25.addActionListener(new java.awt.event.ActionListener() {
+=======
+        jButton11.setBounds(120, 0, 60, 60);
+        jLayeredPane1.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I08.png"))); // NOI18N
+        jButton9.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton25ActionPerformed(evt);
             }
         });
+<<<<<<< HEAD
         jButton25.setBounds(0, 150, 200, 30);
         jLayeredPane1.add(jButton25, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -327,6 +455,20 @@ public class Nurse extends javax.swing.JFrame {
         });
         jButton37.setBounds(0, 240, 200, 30);
         jLayeredPane1.add(jButton37, javax.swing.JLayeredPane.DEFAULT_LAYER);
+=======
+        jButton9.setBounds(60, 0, 60, 60);
+        jLayeredPane1.add(jButton9, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I02.png"))); // NOI18N
+        jButton12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+        jButton12.setBounds(0, 0, 60, 60);
+        jLayeredPane1.add(jButton12, javax.swing.JLayeredPane.DEFAULT_LAYER);
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
 
         jMenu1.setText("File");
 
@@ -475,6 +617,7 @@ public class Nurse extends javax.swing.JFrame {
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton12ActionPerformed
+<<<<<<< HEAD
 
     private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
         DiscardedBlood discardedBlood = new DiscardedBlood(jDesktopPane1.getSize());
@@ -485,6 +628,8 @@ public class Nurse extends javax.swing.JFrame {
         jDesktopPane1.setRequestFocusEnabled(true);
         discardedBlood.show();
     }//GEN-LAST:event_jButton33ActionPerformed
+=======
+>>>>>>> b4e7ee09262877c0f8696409dd1258149040a491
 
     /**
      * @param args the command line arguments
