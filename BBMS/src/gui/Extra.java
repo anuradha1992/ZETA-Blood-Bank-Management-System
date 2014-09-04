@@ -6,18 +6,10 @@
 /*
  * Extra.java
  *
- * Created on Jul 12, 2014, 10:57:08 PM
+ * Created on Sep 4, 2014, 7:07:18 AM
  */
 
 package gui;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -27,15 +19,7 @@ public class Extra extends javax.swing.JInternalFrame {
 
     /** Creates new form Extra */
     public Extra() {
-//        try {
-//            initComponents();
-//            InputStream imgStream = this.getClass().getResourceAsStream("./drop.png");
-//            BufferedImage bi = ImageIO.read(imgStream);
-//            ImageIcon myImg = new ImageIcon(bi);
-//            this.setFrameIcon(myImg);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Compatability.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        initComponents();
     }
 
     /** This method is called from within the constructor to
@@ -47,17 +31,15 @@ public class Extra extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/gui/1.jpg")))); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1267, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 636, Short.MAX_VALUE)
         );
 
         pack();
