@@ -576,17 +576,13 @@ public class Personalize extends javax.swing.JInternalFrame {
         try {
 
             File imgfile = new File("..\\BBMS\\src\\images\\1small.jpg");
-            File imglfile = new File("..\\BBMS\\src\\images\\1.jpg");
             FileInputStream imgStream = new FileInputStream(imgfile);
-            FileInputStream imglStream = new FileInputStream(imglfile);
             BufferedImage bi = ImageIO.read(imgStream);
-            BufferedImage bil = ImageIO.read(imglStream);
             ImageIcon myImg = new ImageIcon(bi);
-            ImageIcon myImgl = new ImageIcon(bil);
 
             jLabel10.setIcon(myImg);
 
-            Border border = new MatteBorder(myImgl);
+            Border border = new MatteBorder(myImg);
             desktop.getDesktop().setBorder(border);
 
         } catch (IOException ex) {
