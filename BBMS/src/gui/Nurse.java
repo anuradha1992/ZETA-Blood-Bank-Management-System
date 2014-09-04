@@ -67,12 +67,9 @@ public class Nurse extends javax.swing.JFrame {
         jButton35 = new javax.swing.JButton();
         jButton33 = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
-        jButton25 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
-        jButton36 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButton37 = new javax.swing.JButton();
         jButton38 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -82,6 +79,9 @@ public class Nurse extends javax.swing.JFrame {
         jButton11 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
+        jButton36 = new javax.swing.JButton();
+        jButton25 = new javax.swing.JButton();
+        jButton37 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -163,31 +163,36 @@ public class Nurse extends javax.swing.JFrame {
 
         jPanel1.setBounds(870, 160, 300, 470);
         jDesktopPane1.add(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jCalendar1.setBounds(870, 0, 301, 160);
+        jCalendar1.setBounds(870, 0, 315, 160);
         jDesktopPane1.add(jCalendar1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jDesktopPane1.setBounds(200, 60, 1170, 650);
         jLayeredPane1.add(jDesktopPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Vijaya", 1, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Vijaya", 1, 36));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Karapitiya Blood Bank Management System - Nurse Form");
         jLabel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
         jLabel1.setBounds(360, 0, 710, 60);
         jLayeredPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jButton35.setText("Donor Details");
+        jButton35.setText("Issue Register");
         jButton35.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton35ActionPerformed(evt);
             }
         });
-        jButton35.setBounds(0, 240, 200, 30);
+        jButton35.setBounds(0, 180, 200, 30);
         jLayeredPane1.add(jButton35, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton33.setText("Blood Discard");
-        jButton33.setBounds(0, 120, 200, 30);
+        jButton33.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton33ActionPerformed(evt);
+            }
+        });
+        jButton33.setBounds(0, 90, 200, 30);
         jLayeredPane1.add(jButton33, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton22.setText("Blood Packet Details");
@@ -196,17 +201,8 @@ public class Nurse extends javax.swing.JFrame {
                 jButton22ActionPerformed(evt);
             }
         });
-        jButton22.setBounds(0, 150, 200, 30);
+        jButton22.setBounds(0, 120, 200, 30);
         jLayeredPane1.add(jButton22, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jButton25.setText("Blood Issue");
-        jButton25.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton25ActionPerformed(evt);
-            }
-        });
-        jButton25.setBounds(0, 90, 200, 30);
-        jLayeredPane1.add(jButton25, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton18.setText("Blood Stock");
         jButton18.addActionListener(new java.awt.event.ActionListener() {
@@ -217,15 +213,6 @@ public class Nurse extends javax.swing.JFrame {
         jButton18.setBounds(0, 60, 200, 30);
         jLayeredPane1.add(jButton18, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jButton36.setText("Item Stock");
-        jButton36.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton36ActionPerformed(evt);
-            }
-        });
-        jButton36.setBounds(0, 210, 200, 30);
-        jLayeredPane1.add(jButton36, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bb1.png"))); // NOI18N
         jLabel2.setBounds(0, 490, 200, 198);
         jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -233,15 +220,6 @@ public class Nurse extends javax.swing.JFrame {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nurse.jpg"))); // NOI18N
         jLabel4.setBounds(-10, 290, 240, 210);
         jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jButton37.setText("Donor Details");
-        jButton37.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton37ActionPerformed(evt);
-            }
-        });
-        jButton37.setBounds(0, 180, 200, 30);
-        jLayeredPane1.add(jButton37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton38.setText("Donor Details");
         jButton38.addActionListener(new java.awt.event.ActionListener() {
@@ -262,7 +240,7 @@ public class Nurse extends javax.swing.JFrame {
         jButton4.setBounds(300, 0, 60, 60);
         jLayeredPane1.add(jButton4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel5.setFont(new java.awt.Font("Monotype Corsiva", 1, 28)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Monotype Corsiva", 1, 28));
         jLabel5.setText("Zeta trouble shoot");
         jLabel5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(102, 255, 255), new java.awt.Color(51, 102, 255)));
         jLabel5.setBounds(1070, 0, 240, 60);
@@ -322,6 +300,33 @@ public class Nurse extends javax.swing.JFrame {
         });
         jButton12.setBounds(0, 0, 60, 60);
         jLayeredPane1.add(jButton12, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton36.setText("Item Stock");
+        jButton36.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton36ActionPerformed(evt);
+            }
+        });
+        jButton36.setBounds(0, 210, 200, 30);
+        jLayeredPane1.add(jButton36, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton25.setText("Blood Issue");
+        jButton25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton25ActionPerformed(evt);
+            }
+        });
+        jButton25.setBounds(0, 150, 200, 30);
+        jLayeredPane1.add(jButton25, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton37.setText("Donor Details");
+        jButton37.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton37ActionPerformed(evt);
+            }
+        });
+        jButton37.setBounds(0, 240, 200, 30);
+        jLayeredPane1.add(jButton37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("File");
 
@@ -399,11 +404,13 @@ public class Nurse extends javax.swing.JFrame {
 }//GEN-LAST:event_jButton25ActionPerformed
 
     private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
-//        Compatability compatability = new Compatability(this, true);
-//        compatability.setClosable(true);
-//        jDesktopPane1.add(compatability);
-//        jDesktopPane1.setRequestFocusEnabled(true);
-//        compatability.show();
+        IssueRegister issue = new IssueRegister(jDesktopPane1.getSize());
+
+        issue.setClosable(true);
+        issue.setMaximizable(true);
+        jDesktopPane1.add(issue);
+        jDesktopPane1.setRequestFocusEnabled(true);
+        issue.show();
 }//GEN-LAST:event_jButton35ActionPerformed
 
     private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton36ActionPerformed
@@ -468,6 +475,16 @@ public class Nurse extends javax.swing.JFrame {
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
+        DiscardedBlood discardedBlood = new DiscardedBlood(jDesktopPane1.getSize());
+
+        discardedBlood.setClosable(true);
+        discardedBlood.setMaximizable(true);
+        jDesktopPane1.add(discardedBlood);
+        jDesktopPane1.setRequestFocusEnabled(true);
+        discardedBlood.show();
+    }//GEN-LAST:event_jButton33ActionPerformed
 
     /**
      * @param args the command line arguments
