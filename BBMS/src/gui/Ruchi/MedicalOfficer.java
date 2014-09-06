@@ -310,7 +310,7 @@ public class MedicalOfficer extends javax.swing.JFrame {
         jLayeredPane1.add(jLabel2);
         jLabel2.setBounds(420, 0, 530, 50);
 
-        BloodGroupButton.setText("Blood Grouping");
+        BloodGroupButton.setText("Blood Grouping and TTI");
         BloodGroupButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BloodGroupButtonActionPerformed(evt);
@@ -337,7 +337,7 @@ public class MedicalOfficer extends javax.swing.JFrame {
         jLayeredPane1.add(jButton22);
         jButton22.setBounds(0, 240, 200, 30);
 
-        testingButton.setText("Blood ");
+        testingButton.setText("Blood and Component Availability");
         testingButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 testingButtonActionPerformed(evt);
@@ -535,7 +535,12 @@ public class MedicalOfficer extends javax.swing.JFrame {
     }//GEN-LAST:event_BloodGroupButtonActionPerformed
 
     private void testingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testingButtonActionPerformed
-
+        BloodAndComponentAvailability availailityform = new BloodAndComponentAvailability();
+        availailityform.setClosable(true);
+        availailityform.setMaximizable(true);
+        jDesktopPane1.add(availailityform);
+        jDesktopPane1.setRequestFocusEnabled(true);
+        availailityform.show();
     }//GEN-LAST:event_testingButtonActionPerformed
 
     /**
