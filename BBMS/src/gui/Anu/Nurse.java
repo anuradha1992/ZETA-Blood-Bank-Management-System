@@ -10,6 +10,7 @@
  */
 package gui.Anu;
 
+import Controller.Anu.BloodPacketController;
 import gui.ChangePassword;
 import gui.Personalize;
 import java.awt.Dimension;
@@ -18,10 +19,15 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -29,19 +35,46 @@ import javax.swing.ImageIcon;
  */
 public class Nurse extends javax.swing.JFrame {
 
+    String[] title = {"PacketID", "Blood Type", "Blood Group"};
+    DefaultTableModel dtm = new DefaultTableModel(title, 0);
+    Calendar currenttime = Calendar.getInstance();
+    java.sql.Date sqldate = new java.sql.Date((currenttime.getTime()).getTime());
+
     /** Creates new form Nurse */
     public Nurse() throws IOException {
 
-        this.setName("Blood Bank Management System");
-        initComponents();
+        try {
+            this.setName("Blood Bank Management System");
+            initComponents();
+            File imgfile = new File("..\\BBMS\\src\\images\\drop.png");
+            FileInputStream imgStream = new FileInputStream(imgfile);
+            BufferedImage bi = ImageIO.read(imgStream);
+            ImageIcon myImg = new ImageIcon(bi);
+            this.setIconImage(myImg.getImage());
 
-        File imgfile = new File("..\\BBMS\\src\\images\\drop.png");
-        FileInputStream imgStream = new FileInputStream(imgfile);
-        BufferedImage bi = ImageIO.read(imgStream);
-        ImageIcon myImg = new ImageIcon(bi);
-        this.setIconImage(myImg.getImage());
+            ResultSet rst = BloodPacketController.getExpiredBloodPackets(sqldate);
+            String packetID = null;
+            String bloodType = null;
+            String bloodGroup = null;
+            int count = 0;
+            while (rst.next()) {
+                packetID = rst.getString("packetID");
+                bloodType = rst.getString("bloodType");
+                bloodGroup = rst.getString("bloodGroup");
+                String[] ar = {packetID, bloodType, bloodGroup};
+                dtm.addRow(ar);
+                count++;
+            }
+            totalTxt.setText("" + count);
 
-        setLocationRelativeTo(null);
+            setLocationRelativeTo(null);
+
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -61,10 +94,12 @@ public class Nurse extends javax.swing.JFrame {
         jButton20 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jCalendar1 = new org.freixas.jcalendar.JCalendar();
+        expiredBloodPacketsTable = new javax.swing.JTable();
+        refreshBtn = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        totalTxt = new javax.swing.JTextField();
+        discardBtn = new javax.swing.JButton();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
         jLabel1 = new javax.swing.JLabel();
         jButton35 = new javax.swing.JButton();
         jButton33 = new javax.swing.JButton();
@@ -120,60 +155,71 @@ public class Nurse extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Packets to be discarded"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        expiredBloodPacketsTable.setModel(dtm);
+        jScrollPane1.setViewportView(expiredBloodPacketsTable);
+
+        refreshBtn.setText("Refresh");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        });
 
-        jButton1.setText("Done");
+        jLabel3.setText("Total");
 
-        jButton2.setText("Refresh");
+        totalTxt.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        totalTxt.setEnabled(false);
+
+        discardBtn.setText("Discard");
+        discardBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                discardBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(totalTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(discardBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(refreshBtn)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(discardBtn)
+                        .addComponent(jLabel3)
+                        .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
         jPanel1.setBounds(870, 160, 300, 470);
         jDesktopPane1.add(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jCalendar1.setBounds(870, 0, 315, 160);
+        jCalendar1.setBounds(872, 0, 300, 160);
         jDesktopPane1.add(jCalendar1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jDesktopPane1.setBounds(200, 60, 1170, 650);
         jLayeredPane1.add(jDesktopPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Vijaya", 1, 36));
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Vijaya", 1, 36)); // NOI18N
         jLabel1.setText("Karapitiya Blood Bank Management System - Nurse Form");
         jLabel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
         jLabel1.setBounds(360, 0, 710, 60);
@@ -490,13 +536,87 @@ public class Nurse extends javax.swing.JFrame {
 
     private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
         DiscardedBlood discardedBlood = new DiscardedBlood(jDesktopPane1.getSize());
-
         discardedBlood.setClosable(true);
         discardedBlood.setMaximizable(true);
         jDesktopPane1.add(discardedBlood);
         jDesktopPane1.setRequestFocusEnabled(true);
         discardedBlood.show();
     }//GEN-LAST:event_jButton33ActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        dtm = new DefaultTableModel(title, 0);
+        expiredBloodPacketsTable.setModel(dtm);
+
+        try {
+            ResultSet rst = BloodPacketController.getExpiredBloodPackets(sqldate);
+            String packetID = null;
+            String bloodType = null;
+            String bloodGroup = null;
+            int count = 0;
+            while (rst.next()) {
+                packetID = rst.getString("packetID");
+                bloodType = rst.getString("bloodType");
+                bloodGroup = rst.getString("bloodGroup");
+                String[] ar = {packetID, bloodType, bloodGroup};
+                dtm.addRow(ar);
+                count++;
+            }
+            totalTxt.setText("" + count);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void discardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discardBtnActionPerformed
+        int row = expiredBloodPacketsTable.getSelectedRow();
+
+        if (row >= 0) {
+            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to discard the selected Blood Packet?", "Discard Blood Packet", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                try {
+                    String packID = "" + dtm.getValueAt(row, 0);
+                    int discarded = BloodPacketController.discardPacket(packID, sqldate);
+                    if (discarded == 1) {
+                        JOptionPane.showMessageDialog(null, "Blood packet discarded succesfully!");
+                        dtm = new DefaultTableModel(title, 0);
+                        expiredBloodPacketsTable.setModel(dtm);
+
+                        try {
+                            ResultSet rst = BloodPacketController.getExpiredBloodPackets(sqldate);
+                            String packetID = null;
+                            String bloodType = null;
+                            String bloodGroup = null;
+                            int count = 0;
+                            while (rst.next()) {
+                                packetID = rst.getString("packetID");
+                                bloodType = rst.getString("bloodType");
+                                bloodGroup = rst.getString("bloodGroup");
+                                String[] ar = {packetID, bloodType, bloodGroup};
+                                dtm.addRow(ar);
+                                count++;
+                            }
+                            totalTxt.setText("" + count);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error while discarding blood packet!");
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Select a row");
+        }
+
+    }//GEN-LAST:event_discardBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -514,13 +634,13 @@ public class Nurse extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton discardBtn;
+    private javax.swing.JTable expiredBloodPacketsTable;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton25;
@@ -534,10 +654,11 @@ public class Nurse extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private org.freixas.jcalendar.JCalendar jCalendar1;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -552,6 +673,7 @@ public class Nurse extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton refreshBtn;
+    private javax.swing.JTextField totalTxt;
     // End of variables declaration//GEN-END:variables
 }
