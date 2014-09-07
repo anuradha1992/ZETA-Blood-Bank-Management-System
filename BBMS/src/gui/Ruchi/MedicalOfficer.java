@@ -15,7 +15,6 @@ import gui.Anu.StockBalance;
 import gui.Naduni.BloodReport;
 import gui.ChangePassword;
 import gui.Naduni.Compatability2;
-import gui.Naduni.CompatibilityReport;
 import gui.Naduni.Immunohaematology;
 import gui.Personalize;
 import java.awt.image.BufferedImage;
