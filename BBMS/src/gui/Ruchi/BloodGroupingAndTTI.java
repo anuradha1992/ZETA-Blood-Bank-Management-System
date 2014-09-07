@@ -16,12 +16,14 @@ import java.util.logging.Logger;
  */
 public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
 
+    BloodGroupingAndTTIHandler handler;
+
     /**
      * Creates new form BloodGrouping
      */
-    public BloodGroupingAndTTI() {
+    public BloodGroupingAndTTI() throws SQLException, ClassNotFoundException {
         initComponents();
-        BloodGroupingAndTTIHandler handler = new BloodGroupingAndTTIHandler();
+        handler = new BloodGroupingAndTTIHandler();
         String[] packetList = null;
         try {
             packetList = handler.getPacketIDList();
@@ -30,7 +32,7 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         for (String id : packetList) {
             packetIDListCombo.addItem(id);
         }
@@ -75,7 +77,7 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        donorTextField = new javax.swing.JTextField();
         blacklistdonerButton = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -263,10 +265,14 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Donor"));
 
-        jTextField1.setText("selected packet doner");
-        jTextField1.setEnabled(false);
+        donorTextField.setEnabled(false);
 
         blacklistdonerButton.setText("Blacklist doner");
+        blacklistdonerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blacklistdonerButtonActionPerformed(evt);
+            }
+        });
 
         jLabel11.setText("Donor");
 
@@ -283,7 +289,7 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(donorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(64, 64, 64))))
         );
         jPanel4Layout.setVerticalGroup(
@@ -291,7 +297,7 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(donorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(blacklistdonerButton)
@@ -299,6 +305,12 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Packet"));
+
+        packetIDListCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                packetIDListComboActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Blood Packet ID");
 
@@ -404,11 +416,42 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_discardPacketCheckBoxActionPerformed
 
+    private void packetIDListComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_packetIDListComboActionPerformed
+        String item = (String) packetIDListCombo.getSelectedItem();
+
+        try {
+            try {
+                donorTextField.setText(handler.getDonorName(item));
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_packetIDListComboActionPerformed
+
+    private void blacklistdonerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blacklistdonerButtonActionPerformed
+
+        String name = donorTextField.getText();
+
+        try {
+            handler.blacklistDonor(name);
+            //TODO:show up a label showing blacklisted successfully
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_blacklistdonerButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton blacklistdonerButton;
     private javax.swing.JButton cancelButton;
     private javax.swing.JCheckBox discardPacketCheckBox;
+    private javax.swing.JTextField donorTextField;
     private javax.swing.JButton generateLabelButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox2;
@@ -438,7 +481,6 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JComboBox packetIDListCombo;

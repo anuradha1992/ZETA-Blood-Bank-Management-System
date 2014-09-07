@@ -18,10 +18,23 @@ import java.sql.SQLException;
  */
 public class BloodGroupingAndTTIDA {
 
-    ResultSet getIDList() throws ClassNotFoundException, SQLException {
-        String query = "Select packetID From BloodPacket where bloodGroup is NULL AND isDiscarded = 0";
+    ResultSet getAllUntestedPackets() throws ClassNotFoundException, SQLException {
+        String query = "Select packetID, nic, bloodGroup, bloodType,  dateOfDonation, dateOfExpiry, packetFrom, bloodBank,campID From BloodPacket where bloodGroup is NULL AND isDiscarded = 0";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
+    }
+
+    ResultSet getDonorName(String donorID) throws ClassNotFoundException, SQLException {
+        String query = "Select name From donor where nic = '"+donorID+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+    }
+
+    int blackListDonor(String name) throws SQLException, ClassNotFoundException {
+        
+        String query = "UPDATE donor SET goodHealth=0 where name = '"+name+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.setData(connection, query);
     }
     
 }
