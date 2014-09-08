@@ -9,10 +9,10 @@
  * Created on Aug 18, 2014, 4:08:52 PM
  */
 
-package gui.Naduni;
+package gui.Ruchi;
 
-import gui.Ruchi.CompatabilityLabel;
 import gui.Ruchi.MedicalOfficer;
+import gui.Ruchi.CompatabilityLabel;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
