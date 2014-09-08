@@ -57,4 +57,161 @@ public class BloodPacketController {
         return DBHandler.getData(connection, query);
     }
 
+    public static int getInhouseCollectedBlood(String bloodType, Date date) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where packetFrom = 'Inhouse' AND bloodType='"+bloodType+"' AND dateOfDonation = '"+date+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getMobileCollectedBlood(String bloodType, Date date) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where packetFrom = 'Campaign' AND bloodType='"+bloodType+"' AND dateOfDonation = '"+date+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getRecievedBlood(String bloodType, Date date) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where packetFrom = 'Received' AND bloodType='"+bloodType+"' AND dateOfDonation = '"+date+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getReturnedBlood(String bloodType, Date date) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where isReturned = 1 AND bloodType='"+bloodType+"' AND returnedDate = '"+date+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getIssuedBlood(String bloodType, Date date) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where isIssued = 1 AND bloodType='"+bloodType+"' AND issuedDate = '"+date+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getDiscardedBlood(String bloodType, Date date) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where isDiscarded = 1 AND bloodType='"+bloodType+"' AND discardedDate = '"+date+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getBloodComponentCount(String bloodType, String bloodGroup) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where bloodType='"+bloodType+"' AND bloodGroup = '"+bloodGroup+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getUncrossmatchedFreshBloodCount(String bloodGroup) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where bloodType='Fresh blood' AND bloodGroup = '"+bloodGroup+"' AND isCrossmatched = 0 AND isSpecialReservation = 0 AND isUnderObservation = 0";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getCrossmatchedFreshBloodCount(String bloodGroup) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where bloodType='Fresh blood' AND bloodGroup = '"+bloodGroup+"' AND isCrossmatched = 1 AND isSpecialReservation = 0 AND isUnderObservation = 0";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getSpecialReservationFreshBloodCount(String bloodGroup) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where bloodType='Fresh blood' AND bloodGroup = '"+bloodGroup+"' AND isSpecialReservation = 1 AND isUnderObservation = 0";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getUnderObservationFreshBloodCount(String bloodGroup) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where bloodType='Fresh blood' AND bloodGroup = '"+bloodGroup+"' AND isSpecialReservation = 0 AND isUnderObservation = 1";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        return count;
+    }
+
+    public static int getUntestedFreshBloodCount(String bloodGroup) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where bloodType='Fresh blood' AND bloodGroup = '"+bloodGroup+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+
+        int count = 0;
+
+        while(rst.next()){
+            count++;
+        }
+        System.out.println(""+count);
+        return count;
+    }
+
 }
