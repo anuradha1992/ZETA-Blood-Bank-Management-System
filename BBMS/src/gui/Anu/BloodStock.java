@@ -56,7 +56,6 @@ public class BloodStock extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel47 = new javax.swing.JLabel();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel11 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
@@ -103,16 +102,14 @@ public class BloodStock extends javax.swing.JInternalFrame {
         jButton31 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
-        jLabel47.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/immunohaetomology.jpg"))); // NOI18N
-
-        jTabbedPane3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jTabbedPane3.setFont(new java.awt.Font("Times New Roman", 1, 14));
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder("Daily Blood Stock Balance"));
 
-        jLabel48.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel48.setFont(new java.awt.Font("Times New Roman", 1, 14));
         jLabel48.setText("Day");
 
-        jTable12.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jTable12.setFont(new java.awt.Font("Times New Roman", 1, 14));
         jTable12.setModel(dtm);
         jTable12.setEnabled(false);
         jScrollPane12.setViewportView(jTable12);
@@ -226,10 +223,10 @@ public class BloodStock extends javax.swing.JInternalFrame {
 
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder("Daily Component Stock Balance"));
 
-        jLabel50.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel50.setFont(new java.awt.Font("Times New Roman", 1, 14));
         jLabel50.setText("Day");
 
-        jTable15.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jTable15.setFont(new java.awt.Font("Times New Roman", 1, 14));
         jTable15.setModel(dtm2);
         jTable15.setEnabled(false);
         jScrollPane15.setViewportView(jTable15);
@@ -345,10 +342,10 @@ public class BloodStock extends javax.swing.JInternalFrame {
 
         jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Monthly Blood Stock Balance"));
 
-        jLabel49.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel49.setFont(new java.awt.Font("Times New Roman", 1, 14));
         jLabel49.setText("Day");
 
-        jTable13.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jTable13.setFont(new java.awt.Font("Times New Roman", 1, 14));
         jTable13.setModel(dtm);
         jTable13.setEnabled(false);
         jScrollPane13.setViewportView(jTable13);
@@ -442,7 +439,6 @@ public class BloodStock extends javax.swing.JInternalFrame {
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1144, Short.MAX_VALUE)
-            .addGap(0, 1144, Short.MAX_VALUE)
             .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel10Layout.createSequentialGroup()
                     .addGap(25, 25, 25)
@@ -451,7 +447,6 @@ public class BloodStock extends javax.swing.JInternalFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 381, Short.MAX_VALUE)
             .addGap(0, 381, Short.MAX_VALUE)
             .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel10Layout.createSequentialGroup()
@@ -464,10 +459,10 @@ public class BloodStock extends javax.swing.JInternalFrame {
 
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder("Monthly Component Stock Balance"));
 
-        jLabel51.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel51.setFont(new java.awt.Font("Times New Roman", 1, 14));
         jLabel51.setText("Day");
 
-        jTable16.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jTable16.setFont(new java.awt.Font("Times New Roman", 1, 14));
         jTable16.setModel(dtm2);
         jTable16.setEnabled(false);
         jScrollPane16.setViewportView(jTable16);
@@ -561,7 +556,6 @@ public class BloodStock extends javax.swing.JInternalFrame {
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1144, Short.MAX_VALUE)
-            .addGap(0, 1144, Short.MAX_VALUE)
             .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel16Layout.createSequentialGroup()
                     .addGap(25, 25, 25)
@@ -570,7 +564,6 @@ public class BloodStock extends javax.swing.JInternalFrame {
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 381, Short.MAX_VALUE)
             .addGap(0, 381, Short.MAX_VALUE)
             .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel16Layout.createSequentialGroup()
@@ -585,24 +578,11 @@ public class BloodStock extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel47)
-                        .addGap(51, 51, 51))))
+            .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1149, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -638,7 +618,6 @@ public class BloodStock extends javax.swing.JInternalFrame {
     private org.freixas.jcalendar.JCalendarCombo jCalendarCombo3;
     private org.freixas.jcalendar.JCalendarCombo jCalendarCombo4;
     private org.freixas.jcalendar.JCalendarCombo jCalendarCombo5;
-    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel50;

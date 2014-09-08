@@ -38,7 +38,7 @@
               <Component id="jLabel44" min="-2" pref="162" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTabbedPane3" min="-2" pref="412" max="-2" attributes="0"/>
-              <EmptySpace pref="41" max="32767" attributes="0"/>
+              <EmptySpace pref="45" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -75,7 +75,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel1" min="-2" max="-2" attributes="1"/>
-                      <EmptySpace pref="14" max="32767" attributes="0"/>
+                      <EmptySpace pref="21" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -107,59 +107,40 @@
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel9" min="-2" max="-2" attributes="1"/>
-                                          <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                                          <Component id="inhouseCampCombo" pref="177" max="32767" attributes="1"/>
-                                      </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="jLabel6" min="-2" pref="135" max="-2" attributes="1"/>
-                                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                                          <Component id="dateOfExpiryCalendar" pref="177" max="32767" attributes="1"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jLabel5" min="-2" pref="64" max="-2" attributes="1"/>
-                                              <Component id="jLabel10" min="-2" pref="73" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="CampIDCombo" alignment="0" pref="177" max="32767" attributes="1"/>
-                                              <Component id="bloodBankText" alignment="0" pref="177" max="32767" attributes="1"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jLabel8" alignment="0" min="-2" pref="113" max="-2" attributes="1"/>
-                                              <Component id="jLabel11" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                              <Component id="jLabel4" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                              <Component id="jLabel3" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                                  <Component id="packIDText" pref="176" max="32767" attributes="1"/>
-                                              </Group>
-                                              <Component id="dateOfCollectionCalendar" pref="177" max="32767" attributes="1"/>
-                                              <Component id="groupCombo" alignment="0" min="-2" pref="81" max="-2" attributes="1"/>
-                                              <Component id="nicText" alignment="1" pref="177" max="32767" attributes="1"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="jLabel5" min="-2" pref="64" max="-2" attributes="1"/>
+                                      <Component id="jLabel10" min="-2" pref="73" max="-2" attributes="0"/>
+                                      <Component id="jLabel8" alignment="0" min="-2" pref="113" max="-2" attributes="1"/>
+                                      <Component id="jLabel11" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                                      <Component id="jLabel4" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                                      <Component id="jLabel3" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
+                                      <Component id="jLabel6" alignment="0" min="-2" pref="135" max="-2" attributes="1"/>
+                                      <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="1"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="CampIDCombo" pref="220" max="32767" attributes="1"/>
+                                      <Component id="inhouseCampCombo" alignment="0" pref="220" max="32767" attributes="1"/>
+                                      <Component id="bloodBankText" pref="220" max="32767" attributes="1"/>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                          <Component id="packIDText" pref="219" max="32767" attributes="1"/>
+                                      </Group>
+                                      <Component id="dateOfCollectionCalendar" pref="220" max="32767" attributes="1"/>
+                                      <Component id="groupCombo" alignment="0" min="-2" pref="81" max="-2" attributes="1"/>
+                                      <Component id="nicText" alignment="1" pref="220" max="32767" attributes="1"/>
+                                      <Component id="dateOfExpiryCalendar" alignment="1" pref="220" max="32767" attributes="1"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel7" min="-2" pref="71" max="-2" attributes="0"/>
                                       <Component id="jLabel21" min="-2" pref="88" max="-2" attributes="0"/>
                                       <Component id="jLabel22" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="bloodTypeCombo" alignment="0" min="-2" pref="81" max="-2" attributes="1"/>
-                                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="campNameCombo" max="32767" attributes="1"/>
-                                          <Component id="donorNameText" alignment="0" pref="195" max="32767" attributes="1"/>
-                                      </Group>
+                                      <Component id="campNameCombo" alignment="0" pref="158" max="32767" attributes="1"/>
+                                      <Component id="donorNameText" alignment="0" min="-2" pref="172" max="-2" attributes="1"/>
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
@@ -169,9 +150,9 @@
                                   <Component id="addBtn" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jLabel49" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -197,8 +178,8 @@
                                           </Group>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="donorNameText" min="-2" max="-2" attributes="0"/>
                                               <Component id="nicText" min="-2" max="-2" attributes="0"/>
-                                              <Component id="donorNameText" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel7" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -215,34 +196,34 @@
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="dateOfExpiryCalendar" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel6" min="-2" pref="21" max="-2" attributes="0"/>
+                                      <Component id="dateOfExpiryCalendar" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel9" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                                      <Component id="inhouseCampCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="inhouseCampCombo" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel9" min="-2" pref="21" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="bloodBankText" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel5" min="-2" pref="21" max="-2" attributes="0"/>
+                                      <Component id="bloodBankText" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="CampIDCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jLabel10" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
-                                              <Component id="campNameCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="printBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="addBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="jLabel10" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                                          <Component id="campNameCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="jLabel21" min="-2" pref="21" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="jLabel21" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                                          <Component id="CampIDCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="printBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="addBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jLabel49" alignment="0" min="-2" pref="307" max="-2" attributes="0"/>
@@ -300,7 +281,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel9">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Inhouse/Campaign"/>
+                    <Property name="text" type="java.lang.String" value="Inhouse/Campaign/Recieved"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="inhouseCampCombo">
