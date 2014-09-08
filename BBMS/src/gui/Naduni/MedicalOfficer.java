@@ -534,13 +534,7 @@ public class MedicalOfficer extends javax.swing.JFrame {
     private void BloodGroupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BloodGroupButtonActionPerformed
         BloodGroupingAndTTI groupform = null;
 
-        try {
-            groupform = new BloodGroupingAndTTI();
-        } catch (SQLException ex) {
-            Logger.getLogger(MedicalOfficer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MedicalOfficer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        groupform = new BloodGroupingAndTTI();
 
         groupform.setClosable(true);
         groupform.setMaximizable(true);
