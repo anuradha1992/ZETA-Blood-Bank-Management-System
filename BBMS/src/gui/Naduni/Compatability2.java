@@ -11,7 +11,7 @@
 
 package gui.Naduni;
 
-import gui.Naduni.CompatabilityLabel;
+import gui.Ruchi.CompatabilityLabel;
 import gui.Ruchi.MedicalOfficer;
 import java.awt.image.BufferedImage;
 import java.io.File;
