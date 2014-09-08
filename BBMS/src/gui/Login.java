@@ -13,7 +13,7 @@ package gui;
 
 import gui.Pubudu.PHI;
 import gui.Upekka.RegistrationOfficer;
-import gui.Ruchi.MedicalOfficer;
+import gui.Naduni.MedicalOfficer;
 import gui.Anu.Nurse;
 import java.awt.image.BufferedImage;
 import java.io.File;

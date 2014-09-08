@@ -8,7 +8,7 @@
  *
  * Created on Jul 6, 2014, 6:06:59 PM
  */
-package gui.Ruchi;
+package gui.Naduni;
 
 import gui.Ruchi.BloodGroupingAndTTI;
 import gui.Anu.StockBalance;
@@ -17,6 +17,10 @@ import gui.ChangePassword;
 import gui.Naduni.Compatability2;
 import gui.Naduni.Immunohaematology;
 import gui.Personalize;
+import gui.Ruchi.BloodAndComponentAvailability;
+import gui.Ruchi.BloodGroupingAndTTI;
+import gui.Ruchi.BloodRequest;
+import gui.Ruchi.CompatibilityReport;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.File;
