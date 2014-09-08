@@ -68,7 +68,7 @@ public class BloodGroupingAndTTIDA {
     }
 
     ResultSet getResultIDs() throws SQLException, ClassNotFoundException {
-        String query = "Select ResultID From testresult";
+        String query = "Select * From testresult";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
     }
@@ -81,6 +81,12 @@ public class BloodGroupingAndTTIDA {
 
     int addResult(String resID, String testID, String packetID, String result, String comment, String date, String doneByID, String checkedByID) throws SQLException, ClassNotFoundException {
         String query = "Insert INTO testresult (ResultID,TestID,packetID,Result,Comment,Date,DoneBy,CheckedBy) Values ('"+resID+"','"+testID+"','"+packetID+"','"+result+"','"+comment+"','"+date+"','"+doneByID+"','"+checkedByID+"')";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.setData(connection, query);
+    }
+
+    int discardPacket(String packetID,String date) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE bloodpacket SET isDiscarded=1,discardedDate='"+date+"' where packetID = '"+packetID+"'";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.setData(connection, query);
     }

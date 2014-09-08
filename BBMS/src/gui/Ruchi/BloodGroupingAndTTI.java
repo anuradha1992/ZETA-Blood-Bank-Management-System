@@ -599,7 +599,6 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
         }
         
         commentsTextField.setText("");
-        //testTable.getModel().setValueAt(title, WIDTH, WIDTH);
     }//GEN-LAST:event_addToListButtonActionPerformed
 
     private void deleteRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRowButtonActionPerformed
@@ -612,6 +611,8 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_deleteRowButtonActionPerformed
 
     private void generateLabelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLabelButtonActionPerformed
+        
+        
         String packetID = (String) packetIDListCombo.getSelectedItem();
         String group = (String) bloodGroupCombo.getSelectedItem();
         String groupComment = groupCommentTextField.getText();
@@ -637,6 +638,16 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
             try {
                 handler.addTestResult(testName, packetID, result, comment, date, doneBy, checkedBy);
             } catch (Exception ex) {
+                Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        if(discardPacketCheckBox.isSelected()){
+            try {
+                handler.setPacketDiscarded(packetID,date);
+            } catch (SQLException ex) {
+                Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

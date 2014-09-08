@@ -162,7 +162,6 @@ public class BloodGroupingAndTTIHandler {
 
     int addTestResult(String testName, String packetID, String result, String comment, String date, String doneBy, String checkedBy) throws Exception {
         String resID = getNextResultID();
-        
         String testID = null;
         for (Test test : tests) {
             if (test.getName().equals(testName)) {
@@ -186,6 +185,10 @@ public class BloodGroupingAndTTIHandler {
              
         int res = dataAccess.addResult(resID,testID,packetID,result,comment,date,doneByID,checkedByID);
         return res;
+    }
+
+    void setPacketDiscarded(String packetID,String date) throws SQLException, ClassNotFoundException {
+        dataAccess.discardPacket(packetID,date);
     }
 
 }
