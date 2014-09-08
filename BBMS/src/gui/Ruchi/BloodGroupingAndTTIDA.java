@@ -32,7 +32,7 @@ public class BloodGroupingAndTTIDA {
 
     int blackListDonor(String name) throws SQLException, ClassNotFoundException {
         
-        String query = "UPDATE donor SET goodHealth=0 where name = '"+name+"'";
+        String query = "UPDATE donor SET blacklisted=1 where name = '"+name+"'";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.setData(connection, query);
     }

@@ -67,8 +67,8 @@ public class BloodGroupingAndTTIHandler {
         return count;
     }
 
-    void blacklistDonor(String name) throws SQLException, ClassNotFoundException {
-        dataAccess.blackListDonor(name);
+    int blacklistDonor(String name) throws SQLException, ClassNotFoundException {
+        return dataAccess.blackListDonor(name);
     }
 
 }

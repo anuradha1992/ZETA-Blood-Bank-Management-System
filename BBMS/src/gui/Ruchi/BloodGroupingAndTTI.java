@@ -80,6 +80,7 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
         donorTextField = new javax.swing.JTextField();
         blacklistdonerButton = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
+        jToggleButton1 = new javax.swing.JToggleButton();
         jPanel5 = new javax.swing.JPanel();
         packetIDListCombo = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
@@ -276,6 +277,8 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Donor");
 
+        jToggleButton1.setText("Blacklist Donor");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -285,7 +288,9 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(blacklistdonerButton)
-                        .addGap(238, 238, 238))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jToggleButton1)
+                        .addContainerGap())
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -300,7 +305,9 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
                     .addComponent(donorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(blacklistdonerButton)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(blacklistdonerButton)
+                    .addComponent(jToggleButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -433,14 +440,17 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
     private void blacklistdonerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blacklistdonerButtonActionPerformed
 
         String name = donorTextField.getText();
-
+        int res = 0;
         try {
-            handler.blacklistDonor(name);
-            //TODO:show up a label showing blacklisted successfully
+            res = handler.blacklistDonor(name);
+
         } catch (SQLException ex) {
             Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (res == 1) {
+            donorTextField.setText("Undo");
         }
 
 
@@ -483,6 +493,7 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JComboBox packetIDListCombo;
     // End of variables declaration//GEN-END:variables
 }
