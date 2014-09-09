@@ -26,7 +26,8 @@ public class MobileDates extends javax.swing.JFrame {
     }
     ;
     MobileDates(PHI aThis, boolean b) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        initComponents();
+        currentDate();
     }
 
     public void currentDate(){
