@@ -11,7 +11,7 @@
 
 package gui;
 
-import gui.Ruchi.MedicalOfficer;
+import gui.Naduni.MedicalOfficer;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;

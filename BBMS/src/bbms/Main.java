@@ -6,7 +6,7 @@
 package bbms;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackStarLookAndFeel;
-import gui.Ruchi.MedicalOfficer;
+import gui.Naduni.MedicalOfficer;
 import gui.Login;
 import gui.Anu.Nurse;
 import java.io.IOException;
