@@ -23,5 +23,24 @@ public class AvailabilityDA {
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
     }
+
+    ResultSet getComponents() throws ClassNotFoundException, SQLException {
+        String query = "Select BloodType From bloodtype order by BloodType";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+    }
+    
+    public ResultSet getDonors() throws ClassNotFoundException, SQLException{
+        String query = "Select name From donor order by name";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+    }
+    
+    public ResultSet getAvailablePackets() throws ClassNotFoundException, SQLException{
+        String query = "select packetID,bloodGroup,bloodType,nic,dateOFExpiry,dateOfDonation,isCrossmatched,isUnderObservation from bloodpacket where isdiscarded = 0 AND isissued = 0";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+    }
+    
     
 }

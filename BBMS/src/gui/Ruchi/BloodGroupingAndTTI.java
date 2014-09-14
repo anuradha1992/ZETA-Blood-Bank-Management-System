@@ -5,6 +5,7 @@
  */
 package gui.Ruchi;
 
+import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -302,6 +303,11 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
         });
 
         cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         discardPacketCheckBox.setText("Discard Packet");
         discardPacketCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -366,14 +372,12 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(blacklistdonerButton)
-                        .addContainerGap())
+                    .addComponent(blacklistdonerButton)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(donorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(64, 64, 64))))
+                        .addComponent(donorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(64, 64, 64))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -597,7 +601,7 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
         } else {
             deleteRowButton.setEnabled(false);
         }
-        
+
         commentsTextField.setText("");
     }//GEN-LAST:event_addToListButtonActionPerformed
 
@@ -611,8 +615,7 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_deleteRowButtonActionPerformed
 
     private void generateLabelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLabelButtonActionPerformed
-        
-        
+
         String packetID = (String) packetIDListCombo.getSelectedItem();
         String group = (String) bloodGroupCombo.getSelectedItem();
         String groupComment = groupCommentTextField.getText();
@@ -631,20 +634,20 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
 
         int testCount = dtm.getRowCount();
         for (int i = 0; i < testCount; i++) {
-            String testName = (String)dtm.getValueAt(i, 0);
-            String result = (String)dtm.getValueAt(i, 1);
-            String comment = (String)dtm.getValueAt(i, 2);
-            
+            String testName = (String) dtm.getValueAt(i, 0);
+            String result = (String) dtm.getValueAt(i, 1);
+            String comment = (String) dtm.getValueAt(i, 2);
+
             try {
                 handler.addTestResult(testName, packetID, result, comment, date, doneBy, checkedBy);
             } catch (Exception ex) {
                 Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        if(discardPacketCheckBox.isSelected()){
+
+        if (discardPacketCheckBox.isSelected()) {
             try {
-                handler.setPacketDiscarded(packetID,date);
+                handler.setPacketDiscarded(packetID, date);
             } catch (SQLException ex) {
                 Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
@@ -652,6 +655,17 @@ public class BloodGroupingAndTTI extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_generateLabelButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+
+        try {
+            this.setClosed(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

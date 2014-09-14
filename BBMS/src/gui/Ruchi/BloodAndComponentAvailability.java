@@ -9,29 +9,31 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ruchiranga
  */
 public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
-    
+
     AvailabilityHandler handler;
+    DefaultTableModel dtm;
 
     /**
      * Creates new form BloodAndComponentAvailability
      */
     public BloodAndComponentAvailability() {
         initComponents();
-        
+
         handler = new AvailabilityHandler();
-        
-        ButtonGroup radio = new ButtonGroup();
-        radio.add(sByDonorRadioButton);
-        radio.add(sbyComponentRadioButton);
-        radio.add(sbygroupRadioButton);
+
+        ButtonGroup search_radios = new ButtonGroup();
+        search_radios.add(sByDonorRadioButton);
+        search_radios.add(sbyComponentRadioButton);
+        search_radios.add(sbygroupRadioButton);
         sbygroupRadioButton.setSelected(true);
-        
+
         String[] groupList = null;
 
         try {
@@ -45,6 +47,47 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
         for (String group : groupList) {
             groupsComboBox.addItem(group);
         }
+
+        String[] compList = null;
+
+        try {
+            compList = handler.getComponentList();
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (String comp : compList) {
+            componentsComboBox.addItem(comp);
+        }
+
+        String[] donorList = null;
+
+        try {
+            donorList = handler.getDonorList();
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BloodGroupingAndTTI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (String donor : donorList) {
+            donorsComboBox.addItem(donor);
+        }
+        
+        ButtonGroup sort_radios = new ButtonGroup();
+        sort_radios.add(doeRadioButton);
+        sort_radios.add(donorNameRadioButton);
+        sort_radios.add(componentRadioButton);
+        sort_radios.add(groupRadioButton);
+        sort_radios.add(rhRadioButton);
+        sort_radios.add(recievedFromRadioButton);
+        
+        
+        String[] columns = {"Packet ID","Blood group","Component Type","Recieved By","Date of expiry","Date of collection","Cross matched","Under observation"};
+        dtm = new DefaultTableModel(columns, 0);
+        availabilityTable.setModel(dtm);
         
 
     }
@@ -71,15 +114,15 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         donorsComboBox = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        jRadioButton6 = new javax.swing.JRadioButton();
-        jRadioButton7 = new javax.swing.JRadioButton();
-        jRadioButton8 = new javax.swing.JRadioButton();
-        jRadioButton9 = new javax.swing.JRadioButton();
+        doeRadioButton = new javax.swing.JRadioButton();
+        donorNameRadioButton = new javax.swing.JRadioButton();
+        componentRadioButton = new javax.swing.JRadioButton();
+        groupRadioButton = new javax.swing.JRadioButton();
+        rhRadioButton = new javax.swing.JRadioButton();
+        recievedFromRadioButton = new javax.swing.JRadioButton();
         jPanel5 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableScrollPane = new javax.swing.JScrollPane();
+        availabilityTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -112,7 +155,7 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(groupsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,7 +171,6 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Component");
 
-        componentsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Red Cells", "FFP", "CRYO", "Platelet Concentrate", "CSP/Plasma", " " }));
         componentsComboBox.setEnabled(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -136,10 +178,11 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(componentsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(componentsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +203,8 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Search by Donor"));
 
-        jLabel3.setText("Donor");
+        jLabel3.setText("Donor name");
 
-        donorsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "donor lst" }));
         donorsComboBox.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -173,8 +215,8 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(donorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addComponent(donorsComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,44 +230,44 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Sort By"));
 
-        jRadioButton4.setText("Date of Expiry");
-        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+        doeRadioButton.setText("Date of Expiry");
+        doeRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
+                doeRadioButtonActionPerformed(evt);
             }
         });
 
-        jRadioButton5.setText("Donor Name");
-        jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
+        donorNameRadioButton.setText("Donor Name");
+        donorNameRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton5ActionPerformed(evt);
+                donorNameRadioButtonActionPerformed(evt);
             }
         });
 
-        jRadioButton6.setText("Component");
+        componentRadioButton.setText("Component");
 
-        jRadioButton7.setText("Group");
+        groupRadioButton.setText("Group");
 
-        jRadioButton8.setText("Rh");
+        rhRadioButton.setText("Rh");
 
-        jRadioButton9.setText("Recieved from");
+        recievedFromRadioButton.setText("Recieved from");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jRadioButton4)
+                .addComponent(doeRadioButton)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton5)
+                .addComponent(donorNameRadioButton)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton6)
+                .addComponent(componentRadioButton)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton7)
+                .addComponent(groupRadioButton)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton8)
+                .addComponent(rhRadioButton)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton9)
+                .addComponent(recievedFromRadioButton)
                 .addGap(0, 35, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -233,17 +275,17 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton4)
-                    .addComponent(jRadioButton5)
-                    .addComponent(jRadioButton6)
-                    .addComponent(jRadioButton7)
-                    .addComponent(jRadioButton8)
-                    .addComponent(jRadioButton9)))
+                    .addComponent(doeRadioButton)
+                    .addComponent(donorNameRadioButton)
+                    .addComponent(componentRadioButton)
+                    .addComponent(groupRadioButton)
+                    .addComponent(rhRadioButton)
+                    .addComponent(recievedFromRadioButton)))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Available Blood Packets"));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        availabilityTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null}
             },
@@ -266,20 +308,20 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
-        jScrollPane3.setViewportView(jTable2);
+        availabilityTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tableScrollPane.setViewportView(availabilityTable);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3)
+            .addComponent(tableScrollPane)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jButton1.setText("Print Table");
@@ -302,19 +344,21 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sbygroupRadioButton)
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sbyComponentRadioButton)
                             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(107, 107, 107)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sByDonorRadioButton)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sByDonorRadioButton)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(20, 20, 20))
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 313, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -322,8 +366,6 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
                 .addComponent(jButton2)
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jPanel1, jPanel3, jPanel4});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
 
@@ -344,7 +386,7 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -354,13 +396,13 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+    private void doeRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doeRadioButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton4ActionPerformed
+    }//GEN-LAST:event_doeRadioButtonActionPerformed
 
-    private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton5ActionPerformed
+    private void donorNameRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_donorNameRadioButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton5ActionPerformed
+    }//GEN-LAST:event_donorNameRadioButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -372,6 +414,8 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
             componentsComboBox.setEnabled(false);
             donorsComboBox.setEnabled(false);
         }
+        
+        
     }//GEN-LAST:event_sbygroupRadioButtonActionPerformed
 
     private void sbyComponentRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sbyComponentRadioButtonActionPerformed
@@ -392,8 +436,13 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable availabilityTable;
+    private javax.swing.JRadioButton componentRadioButton;
     private javax.swing.JComboBox componentsComboBox;
+    private javax.swing.JRadioButton doeRadioButton;
+    private javax.swing.JRadioButton donorNameRadioButton;
     private javax.swing.JComboBox donorsComboBox;
+    private javax.swing.JRadioButton groupRadioButton;
     private javax.swing.JComboBox groupsComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -405,16 +454,11 @@ public class BloodAndComponentAvailability extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JRadioButton jRadioButton8;
-    private javax.swing.JRadioButton jRadioButton9;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JRadioButton recievedFromRadioButton;
+    private javax.swing.JRadioButton rhRadioButton;
     private javax.swing.JRadioButton sByDonorRadioButton;
     private javax.swing.JRadioButton sbyComponentRadioButton;
     private javax.swing.JRadioButton sbygroupRadioButton;
+    private javax.swing.JScrollPane tableScrollPane;
     // End of variables declaration//GEN-END:variables
 }

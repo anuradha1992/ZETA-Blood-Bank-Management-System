@@ -19,7 +19,7 @@ import java.sql.SQLException;
 public class BloodGroupingAndTTIDA {
 
     public ResultSet getAllUntestedPackets() throws ClassNotFoundException, SQLException {
-        String query = "Select packetID, nic, bloodGroup, bloodType,  dateOfDonation, dateOfExpiry, packetFrom, bloodBank,campID From BloodPacket where bloodGroup is NULL AND isDiscarded = 0";
+        String query = "Select packetID, nic, bloodBank ,  dateOfDonation, dateOfExpiry, bloodType , packetFrom,campID,bloodGroup From BloodPacket where bloodGroup is NULL AND isDiscarded = 0";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
     }
