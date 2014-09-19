@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Controller.Anu;
+package data_access.anu;
 
 import connection.DBConnection;
 import connection.DBHandler;
@@ -16,7 +16,7 @@ import model.Ward;
  *
  * @author Anuradha
  */
-public class WardController {
+public class WardDA {
 
     public static int addWard(Ward ward) throws ClassNotFoundException, SQLException {
         String query = "Insert into Ward(WardName) values ('" + ward.getWardName()+ "')";

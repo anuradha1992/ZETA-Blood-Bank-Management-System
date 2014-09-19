@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Controller.Anu;
+package data_access.anu;
 
 import connection.DBConnection;
 import connection.DBHandler;
@@ -16,7 +16,7 @@ import model.Requestor;
  *
  * @author Anuradha
  */
-public class RequestorController {
+public class RequestorDA {
 
     public static int addRequestor(Requestor requestor) throws ClassNotFoundException, SQLException {
         String query = "Insert into Requestor(Hospital) values ('" +requestor.getHospital() + "')";

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Controller.Anu;
+package data_access.anu;
 
 import connection.DBConnection;
 import connection.DBHandler;
@@ -16,7 +16,7 @@ import model.Item;
  *
  * @author Anuradha
  */
-public class ItemHandler {
+public class ItemDA {
 
     public static int addItem(Item item) throws ClassNotFoundException, SQLException {
         String query = "Insert into Item(itemID,itemType,description,quantity,units,isReagent) values ('" + item.getItemID() + "','" + item.getItemType() + "','" + item.getDescription() + "','" + item.getQuantity() +"','" + item.getUnits()+ "',"+item.getIsReagent()+ ")";

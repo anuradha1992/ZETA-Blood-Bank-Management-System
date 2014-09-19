@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Controller.Anu;
+package data_access.anu;
 
 import connection.DBConnection;
 import connection.DBHandler;
@@ -16,7 +16,7 @@ import model.BloodType;
  *
  * @author Anuradha
  */
-public class BloodTypeController {
+public class BloodTypeDA {
 
     public static int addType(BloodType type) throws ClassNotFoundException, SQLException {
         String query = "Insert into BloodType(BloodType) values ('" +type.getBloodType() + "')";
