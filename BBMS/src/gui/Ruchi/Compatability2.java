@@ -11,10 +11,10 @@
 
 package gui.Ruchi;
 
-<<<<<<< HEAD:BBMS/src/gui/Ruchi/Compatability2.java
-import gui.Ruchi.MedicalOfficer;
-=======
->>>>>>> af6d04af4471587f86cfcd4fe111c8539347dc63:BBMS/src/gui/Naduni/Compatability2.java
+//<<<<<<< HEAD:BBMS/src/gui/Ruchi/Compatability2.java
+import gui.Naduni.MedicalOfficer;
+//=======
+//>>>>>>> af6d04af4471587f86cfcd4fe111c8539347dc63:BBMS/src/gui/Naduni/Compatability2.java
 import gui.Ruchi.CompatabilityLabel;
 import java.awt.image.BufferedImage;
 import java.io.File;
