@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Controller.Anu;
+package data_access.anu;
 
 import connection.DBConnection;
 import connection.DBHandler;
@@ -17,7 +17,7 @@ import model.BloodPacket;
  *
  * @author Anuradha
  */
-public class BloodPacketController {
+public class BloodPacketDA {
 
     public static int addPacket(BloodPacket packet) throws ClassNotFoundException, SQLException {
         String query = "Insert into BloodPacket(packetID,nic,bloodGroup,bloodType,dateOfDonation,dateOfExpiry,packetFrom,bloodBank,campID) values ('" + packet.getPacketID() + "','" + packet.getNic() + "','" + packet.getBloodGroup() + "','" + packet.getBloodType() +"','" + packet.getDateOfDonation() + "','" + packet.getDateOfExpiry() + "','" + packet.getPacketFrom() + "','" + packet.getBloodBank() + "','"+ packet.getCampID()+ "')";

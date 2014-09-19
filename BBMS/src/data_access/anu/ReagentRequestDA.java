@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Controller.Anu;
+package data_access.anu;
 
 import connection.DBConnection;
 import connection.DBHandler;
@@ -16,7 +16,7 @@ import model.ReagentRequest;
  *
  * @author Anuradha
  */
-public class ReagentRequestHandler {
+public class ReagentRequestDA {
 
     public static int addReceivedLog(ReagentRequest request) throws ClassNotFoundException, SQLException {
         String query = "Insert into ReagentRequest(requestID,itemID,date,qty,reason,requestingOfficerID) values ('" + request.getRequestID() + "','" + request.getItemID() + "','" + request.getDate() + "','"+ request.getQty() + "','"+ request.getReason() + "','"+request.getOfficerID()+ "')";

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Controller.Anu;
+package data_access.anu;
 
 import connection.DBConnection;
 import connection.DBHandler;
@@ -16,7 +16,7 @@ import model.BloodGroup;
  *
  * @author Anuradha
  */
-public class BloodGroupController {
+public class BloodGroupDA {
 
     public static int addGroup(BloodGroup group) throws ClassNotFoundException, SQLException {
         String query = "Insert into BloodGroup(groupName) values ('" +group.getGroupName() + "')";
