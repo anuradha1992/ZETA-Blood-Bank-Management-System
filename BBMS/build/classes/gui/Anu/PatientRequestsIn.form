@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <NonVisualComponents>
@@ -37,7 +37,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jTabbedPane1" pref="540" max="32767" attributes="0"/>
+              <Component id="jTabbedPane1" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -76,7 +76,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                      <Component id="jLabel50" pref="65" max="32767" attributes="0"/>
+                      <Component id="jLabel50" pref="72" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -103,7 +103,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="jLabel5" alignment="1" pref="61" max="32767" attributes="1"/>
+                                          <Component id="jLabel5" alignment="1" max="32767" attributes="1"/>
                                           <Component id="jLabel3" alignment="1" max="32767" attributes="1"/>
                                           <Component id="jLabel4" alignment="1" max="32767" attributes="1"/>
                                       </Group>
@@ -143,33 +143,40 @@
                                           <Component id="jLabel51" min="-2" pref="108" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                       </Group>
-                                      <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                          <Component id="jLabel18" min="-2" pref="108" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Group type="103" groupAlignment="1" attributes="0">
-                                                  <Group type="102" attributes="0">
-                                                      <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Component id="jLabel15" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
-                                                          <Component id="jLabel14" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
-                                                          <Component id="jLabel16" min="-2" pref="108" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                                                      <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Component id="addNoOfPacketsSpinner" alignment="0" min="-2" pref="49" max="-2" attributes="0"/>
-                                                          <Component id="addBloodGroupCombo" alignment="1" pref="107" max="32767" attributes="1"/>
-                                                          <Component id="addBloodTypeCombo" alignment="0" pref="107" max="32767" attributes="1"/>
-                                                          <Component id="addRequestBtn" alignment="1" min="-2" max="-2" attributes="0"/>
-                                                          <Component id="specialRemarksText" alignment="0" pref="107" max="32767" attributes="0"/>
-                                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="jLabel17" min="-2" pref="108" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                                  <Component id="addDateCalendar" pref="107" max="32767" attributes="1"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="jLabel15" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
+                                                      <Component id="jLabel14" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
+                                                      <Component id="jLabel16" min="-2" pref="108" max="-2" attributes="0"/>
+                                                      <Component id="jLabel18" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
                                                   </Group>
-                                                  <Group type="102" alignment="1" attributes="0">
-                                                      <Component id="jLabel17" min="-2" pref="108" max="-2" attributes="0"/>
-                                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                                                      <Component id="addDateCalendar" pref="107" max="32767" attributes="1"/>
+                                                  <EmptySpace min="38" pref="38" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="addBloodGroupCombo" alignment="1" pref="107" max="32767" attributes="1"/>
+                                                      <Component id="addBloodTypeCombo" alignment="0" pref="107" max="32767" attributes="1"/>
+                                                      <Group type="102" alignment="1" attributes="0">
+                                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                                          <Component id="addRequestBtn" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <Component id="specialRemarksText" alignment="0" pref="107" max="32767" attributes="0"/>
+                                                      <Group type="102" attributes="0">
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Component id="addNoOfPacketsSpinner" min="-2" pref="49" max="-2" attributes="0"/>
+                                                              <Component id="addTime" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                          </Group>
+                                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                                      </Group>
                                                   </Group>
                                               </Group>
-                                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                                           </Group>
+                                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -234,9 +241,12 @@
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                                  <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                                      <Component id="addTime" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="addBloodTypeCombo" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -463,6 +473,8 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="specialRemarksText">
                 </Component>
+                <Component class="lu.tudor.santec.jtimechooser.JTimeChooser" name="addTime">
+                </Component>
               </SubComponents>
             </Container>
             <Component class="javax.swing.JLabel" name="jLabel50">
@@ -568,10 +580,10 @@
                                               <Group type="102" attributes="0">
                                                   <Group type="103" groupAlignment="1" attributes="0">
                                                       <Component id="searcgAgeText" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
-                                                      <Component id="seachIndicationOfTransfusionText" alignment="0" pref="169" max="32767" attributes="0"/>
-                                                      <Component id="searchWardText" alignment="1" pref="169" max="32767" attributes="0"/>
-                                                      <Component id="searchHospitalText" alignment="1" pref="169" max="32767" attributes="1"/>
-                                                      <Component id="searchPatientText" alignment="1" pref="169" max="32767" attributes="1"/>
+                                                      <Component id="seachIndicationOfTransfusionText" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="searchWardText" alignment="1" max="32767" attributes="0"/>
+                                                      <Component id="searchHospitalText" alignment="1" max="32767" attributes="1"/>
+                                                      <Component id="searchPatientText" alignment="1" max="32767" attributes="1"/>
                                                   </Group>
                                                   <EmptySpace min="-2" pref="227" max="-2" attributes="0"/>
                                               </Group>
@@ -999,7 +1011,7 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="162" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="jLabel55" min="-2" pref="264" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
                           </Group>
@@ -1150,10 +1162,10 @@
                                           <Group type="102" alignment="0" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="updateAgeText" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
-                                                  <Component id="updateHospitalcombo" alignment="1" pref="169" max="32767" attributes="0"/>
-                                                  <Component id="updateWardCombo" alignment="1" pref="169" max="32767" attributes="0"/>
-                                                  <Component id="updatePatientText" alignment="0" pref="169" max="32767" attributes="1"/>
-                                                  <Component id="updateIndicationOfTransfusionText" alignment="0" pref="169" max="32767" attributes="0"/>
+                                                  <Component id="updateHospitalcombo" alignment="1" max="32767" attributes="0"/>
+                                                  <Component id="updateWardCombo" alignment="1" max="32767" attributes="0"/>
+                                                  <Component id="updatePatientText" alignment="0" max="32767" attributes="1"/>
+                                                  <Component id="updateIndicationOfTransfusionText" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -1171,7 +1183,10 @@
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="jLabel53" min="-2" pref="118" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="updateSpecialRemarksText" min="-2" pref="149" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="updateTimeText" min="-2" max="-2" attributes="0"/>
+                                      <Component id="updateSpecialRemarksText" min="-2" pref="149" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
@@ -1215,20 +1230,25 @@
                               <Component id="updateHospitalBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel30" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="updateWardCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="updateWardBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="updatePatientText" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel37" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel38" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="updateAgeText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel30" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="updateWardCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="updateWardBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="updatePatientText" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel37" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel38" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="updateAgeText" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="updateTimeText" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -1452,6 +1472,8 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="updateSpecialRemarksText">
+                </Component>
+                <Component class="lu.tudor.santec.jtimechooser.JTimeChooser" name="updateTimeText">
                 </Component>
               </SubComponents>
             </Container>
