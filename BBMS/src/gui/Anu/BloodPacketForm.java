@@ -98,7 +98,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         bloodTypeCombo1 = new javax.swing.JComboBox();
         jLabel52 = new javax.swing.JLabel();
 
-        jTabbedPane3.setFont(new java.awt.Font("Times New Roman", 1, 14));
+        jTabbedPane3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Add blood packet details"));
 
@@ -155,6 +155,11 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         groupCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Unknown", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" }));
 
         printBtn.setText("Print Label");
+        printBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printBtnActionPerformed(evt);
+            }
+        });
 
         addBtn.setText("Add");
         addBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -217,7 +222,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(bloodTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(campNameCombo, 0, 158, Short.MAX_VALUE)
+                            .addComponent(campNameCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(donorNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -281,7 +286,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        jLabel51.setFont(new java.awt.Font("Monotype Corsiva", 1, 24));
+        jLabel51.setFont(new java.awt.Font("Monotype Corsiva", 1, 24)); // NOI18N
         jLabel51.setText("Add Blood Packet");
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -427,7 +432,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                         .addGap(34, 34, 34)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(bloodTypeCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(campNameCombo1, 0, 158, Short.MAX_VALUE)
+                            .addComponent(campNameCombo1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(donorNameText1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
@@ -491,7 +496,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        jLabel52.setFont(new java.awt.Font("Monotype Corsiva", 1, 24));
+        jLabel52.setFont(new java.awt.Font("Monotype Corsiva", 1, 24)); // NOI18N
         jLabel52.setText("Update Blood Packet");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -526,7 +531,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+                .addComponent(jTabbedPane3)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -644,6 +649,10 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
     private void campNameCombo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campNameCombo1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campNameCombo1ActionPerformed
+
+    private void printBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CampIDCombo;
