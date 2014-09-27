@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import model.Requestor;
+import model.Requester;
 import model.Ward;
 
 /**
@@ -368,7 +368,7 @@ public class AddRequestor extends javax.swing.JInternalFrame {
     private void addHospitalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHospitalBtnActionPerformed
         try {
             String hospital = addHospitalText.getText();
-            Requestor requestor = new Requestor(hospital);
+            Requester requestor = new Requester(hospital);
             int res = RequestorDA.addRequestor(requestor);
 
             if (res == 1) {
@@ -436,8 +436,8 @@ public class AddRequestor extends javax.swing.JInternalFrame {
 
     private void updateHospitalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateHospitalBtnActionPerformed
         try {
-            Requestor oldHospital = new Requestor(oldHospitalName);
-            Requestor newHospital = new Requestor(updateHospitalText.getText());
+            Requester oldHospital = new Requester(oldHospitalName);
+            Requester newHospital = new Requester(updateHospitalText.getText());
             int res = RequestorDA.updateHospital(oldHospital, newHospital);
             if (res == 1) {
                 JOptionPane.showMessageDialog(null, "Updated Succesfully");
@@ -484,7 +484,7 @@ public class AddRequestor extends javax.swing.JInternalFrame {
 
     private void deleteHospitalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHospitalBtnActionPerformed
         try {
-            Requestor deletedHospital = new Requestor(updateHospitalText.getText());
+            Requester deletedHospital = new Requester(updateHospitalText.getText());
             int res = RequestorDA.deleteHospital(deletedHospital);
             if (res == 1) {
                 JOptionPane.showMessageDialog(null, "Deleted Succesfully");

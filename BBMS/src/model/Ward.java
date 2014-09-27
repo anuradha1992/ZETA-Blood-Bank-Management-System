@@ -11,24 +11,24 @@ package model;
  */
 public class Ward {
 
-    private String wardName;
+    private String name;
 
     public Ward(String wardName) {
-        this.wardName = wardName;
+        this.name = wardName;
     }
 
     /**
-     * @return the wardName
+     * @return the name
      */
-    public String getWardName() {
-        return wardName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param wardName the wardName to set
+     * @param Name the name to set
      */
-    public void setWardName(String wardName) {
-        this.wardName = wardName;
+    public void setName(String Name) {
+        this.name = Name;
     }
 
     

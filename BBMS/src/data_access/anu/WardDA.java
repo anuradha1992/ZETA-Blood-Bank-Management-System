@@ -19,7 +19,7 @@ import model.Ward;
 public class WardDA {
 
     public static int addWard(Ward ward) throws ClassNotFoundException, SQLException {
-        String query = "Insert into Ward(WardName) values ('" + ward.getWardName()+ "')";
+        String query = "Insert into Ward(WardName) values ('" + ward.getName()+ "')";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;
@@ -32,7 +32,7 @@ public class WardDA {
     }
 
     public static int updateWard(Ward oldWard, Ward newWard) throws ClassNotFoundException, SQLException {
-        String query = "update Ward set WardName='" + newWard.getWardName() + "' where WardName='" + oldWard.getWardName() + "'";
+        String query = "update Ward set WardName='" + newWard.getName() + "' where WardName='" + oldWard.getName() + "'";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;
@@ -41,7 +41,7 @@ public class WardDA {
 
     public static int deleteWard(Ward ward) throws ClassNotFoundException, SQLException {
 
-        String query = "Delete from Ward where WardName='" +  ward.getWardName()+ "'";
+        String query = "Delete from Ward where WardName='" +  ward.getName()+ "'";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;

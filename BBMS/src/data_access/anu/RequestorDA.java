@@ -10,7 +10,7 @@ import connection.DBHandler;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.Requestor;
+import model.Requester;
 
 /**
  *
@@ -18,7 +18,7 @@ import model.Requestor;
  */
 public class RequestorDA {
 
-    public static int addRequestor(Requestor requestor) throws ClassNotFoundException, SQLException {
+    public static int addRequestor(Requester requestor) throws ClassNotFoundException, SQLException {
         String query = "Insert into Requestor(Hospital) values ('" +requestor.getHospital() + "')";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
@@ -31,7 +31,7 @@ public class RequestorDA {
         return DBHandler.getData(connection, query);
     }
 
-    public static int updateHospital(Requestor oldHospital, Requestor newHospital) throws ClassNotFoundException, SQLException {
+    public static int updateHospital(Requester oldHospital, Requester newHospital) throws ClassNotFoundException, SQLException {
         String query = "update Requestor set hospital='" + newHospital.getHospital() + "' where hospital='" + oldHospital.getHospital() + "'";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
@@ -39,7 +39,7 @@ public class RequestorDA {
 
     }
 
-    public static int deleteHospital(Requestor hospital) throws ClassNotFoundException, SQLException {
+    public static int deleteHospital(Requester hospital) throws ClassNotFoundException, SQLException {
 
         String query = "Delete from Requestor where hospital='" + hospital.getHospital() + "'";
         Connection connection = DBConnection.getConnectionToDB();
