@@ -851,7 +851,7 @@ public class Nurse extends javax.swing.JFrame {
     }//GEN-LAST:event_bloodReturnBtnActionPerformed
 
     private void addRequesteeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRequesteeBtnActionPerformed
-        AddRequestee requestee = new AddRequestee();
+        AddRequestee requestee = new AddRequestee(null);
         requestee.setClosable(true);
         NurseDesktop.add(requestee);
         NurseDesktop.setRequestFocusEnabled(true);

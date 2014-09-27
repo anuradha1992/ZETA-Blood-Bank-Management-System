@@ -14,6 +14,7 @@ public class BloodPacket {
 
     private String packetID;
     private String nic;    
+    private String recievedID;
     private Date dateOfDonation;
     private Date dateOfExpiry;
     private String bloodType; //FreshBlood, FFP, CRYO, Plasma, Platelets
@@ -29,9 +30,10 @@ public class BloodPacket {
     private String comment;
     private String bullkissueID;
 
-    public BloodPacket(String packetID, String nic, Date dateOfDonation, Date dateOfExpiry, String bloodType, byte isCrossmatched, byte isSpecialReservation, byte isUnderObservation, String campID, byte isDiscarded, String bloodGroup, Date discardedDate, String returnID, String patientIssueID, String comment, String bullkissueID) {
+    public BloodPacket(String packetID, String nic, String recievedID, Date dateOfDonation, Date dateOfExpiry, String bloodType, byte isCrossmatched, byte isSpecialReservation, byte isUnderObservation, String campID, byte isDiscarded, String bloodGroup, Date discardedDate, String returnID, String patientIssueID, String comment, String bullkissueID) {
         this.packetID = packetID;
         this.nic = nic;
+        this.recievedID = recievedID;
         this.dateOfDonation = dateOfDonation;
         this.dateOfExpiry = dateOfExpiry;
         this.bloodType = bloodType;
@@ -74,6 +76,20 @@ public class BloodPacket {
      */
     public void setNic(String nic) {
         this.nic = nic;
+    }
+
+    /**
+     * @return the recievedID
+     */
+    public String getRecievedID() {
+        return recievedID;
+    }
+
+    /**
+     * @param recievedID the recievedID to set
+     */
+    public void setRecievedID(String recievedID) {
+        this.recievedID = recievedID;
     }
 
     /**
@@ -121,7 +137,7 @@ public class BloodPacket {
     /**
      * @return the isCrossmatched
      */
-    public byte isIsCrossmatched() {
+    public byte getIsCrossmatched() {
         return isCrossmatched;
     }
 
@@ -135,7 +151,7 @@ public class BloodPacket {
     /**
      * @return the isSpecialReservation
      */
-    public byte isIsSpecialReservation() {
+    public byte getIsSpecialReservation() {
         return isSpecialReservation;
     }
 
@@ -149,7 +165,7 @@ public class BloodPacket {
     /**
      * @return the isUnderObservation
      */
-    public byte isIsUnderObservation() {
+    public byte getIsUnderObservation() {
         return isUnderObservation;
     }
 
@@ -177,7 +193,7 @@ public class BloodPacket {
     /**
      * @return the isDiscarded
      */
-    public byte isIsDiscarded() {
+    public byte getIsDiscarded() {
         return isDiscarded;
     }
 
@@ -271,6 +287,8 @@ public class BloodPacket {
     public void setBullkissueID(String bullkissueID) {
         this.bullkissueID = bullkissueID;
     }
+
+    
 
    
 }

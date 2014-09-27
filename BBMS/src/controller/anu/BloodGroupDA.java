@@ -19,7 +19,7 @@ import model.BloodGroup;
 public class BloodGroupDA {
 
     public static int addGroup(BloodGroup group) throws ClassNotFoundException, SQLException {
-        String query = "Insert into BloodGroup(groupName) values ('" +group.getGroupName() + "')";
+        String query = "Insert into BloodGroup(groupName) values ('" +group.getBloodgroup() + "')";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;
@@ -27,7 +27,7 @@ public class BloodGroupDA {
 
     public static int updateGroup(BloodGroup oldGroup, BloodGroup newGroup) throws ClassNotFoundException, SQLException {
 
-        String query = "update BloodGroup set GroupName='" + newGroup.getGroupName() + "' where GroupName='" + oldGroup.getGroupName() + "'";
+        String query = "update BloodGroup set GroupName='" + newGroup.getBloodgroup() + "' where GroupName='" + oldGroup.getBloodgroup() + "'";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;
@@ -36,7 +36,7 @@ public class BloodGroupDA {
 
     public static int deleteGroup(BloodGroup group) throws ClassNotFoundException, SQLException {
 
-        String query = "Delete from BloodGroup where GroupName='" + group.getGroupName() + "'";
+        String query = "Delete from BloodGroup where GroupName='" + group.getBloodgroup() + "'";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;
