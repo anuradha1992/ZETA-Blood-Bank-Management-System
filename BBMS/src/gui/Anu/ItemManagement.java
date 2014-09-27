@@ -10,9 +10,9 @@
  */
 package gui.Anu;
 
-import data_access.anu.ItemDA;
-import data_access.anu.ReagentRequestDA;
-import data_access.anu.RecievedLogDA;
+import controller.anu.ItemDA;
+import controller.anu.ReagentRequestDA;
+import controller.anu.RecievedLogDA;
 import java.awt.Dimension;
 import java.sql.ResultSet;
 import java.sql.SQLException;
