@@ -14,19 +14,13 @@ import java.sql.Date;
 public class ReagentRequest {
 
     private String requestID;
-    private String itemID;
-    private Date date;
-    private double qty;
-    private String reason;
-    private String officerID;
+    private Date requestDate;
+    private String requestingOfficerID;
 
-    public ReagentRequest(String requestID, String itemID, Date date, double qty, String reason, String officerID) {
+    public ReagentRequest(String requestID, Date requestDate, String requestingOfficerID) {
         this.requestID = requestID;
-        this.itemID = itemID;
-        this.date = date;
-        this.qty = qty;
-        this.reason = reason;
-        this.officerID = officerID;
+        this.requestDate = requestDate;
+        this.requestingOfficerID = requestingOfficerID;
     }
 
     /**
@@ -44,75 +38,33 @@ public class ReagentRequest {
     }
 
     /**
-     * @return the itemID
+     * @return the requestDate
      */
-    public String getItemID() {
-        return itemID;
+    public Date getRequestDate() {
+        return requestDate;
     }
 
     /**
-     * @param itemID the itemID to set
+     * @param requestDate the requestDate to set
      */
-    public void setItemID(String itemID) {
-        this.itemID = itemID;
+    public void setRequestDate(Date requestDate) {
+        this.requestDate = requestDate;
     }
 
     /**
-     * @return the date
+     * @return the requestingOfficerID
      */
-    public Date getDate() {
-        return date;
+    public String getRequestingOfficerID() {
+        return requestingOfficerID;
     }
 
     /**
-     * @param date the date to set
+     * @param requestingOfficerID the requestingOfficerID to set
      */
-    public void setDate(Date date) {
-        this.date = date;
+    public void setRequestingOfficerID(String requestingOfficerID) {
+        this.requestingOfficerID = requestingOfficerID;
     }
 
-    /**
-     * @return the qty
-     */
-    public double getQty() {
-        return qty;
-    }
-
-    /**
-     * @param qty the qty to set
-     */
-    public void setQty(double qty) {
-        this.qty = qty;
-    }
-
-    /**
-     * @return the reason
-     */
-    public String getReason() {
-        return reason;
-    }
-
-    /**
-     * @param reason the reason to set
-     */
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    /**
-     * @return the officerID
-     */
-    public String getOfficerID() {
-        return officerID;
-    }
-
-    /**
-     * @param officerID the officerID to set
-     */
-    public void setOfficerID(String officerID) {
-        this.officerID = officerID;
-    }
-
-    
+       
 
 }

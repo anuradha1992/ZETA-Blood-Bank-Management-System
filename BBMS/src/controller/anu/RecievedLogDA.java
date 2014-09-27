@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.ReceivedLog;
+import model.ItemReceivedLog;
 
 /**
  *
@@ -19,7 +19,7 @@ import model.ReceivedLog;
  */
 public class RecievedLogDA {
 
-    public static int addReceivedLog(ReceivedLog log) throws ClassNotFoundException, SQLException {
+    public static int addReceivedLog(ItemReceivedLog log) throws ClassNotFoundException, SQLException {
         String query = "Insert into RecievedLog(itemID,dateRecieved,qtyRecieved,recievedFrom) values ('" + log.getItemID() + "','" + log.getRecievedDate() + "','" + log.getQty() + "','"+log.getFrom()+ "')";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
