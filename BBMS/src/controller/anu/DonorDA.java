@@ -10,6 +10,7 @@ import connection.DBHandler;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.Donor;
 
 /**
  *
@@ -17,7 +18,7 @@ import java.sql.SQLException;
  */
 public class DonorDA {
     
-    public static ResultSet getAllGroups() throws ClassNotFoundException, SQLException {
+    public static ResultSet getAllDonors() throws ClassNotFoundException, SQLException {
         String query = "Select * From Donor";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
@@ -32,6 +33,25 @@ public class DonorDA {
         }else{
             return null;
         }
+    }
+    
+    public static int addDonorFromOtherBloodBank(String nic, String name) throws ClassNotFoundException, SQLException {
+        String query = "Insert into Donor(nic, name) values ('"+nic+"','"+name+"')";
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
+    
+    public static boolean isNicDuplicate(int nic) throws ClassNotFoundException, SQLException{
+        String query = "Select * From Donor";
+        String donor_nic = nic+"-";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+        while(rst.next()){
+            if(donor_nic.equalsIgnoreCase(rst.getString("nic")))
+                return true;
+        }
+        return false;
     }
         
 }

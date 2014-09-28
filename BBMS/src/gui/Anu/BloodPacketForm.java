@@ -98,7 +98,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         try {
             combo.removeAllItems();
             ResultSet rst = null;
-            rst = DonorDA.getAllGroups();
+            rst = DonorDA.getAllDonors();
 
             while (rst.next()) {
                 combo.addItem(rst.getString("nic"));

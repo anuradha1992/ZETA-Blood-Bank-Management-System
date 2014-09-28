@@ -24,6 +24,8 @@ public class TestController {
         return DBHandler.getData(connection, query);
     }
     
+    
+    
     public static int getTestCount() throws ClassNotFoundException, SQLException {
         String query = "Select count(*) From Test";
         Connection connection = DBConnection.getConnectionToDB();
@@ -32,6 +34,16 @@ public class TestController {
             return rst.getInt("count(*)");
         }
         return -1;
+    }
+    
+    public static String getTestID(String testName) throws ClassNotFoundException, SQLException {
+        String query = "Select * from Test where Name='"+testName+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+        while(rst.next()){
+            return rst.getString("TestID");
+        }
+        return null;
     }
     
 }

@@ -16,12 +16,17 @@ import java.sql.SQLException;
  *
  * @author Anuradha
  */
-public class RecievedLogController {
+public class BulkIssueController {
     
-    public static ResultSet getResultIDs() throws ClassNotFoundException, SQLException {
-        String query = "Select * From BloodRecievedLog order by RecievedID";
+    public static String getIssuedTo(String issueID) throws ClassNotFoundException, SQLException {
+        
+        String query = "Select * From BulkIssue where IssueID = '"+issueID+"'";
         Connection connection = DBConnection.getConnectionToDB();
-        return DBHandler.getData(connection, query);
+        ResultSet rst = DBHandler.getData(connection, query);
+        while(rst.next()){
+            return rst.getString("Requester");
+        }
+        return null;
     }
     
 }

@@ -10,7 +10,9 @@
  */
 package gui.Anu;
 
+import controller.anu.BloodGroupDA;
 import controller.anu.BloodPacketDA;
+import controller.anu.BloodStockController;
 import gui.ChangePassword;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -44,38 +46,80 @@ public class Nurse extends javax.swing.JFrame {
     DefaultTableModel dtm = new DefaultTableModel(title, 0);
     Calendar currenttime = Calendar.getInstance();
     java.sql.Date sqldate = new java.sql.Date((currenttime.getTime()).getTime());
-    String[] bloodTitle = {"Arribite", "Count"};
-    Object[][] bloodData = {{"Balance", null},
-    {"Inhouse", null},
-    {"Mobile", null},
-    {"", null},
-    {"Recieved", null},
-    {"Returned", null},
-    {"", null},
-    {"Issued", null},
-    {"", null},
-    {"Discarded", null},
-    {"Total", null}};
-    DefaultTableModel freshBloodDtm = new DefaultTableModel(bloodData, bloodTitle);
+//    String[] bloodTitle = {"Arribite", "Count"};
+//    Object[][] bloodData = {{"Balance", null},
+//    {"Inhouse", null},
+//    {"Mobile", null},
+//    {"", null},
+//    {"Recieved", null},
+//    {"Returned", null},
+//    {"", null},
+//    {"Issued", null},
+//    {"", null},
+//    {"Discarded", null},
+//    {"Total", null}};
+//    DefaultTableModel freshBloodDtm = new DefaultTableModel(bloodData, bloodTitle);
+
     String[] bloodStockTitle = {"Blood Group", "Un X matched", "X matched", "Special Reservations", "Under Observation", "Total"};
-    Object[][] bloodStockData = {{"A +ve", null, null, null, null, null},
-    {"B +ve", null, null, null, null, null},
-    {"AB +ve", null, null, null, null, null},
-    {"O +ve", null, null, null, null, null},
-    {"A neg", null, null, null, null, null},
-    {"B neg", null, null, null, null, null},
-    {"AB neg", null, null, null, null, null},
-    {"O neg", null, null, null, null, null},
-    {"Total", null, null, null, null, null},
-    {"Untested", null, null, null, null, null},
-    {null, null, null, null, "Grand Total", null}};
-    DefaultTableModel bloodStockDtm = new DefaultTableModel(bloodStockData, bloodStockTitle);
+    DefaultTableModel bloodStockDtm = new DefaultTableModel(bloodStockTitle, 0);
+//    Object[][] bloodStockData = {{"A +ve", null, null, null, null, null},
+//    {"B +ve", null, null, null, null, null},
+//    {"AB +ve", null, null, null, null, null},
+//    {"O +ve", null, null, null, null, null},
+//    {"A neg", null, null, null, null, null},
+//    {"B neg", null, null, null, null, null},
+//    {"AB neg", null, null, null, null, null},
+//    {"O neg", null, null, null, null, null},
+//    {"Total", null, null, null, null, null},
+//    {"Untested", null, null, null, null, null},
+//    {null, null, null, null, "Grand Total", null}};
+//    DefaultTableModel bloodStockDtm = new DefaultTableModel(bloodStockData, bloodStockTitle);
     String[] componentStockTitle = {"Component", "A +ve", "A neg", "B +ve", "B neg", "AB +ve", "AB neg", "O +ve", "O neg", "UG", "Total"};
-    Object[][] componenetStockData = {{"Platelets", null, null, null, null, null, null, null, null, null, null},
-    {"FFP", null, null, null, null, null, null, null, null, null, null},
-    {"CRYO", null, null, null, null, null, null, null, null, null, null},
-    {"Plasma/CSP", null, null, null, null, null, null, null, null, null, null}};
-    DefaultTableModel componenetStockDtm = new DefaultTableModel(componenetStockData, componentStockTitle);
+//    Object[][] componenetStockData = {{"Platelets", null, null, null, null, null, null, null, null, null, null},
+//    {"FFP", null, null, null, null, null, null, null, null, null, null},
+//    {"CRYO", null, null, null, null, null, null, null, null, null, null},
+//    {"Plasma/CSP", null, null, null, null, null, null, null, null, null, null}};
+    DefaultTableModel componenetStockDtm = new DefaultTableModel(componentStockTitle, 0);
+
+    private void setDailyStockBalance() {
+        ResultSet rst;
+        try {
+            rst = BloodGroupDA.getAllGroups();
+            int groupCount = BloodGroupDA.getGroupCount();
+            int[] tot = new int[groupCount-1];
+            int i = 0;
+            while (rst.next()) {
+                String bloodGroup = rst.getString("GroupName");
+                String bloodType = "Fresh blood";
+                if(!bloodGroup.equalsIgnoreCase("UG")){
+                    int unX = BloodStockController.getUnX(bloodGroup,bloodType);
+                    int x = BloodStockController.getX(bloodGroup,bloodType);
+                    int specialReservation = BloodStockController.getSpecialReservation(bloodGroup,bloodType);
+                    int underObservation = BloodStockController.getUnderObservation(bloodGroup,bloodType);
+                    int total = unX + x + specialReservation + underObservation;
+                    tot[i++]=total;
+                    String[] row = {bloodGroup,""+unX,""+x,""+specialReservation,""+underObservation,""+total};
+                    bloodStockDtm.addRow(row);
+                }
+            }
+            int totalOfTested = 0;
+            for (int j = 0; j < tot.length; j++) {
+                totalOfTested += tot[j];
+            }
+            String[] totalRow = {"Total","","","","",""+totalOfTested};
+            bloodStockDtm.addRow(totalRow);
+                        
+            int totalOfUntested = BloodStockController.getUntestedTotal("UG","Fresh blood");
+            String[] untestedRow = {"Untested","","","","",""+totalOfUntested};
+            bloodStockDtm.addRow(untestedRow);
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     /**
      * Creates new form Nurse
@@ -119,211 +163,6 @@ public class Nurse extends javax.swing.JFrame {
 
     public JDesktopPane getDesktop() {
         return this.NurseDesktop;
-    }
-
-    private void setDailyStockBalance() {
-        try {
-
-            /* Updating Components Table */
-            //platelets
-            int platelet_A_plus_count = BloodPacketDA.getBloodComponentCount("Platelets", "A+");
-            componenetStockDtm.setValueAt("" + platelet_A_plus_count, 0, 1);
-            int platelet_A_min_count = BloodPacketDA.getBloodComponentCount("Platelets", "A-");
-            componenetStockDtm.setValueAt("" + platelet_A_min_count, 0, 2);
-            int platelet_B_plus_count = BloodPacketDA.getBloodComponentCount("Platelets", "B+");
-            componenetStockDtm.setValueAt("" + platelet_B_plus_count, 0, 3);
-            int platelet_B_min_count = BloodPacketDA.getBloodComponentCount("Platelets", "B-");
-            componenetStockDtm.setValueAt("" + platelet_B_min_count, 0, 4);
-            int platelet_AB_plus_count = BloodPacketDA.getBloodComponentCount("Platelets", "AB+");
-            componenetStockDtm.setValueAt("" + platelet_AB_plus_count, 0, 5);
-            int platelet_AB_min_count = BloodPacketDA.getBloodComponentCount("Platelets", "AB-");
-            componenetStockDtm.setValueAt("" + platelet_AB_min_count, 0, 6);
-            int platelet_O_plus_count = BloodPacketDA.getBloodComponentCount("Platelets", "O+");
-            componenetStockDtm.setValueAt("" + platelet_O_plus_count, 0, 7);
-            int platelet_O_min_count = BloodPacketDA.getBloodComponentCount("Platelets", "O-");
-            componenetStockDtm.setValueAt("" + platelet_O_min_count, 0, 8);
-            int platelet_unknown_count = BloodPacketDA.getBloodComponentCount("Platelets", null);
-            componenetStockDtm.setValueAt("" + platelet_unknown_count, 0, 9);
-
-            //ffp
-            int ffp_A_plus_count = BloodPacketDA.getBloodComponentCount("FFP", "A+");
-            componenetStockDtm.setValueAt("" + ffp_A_plus_count, 1, 1);
-            int ffp_A_min_count = BloodPacketDA.getBloodComponentCount("FFP", "A-");
-            componenetStockDtm.setValueAt("" + ffp_A_min_count, 1, 2);
-            int ffp_B_plus_count = BloodPacketDA.getBloodComponentCount("FFP", "B+");
-            componenetStockDtm.setValueAt("" + ffp_B_plus_count, 1, 3);
-            int ffp_B_min_count = BloodPacketDA.getBloodComponentCount("FFP", "B-");
-            componenetStockDtm.setValueAt("" + ffp_B_min_count, 1, 4);
-            int ffp_AB_plus_count = BloodPacketDA.getBloodComponentCount("FFP", "AB+");
-            componenetStockDtm.setValueAt("" + ffp_AB_plus_count, 1, 5);
-            int ffp_AB_min_count = BloodPacketDA.getBloodComponentCount("FFP", "AB-");
-            componenetStockDtm.setValueAt("" + ffp_AB_min_count, 1, 6);
-            int ffp_O_plus_count = BloodPacketDA.getBloodComponentCount("FFP", "O+");
-            componenetStockDtm.setValueAt("" + ffp_O_plus_count, 1, 7);
-            int ffp_O_min_count = BloodPacketDA.getBloodComponentCount("FFP", "O-");
-            componenetStockDtm.setValueAt("" + ffp_O_min_count, 1, 8);
-            int ffp_unknown_count = BloodPacketDA.getBloodComponentCount("FFP", null);
-            componenetStockDtm.setValueAt("" + ffp_unknown_count, 1, 9);
-
-            //cryo
-            int cryo_A_plus_count = BloodPacketDA.getBloodComponentCount("CRYO", "A+");
-            componenetStockDtm.setValueAt("" + cryo_A_plus_count, 2, 1);
-            int cryo_A_min_count = BloodPacketDA.getBloodComponentCount("CRYO", "A-");
-            componenetStockDtm.setValueAt("" + cryo_A_min_count, 2, 2);
-            int cryo_B_plus_count = BloodPacketDA.getBloodComponentCount("CRYO", "B+");
-            componenetStockDtm.setValueAt("" + cryo_B_plus_count, 2, 3);
-            int cryo_B_min_count = BloodPacketDA.getBloodComponentCount("CRYO", "B-");
-            componenetStockDtm.setValueAt("" + cryo_B_min_count, 2, 4);
-            int cryo_AB_plus_count = BloodPacketDA.getBloodComponentCount("CRYO", "AB+");
-            componenetStockDtm.setValueAt("" + cryo_AB_plus_count, 2, 5);
-            int cryo_AB_min_count = BloodPacketDA.getBloodComponentCount("CRYO", "AB-");
-            componenetStockDtm.setValueAt("" + cryo_AB_min_count, 2, 6);
-            int cryo_O_plus_count = BloodPacketDA.getBloodComponentCount("CRYO", "O+");
-            componenetStockDtm.setValueAt("" + cryo_O_plus_count, 2, 7);
-            int cryo_O_min_count = BloodPacketDA.getBloodComponentCount("CRYO", "O-");
-            componenetStockDtm.setValueAt("" + cryo_O_min_count, 2, 8);
-            int cryo_unknown_count = BloodPacketDA.getBloodComponentCount("CRYO", null);
-            componenetStockDtm.setValueAt("" + cryo_unknown_count, 2, 9);
-
-            //plasma
-            int plasma_A_plus_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", "A+");
-            componenetStockDtm.setValueAt("" + plasma_A_plus_count, 3, 1);
-            int plasma_A_min_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", "A-");
-            componenetStockDtm.setValueAt("" + plasma_A_min_count, 3, 2);
-            int plasma_B_plus_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", "B+");
-            componenetStockDtm.setValueAt("" + plasma_B_plus_count, 3, 3);
-            int plasma_B_min_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", "B-");
-            componenetStockDtm.setValueAt("" + plasma_B_min_count, 3, 4);
-            int plasma_AB_plus_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", "AB+");
-            componenetStockDtm.setValueAt("" + plasma_AB_plus_count, 3, 5);
-            int plasma_AB_min_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", "AB-");
-            componenetStockDtm.setValueAt("" + plasma_AB_min_count, 3, 6);
-            int plasma_O_plus_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", "O+");
-            componenetStockDtm.setValueAt("" + plasma_O_plus_count, 3, 7);
-            int plasma_O_min_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", "O-");
-            componenetStockDtm.setValueAt("" + plasma_O_min_count, 3, 8);
-            int plasma_unknown_count = BloodPacketDA.getBloodComponentCount("Plasma/CSP", null);
-            componenetStockDtm.setValueAt("" + plasma_unknown_count, 3, 9);
-
-            /* Calculate component total */
-            for (int i = 0; i < 4; i++) {
-                int total = 0;
-                int j = 1;
-                for (; j < 10; j++) {
-                    total += Integer.parseInt("" + componenetStockDtm.getValueAt(i, j));
-                }
-                componenetStockDtm.setValueAt("" + total, i, j);
-            }
-
-
-            /*Fresh Blood Stock Balance Table */
-            //A+
-            int fresh_blood_A_plus_UnX = BloodPacketDA.getUncrossmatchedFreshBloodCount("A+");
-            bloodStockDtm.setValueAt(fresh_blood_A_plus_UnX, 0, 1);
-            int fresh_blood_A_plus_X = BloodPacketDA.getCrossmatchedFreshBloodCount("A+");
-            bloodStockDtm.setValueAt(fresh_blood_A_plus_X, 0, 2);
-            int fresh_blood_A_plus_SR = BloodPacketDA.getSpecialReservationFreshBloodCount("A+");
-            bloodStockDtm.setValueAt(fresh_blood_A_plus_SR, 0, 3);
-            int fresh_blood_A_plus_UO = BloodPacketDA.getUnderObservationFreshBloodCount("A+");
-            bloodStockDtm.setValueAt(fresh_blood_A_plus_UO, 0, 4);
-
-            //B+
-            int fresh_blood_B_plus_UnX = BloodPacketDA.getUncrossmatchedFreshBloodCount("B+");
-            bloodStockDtm.setValueAt(fresh_blood_B_plus_UnX, 1, 1);
-            int fresh_blood_B_plus_X = BloodPacketDA.getCrossmatchedFreshBloodCount("B+");
-            bloodStockDtm.setValueAt(fresh_blood_B_plus_X, 1, 2);
-            int fresh_blood_B_plus_SR = BloodPacketDA.getSpecialReservationFreshBloodCount("B+");
-            bloodStockDtm.setValueAt(fresh_blood_B_plus_SR, 1, 3);
-            int fresh_blood_B_plus_UO = BloodPacketDA.getUnderObservationFreshBloodCount("B+");
-            bloodStockDtm.setValueAt(fresh_blood_B_plus_UO, 1, 4);
-
-            //AB+
-            int fresh_blood_AB_plus_UnX = BloodPacketDA.getUncrossmatchedFreshBloodCount("AB+");
-            bloodStockDtm.setValueAt(fresh_blood_AB_plus_UnX, 2, 1);
-            int fresh_blood_AB_plus_X = BloodPacketDA.getCrossmatchedFreshBloodCount("AB+");
-            bloodStockDtm.setValueAt(fresh_blood_AB_plus_X, 2, 2);
-            int fresh_blood_AB_plus_SR = BloodPacketDA.getSpecialReservationFreshBloodCount("AB+");
-            bloodStockDtm.setValueAt(fresh_blood_AB_plus_SR, 2, 3);
-            int fresh_blood_AB_plus_UO = BloodPacketDA.getUnderObservationFreshBloodCount("AB+");
-            bloodStockDtm.setValueAt(fresh_blood_AB_plus_UO, 2, 4);
-
-            //O+
-            int fresh_blood_O_plus_UnX = BloodPacketDA.getUncrossmatchedFreshBloodCount("O+");
-            bloodStockDtm.setValueAt(fresh_blood_O_plus_UnX, 3, 1);
-            int fresh_blood_O_plus_X = BloodPacketDA.getCrossmatchedFreshBloodCount("O+");
-            bloodStockDtm.setValueAt(fresh_blood_O_plus_X, 3, 2);
-            int fresh_blood_O_plus_SR = BloodPacketDA.getSpecialReservationFreshBloodCount("O+");
-            bloodStockDtm.setValueAt(fresh_blood_O_plus_SR, 3, 3);
-            int fresh_blood_O_plus_UO = BloodPacketDA.getUnderObservationFreshBloodCount("O+");
-            bloodStockDtm.setValueAt(fresh_blood_O_plus_UO, 3, 4);
-
-            //A-
-            int fresh_blood_A_min_UnX = BloodPacketDA.getUncrossmatchedFreshBloodCount("A-");
-            bloodStockDtm.setValueAt(fresh_blood_A_min_UnX, 4, 1);
-            int fresh_blood_A_min_X = BloodPacketDA.getCrossmatchedFreshBloodCount("A-");
-            bloodStockDtm.setValueAt(fresh_blood_A_min_X, 4, 2);
-            int fresh_blood_A_min_SR = BloodPacketDA.getSpecialReservationFreshBloodCount("A-");
-            bloodStockDtm.setValueAt(fresh_blood_A_min_SR, 4, 3);
-            int fresh_blood_A_min_UO = BloodPacketDA.getUnderObservationFreshBloodCount("A-");
-            bloodStockDtm.setValueAt(fresh_blood_A_min_UO, 4, 4);
-
-            //B-
-            int fresh_blood_B_min_UnX = BloodPacketDA.getUncrossmatchedFreshBloodCount("B-");
-            bloodStockDtm.setValueAt(fresh_blood_B_min_UnX, 5, 1);
-            int fresh_blood_B_min_X = BloodPacketDA.getCrossmatchedFreshBloodCount("B-");
-            bloodStockDtm.setValueAt(fresh_blood_B_min_X, 5, 2);
-            int fresh_blood_B_min_SR = BloodPacketDA.getSpecialReservationFreshBloodCount("B-");
-            bloodStockDtm.setValueAt(fresh_blood_B_min_SR, 5, 3);
-            int fresh_blood_B_min_UO = BloodPacketDA.getUnderObservationFreshBloodCount("B-");
-            bloodStockDtm.setValueAt(fresh_blood_B_min_UO, 5, 4);
-
-            //AB-
-            int fresh_blood_AB_min_UnX = BloodPacketDA.getUncrossmatchedFreshBloodCount("AB-");
-            bloodStockDtm.setValueAt(fresh_blood_AB_min_UnX, 6, 1);
-            int fresh_blood_AB_min_X = BloodPacketDA.getCrossmatchedFreshBloodCount("AB-");
-            bloodStockDtm.setValueAt(fresh_blood_AB_min_X, 6, 2);
-            int fresh_blood_AB_min_SR = BloodPacketDA.getSpecialReservationFreshBloodCount("AB-");
-            bloodStockDtm.setValueAt(fresh_blood_AB_min_SR, 6, 3);
-            int fresh_blood_AB_min_UO = BloodPacketDA.getUnderObservationFreshBloodCount("AB-");
-            bloodStockDtm.setValueAt(fresh_blood_AB_min_UO, 6, 4);
-
-            //O-
-            int fresh_blood_O_min_UnX = BloodPacketDA.getUncrossmatchedFreshBloodCount("O-");
-            bloodStockDtm.setValueAt(fresh_blood_O_min_UnX, 7, 1);
-            int fresh_blood_O_min_X = BloodPacketDA.getCrossmatchedFreshBloodCount("O-");
-            bloodStockDtm.setValueAt(fresh_blood_O_min_X, 7, 2);
-            int fresh_blood_O_min_SR = BloodPacketDA.getSpecialReservationFreshBloodCount("O-");
-            bloodStockDtm.setValueAt(fresh_blood_O_min_SR, 7, 3);
-            int fresh_blood_O_min_UO = BloodPacketDA.getUnderObservationFreshBloodCount("O-");
-            bloodStockDtm.setValueAt(fresh_blood_O_min_UO, 7, 4);
-
-            /* Calculate blood total */
-            int netTotal_Tested = 0;
-            int i = 0;
-            int j = 1;
-            for (; i < 8; i++) {
-                int total = 0;
-                j = 1;
-                for (; j < 5; j++) {
-                    total += Integer.parseInt("" + bloodStockDtm.getValueAt(i, j));
-                }
-                bloodStockDtm.setValueAt("" + total, i, j);
-                netTotal_Tested += total;
-            }
-            bloodStockDtm.setValueAt("" + netTotal_Tested, i, j);
-
-            int fresh_blood_untested = BloodPacketDA.getUntestedFreshBloodCount("");
-            bloodStockDtm.setValueAt(fresh_blood_untested, i + 1, j);
-
-            int grantTotal = netTotal_Tested + fresh_blood_untested;
-            bloodStockDtm.setValueAt(grantTotal, i + 2, j);
-
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     /**
@@ -876,7 +715,7 @@ public class Nurse extends javax.swing.JFrame {
 
     private void addRequestorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRequestorBtnActionPerformed
         AddHospitalWard requestor = new AddHospitalWard();
-        requestor.setClosable(true); 
+        requestor.setClosable(true);
         NurseDesktop.add(requestor);
         NurseDesktop.setRequestFocusEnabled(true);
         requestor.show();

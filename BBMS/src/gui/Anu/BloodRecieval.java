@@ -10,10 +10,14 @@
  */
 package gui.Anu;
 
+import controller.anu.BloodPacketDA;
+import controller.anu.BloodRecievedDetailController;
+import controller.anu.BloodRecievedLogController;
+import controller.anu.DonorDA;
 import controller.anu.EmployeeController;
-import controller.anu.RecievedLogController;
 import controller.anu.RequesteeDA;
 import controller.anu.TestController;
+import controller.anu.TestResultController;
 import idgenerator.IDGenerator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,11 +26,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.Employee;
+import model.BloodPacket;
+import model.BloodReceivedLog;
+import model.BloodrecievedDetail;
+import model.TestResult;
 
 /**
  *
@@ -53,6 +62,14 @@ public class BloodRecieval extends javax.swing.JInternalFrame {
         setRequesteeCombo(requesteeCombo);
         setEmpCombo(empNamesCombo);
 
+    }
+    
+    private void clear(){
+        tempText.setText("");
+        sendingOfficerText.setText("");
+        String[] title = {"Unit No", "Donor's Name", "Blood Group", "Blood Type", "Date of collection", "Date of Expiry", "TTI Results", "Remarks"};
+        dtm = new DefaultTableModel(title, 0);
+        recievalTable.setModel(dtm);
     }
 
     //recievalForm.setData(packetID,name,bloodGroup,bloodType,sqlDateC,sqlDateE,testResults,comment);
@@ -125,7 +142,7 @@ public class BloodRecieval extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JSeparator();
         AddPacketBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        recievalTable = new javax.swing.JTable();
         editPacketBtn = new javax.swing.JButton();
         addRecievalBtn = new javax.swing.JButton();
         deletePacketBtn = new javax.swing.JButton();
@@ -175,9 +192,9 @@ public class BloodRecieval extends javax.swing.JInternalFrame {
             }
         });
 
-        jTable1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 102, 255)));
-        jTable1.setModel(dtm);
-        jScrollPane1.setViewportView(jTable1);
+        recievalTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 102, 255)));
+        recievalTable.setModel(dtm);
+        jScrollPane1.setViewportView(recievalTable);
 
         editPacketBtn.setText("Edit Blood Packet");
 
@@ -384,11 +401,11 @@ public class BloodRecieval extends javax.swing.JInternalFrame {
             //===============================================================================================
             String recievedID = "";
             ResultSet rst;
-            rst = RecievedLogController.getResultIDs();
+            rst = BloodRecievedLogController.getResultIDs();
             rst.last();
             String curID = null;
             try {
-                curID = rst.getString("returnedID");
+                curID = rst.getString("recievedID");
                 try {
                     recievedID = IDGenerator.generateNextID(curID);
                 } catch (Exception ex) {
@@ -408,7 +425,7 @@ public class BloodRecieval extends javax.swing.JInternalFrame {
 
             /*Time*/
             SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
-            java.sql.Time sqlTime;
+            java.sql.Time sqlTime = null;
             try {
                 sqlTime = new java.sql.Time(formatter.parse(recievedTimer.getFormatedTime()).getTime());
             } catch (ParseException ex) {
@@ -418,43 +435,117 @@ public class BloodRecieval extends javax.swing.JInternalFrame {
             String sendingOfficer = sendingOfficerText.getText();
             float temp = Float.parseFloat(tempText.getText());
             String icePacketCondition = "" + icePacketsCombo.getSelectedItem();
-            String recievingOfficerID = EmployeeController.getEmpID(sendingOfficerText.getText());
+            String recievingOfficerID = EmployeeController.getEmpID(""+empNamesCombo.getSelectedItem());
+            System.out.println("emp ID : "+recievingOfficerID);
+
+            BloodReceivedLog log = new BloodReceivedLog(recievedID, requestee, sqlDateC, sqlTime, sendingOfficer, recievingOfficerID, temp, icePacketCondition);
+            int res1 = BloodRecievedLogController.addLog(log);
 
         //=============================================================================================== BloodRecivedLog
-            for (int i = 0; i < dtm.getRowCount(); i++) {
-                String packetID = "" + dtm.getValueAt(i, 0);
-        //================================================================================== BloodRecivedDetail
-                //{packetID, name, bloodGroup, bloodType, dateC, dateE, testResults, comment};
+            if (res1 == 1) {
 
-                String donorName = "" + dtm.getValueAt(i, 1);   //Have to generate a (-) nic
-                
-                String bloodGroup = "" + dtm.getValueAt(i, 2);
-                String bloodType = "" + dtm.getValueAt(i, 3);
+                int res_bloodPacket = 0;
+                int res_bloodPacketRecievedDetail = 0;
+                int res_donor = 0;
+                int res_Test = 0;
 
-                //Collection date
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                Date parsed=null;
-                try {
-                    parsed = format.parse(""+dtm.getValueAt(i, 4));
-                } catch (ParseException ex) {
-                    Logger.getLogger(BloodRecieval.class.getName()).log(Level.SEVERE, null, ex);
+                BloodrecievedDetail detail;
+
+                for (int i = 0; i < dtm.getRowCount(); i++) {
+                    String packetID = "" + dtm.getValueAt(i, 0);
+
+                    detail = new BloodrecievedDetail(recievedID, packetID);
+                    
+
+                    //================================================================================== BloodRecivedDetail
+                    //{packetID, name, bloodGroup, bloodType, dateC, dateE, testResults, comment};
+                    String donorName = "" + dtm.getValueAt(i, 1);   //Have to generate a (-) nic
+
+                    int donor_nic;
+                    
+                    do{
+                        
+                        Random r = new Random();
+                        donor_nic = Math.abs((r.nextInt()%1000000000)) + 1;
+                        
+                    }while(DonorDA.isNicDuplicate(donor_nic));
+                    
+                    String donorNic = ""+donor_nic+"-";
+                    System.out.println("NIC : "+donorNic);
+                    
+                    String bloodGroup = "" + dtm.getValueAt(i, 2);
+                    String bloodType = "" + dtm.getValueAt(i, 3);
+
+                    //Collection date
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date parsed = null;
+                    try {
+                        parsed = format.parse("" + dtm.getValueAt(i, 4));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(BloodRecieval.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    java.sql.Date sqlDateCollection = new java.sql.Date(parsed.getTime());
+
+                    //Expiry date
+                    try {
+                        parsed = format.parse("" + dtm.getValueAt(i, 5));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(BloodRecieval.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    java.sql.Date sqlDateExpiry = new java.sql.Date(parsed.getTime());
+
+                    String ttiResults = "" + dtm.getValueAt(i, 6);;
+                    String comment = "" + dtm.getValueAt(i, 7);
+
+                    res_donor += DonorDA.addDonorFromOtherBloodBank(donorNic, donorName);
+
+                    BloodPacket newPacket = new BloodPacket(packetID, donorNic, recievedID, sqlDateCollection, sqlDateExpiry, bloodType, (byte) 0, (byte) 0, (byte) 0, null, (byte) 0, bloodGroup, null, null, null, comment, null);
+
+                    res_bloodPacket += BloodPacketDA.addRecievedPacket(newPacket);
+                    res_bloodPacketRecievedDetail += BloodRecievedDetailController.addDetail(detail);
+
+                    //=========================================================================================
+                    String[] tests = ttiResults.split(",");   //Tests want to update test result table also
+
+                    for (int j = 0; j < tests.length; j++) {
+
+                        //finding testResultID
+                        String testResultID = "";
+                        ResultSet rst_testResult;
+                        rst_testResult = TestResultController.getAllTests();
+                        rst_testResult.last();
+                        String curTestResultID = null;
+                        try {
+                            curTestResultID = rst_testResult.getString("ResultID");
+                            try {
+                                testResultID = IDGenerator.generateNextID(curTestResultID);
+                            } catch (Exception ex) {
+                                Logger.getLogger(BloodReturn.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } catch (SQLException e) {
+                            testResultID = "RS00000001";
+                        }
+
+                        String test = tests[j];
+                        String testId = TestController.getTestID(test);
+                        if (testId != null) {
+                            TestResult result = new TestResult(testResultID, testId, packetID, "negative", "None", null, null, null, null);
+                            res_Test += TestResultController.addTestResultOfRecievedBloodPackets(result);
+                        }
+
+                    }
+
                 }
-                java.sql.Date sqlDateCollection = new java.sql.Date(parsed.getTime());
                 
-                //Expiry date
-                try {
-                    parsed = format.parse(""+dtm.getValueAt(i, 5));
-                } catch (ParseException ex) {
-                    Logger.getLogger(BloodRecieval.class.getName()).log(Level.SEVERE, null, ex);
+                if((res_donor+res_bloodPacket+res_bloodPacketRecievedDetail)==3*dtm.getRowCount() && res_Test > 0){
+                    JOptionPane.showMessageDialog(null, "Successfully updated");
+                    clear();
+                }else{
+                    JOptionPane.showMessageDialog(null, "An error occured!");
                 }
-                java.sql.Date sqlDateExpiry = new java.sql.Date(parsed.getTime());
                 
-                String ttiResults = ""+dtm.getValueAt(i, 6);;
-                String comment = ""+dtm.getValueAt(i, 7);
-                
-                String[] tests = ttiResults.split(" ");   //Tests want to update test result table also
-                
-                                
+            } else {
+                JOptionPane.showMessageDialog(null, "An error occured!");
             }
 
         } catch (ClassNotFoundException ex) {
@@ -489,7 +580,7 @@ public class BloodRecieval extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable recievalTable;
     private com.toedter.calendar.JDateChooser recievedDateCalendar;
     private lu.tudor.santec.jtimechooser.JTimeChooser recievedTimer;
     private javax.swing.JComboBox requesteeCombo;

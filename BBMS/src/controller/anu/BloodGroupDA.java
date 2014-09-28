@@ -48,5 +48,15 @@ public class BloodGroupDA {
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
     }
+    
+    public static int getGroupCount() throws ClassNotFoundException, SQLException {
+        String query = "Select count(*) From BloodGroup";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+        while(rst.next()){
+            return rst.getInt("count(*)");
+        }
+        return -1;
+    }
 
 }

@@ -31,9 +31,33 @@ public class BloodPacketDA {
         int res = DBHandler.setData(connection, query);
         return res;
     }
+    
+    public static int addRecievedPacket(BloodPacket packet) throws ClassNotFoundException, SQLException {
+        String query;
+        
+            query = "Insert into BloodPacket(packetID,nic,recievedID,dateOfDonation,dateOfExpiry,BloodType,BloodGroup,Comment) values ('" + packet.getPacketID() + "','" + packet.getNic() +"','" + packet.getRecievedID() + "','" + packet.getDateOfDonation() + "','" + packet.getDateOfExpiry() + "','" + packet.getBloodType() + "','" + packet.getBloodGroup() + "','" + packet.getComment() + "')";
+
+        
+
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
 
     public static ResultSet getAllBloodPackets() throws ClassNotFoundException, SQLException {
         String query = "Select * From BloodPacket";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+    }
+
+    public static ResultSet getAllIssuedBloodPackets() throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket where PatientIssueID is not null OR BulkIssueID is not null";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+    }
+
+    public static ResultSet getIssuedPacketDetails(String packetID) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket NATURAL JOIN Issue NATURAL JOIN IssueDetail where packetID = '" + packetID + "'";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
     }
@@ -57,8 +81,8 @@ public class BloodPacketDA {
         return res;
     }
 
-    public static int markReturnedPacket(String packetID) throws ClassNotFoundException, SQLException {
-        String query = "Update BloodPacket set isIssued = 0, isReturned=" + 1 + " where packetID='" + packetID + "'";
+    public static int markReturnedPacket(String packetID, String returnedID) throws ClassNotFoundException, SQLException {
+        String query = "Update BloodPacket set PatientIssueID = NULL, BulkIssueID = NULL, ReturnID='" + returnedID + "' where packetID='" + packetID + "'";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;

@@ -19,7 +19,22 @@ import model.ReturnedLog;
 public class ReturnedLogController {
 
     public static int addReturnedLog(ReturnedLog log) throws ClassNotFoundException, SQLException {
-        String query = "Insert into ReturnedLog(returnedID,returnedDate,packetID,reason) values ('" + log.getReturnID() + "','" + log.getReturnedDate() + "','" + log.getPacketID() + "','" + log.getReason() + "')";
+        String query;
+        
+        if(log.getPatientIssueID()!=null){
+            query = "Insert into ReturnedLog(returnedID,returnedDate,packetID,reason,PatientIssueID) values ('" + log.getReturnedID() + "','" + log.getReturnedDate() + "','" + log.getPacketID() + "','" + log.getReason() + "','" + log.getPatientIssueID() + "')";
+            System.out.println("===============");
+            System.out.println(log.getReturnedID());
+            System.out.println(""+log.getReturnedDate());
+            System.out.println(""+log.getPacketID());
+            System.out.println(""+ log.getReason());
+            System.out.println(""+log.getPatientIssueID());
+            
+            System.out.println("===============");
+
+        }else{
+           query = "Insert into ReturnedLog(returnedID,returnedDate,packetID,reason,BulkIssueID) values ('" + log.getReturnedID() + "','" + log.getReturnedDate() + "','" + log.getPacketID() + "','" + log.getReason() + "','" + log.getBulkIssueID() +"')"; 
+        }
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;
@@ -38,7 +53,7 @@ public class ReturnedLogController {
     }
 
     public static int updateReturnedLog(ReturnedLog log) throws ClassNotFoundException, SQLException {
-        String query = "Update ReturnedLog set returnedDate='" + log.getReturnedDate() + "', packetID = '"+log.getPacketID()+"', reason='"+log.getReason()+"' where returnedID='" + log.getReturnID() + "'";
+        String query = "Update ReturnedLog set returnedDate='" + log.getReturnedDate() + "', packetID = '"+log.getPacketID()+"', reason='"+log.getReason()+"' where returnedID='" + log.getReturnedID() + "'";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;
