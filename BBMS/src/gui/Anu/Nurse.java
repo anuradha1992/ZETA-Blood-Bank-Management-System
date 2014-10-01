@@ -13,6 +13,7 @@ package gui.Anu;
 import controller.anu.BloodGroupDA;
 import controller.anu.BloodPacketDA;
 import controller.anu.BloodStockController;
+import controller.anu.BloodTypeDA;
 import gui.ChangePassword;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -22,11 +23,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -34,99 +33,31 @@ import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.BloodPacket;
+import model.Balance;
+import model.BloodStockHistory;
+import model.ComponentStockHistory;
 
 /**
  *
  * @author Anuradha
  */
-public class Nurse extends javax.swing.JFrame {
+public class Nurse extends javax.swing.JFrame implements Observer {
 
     String[] title = {"PacketID", "Blood Type", "Blood Group"};
     DefaultTableModel dtm = new DefaultTableModel(title, 0);
+    
     Calendar currenttime = Calendar.getInstance();
-    java.sql.Date sqldate = new java.sql.Date((currenttime.getTime()).getTime());
-//    String[] bloodTitle = {"Arribite", "Count"};
-//    Object[][] bloodData = {{"Balance", null},
-//    {"Inhouse", null},
-//    {"Mobile", null},
-//    {"", null},
-//    {"Recieved", null},
-//    {"Returned", null},
-//    {"", null},
-//    {"Issued", null},
-//    {"", null},
-//    {"Discarded", null},
-//    {"Total", null}};
-//    DefaultTableModel freshBloodDtm = new DefaultTableModel(bloodData, bloodTitle);
+    java.sql.Date sqlCurrentDate = new java.sql.Date((currenttime.getTime()).getTime());
 
     String[] bloodStockTitle = {"Blood Group", "Un X matched", "X matched", "Special Reservations", "Under Observation", "Total"};
     DefaultTableModel bloodStockDtm = new DefaultTableModel(bloodStockTitle, 0);
-//    Object[][] bloodStockData = {{"A +ve", null, null, null, null, null},
-//    {"B +ve", null, null, null, null, null},
-//    {"AB +ve", null, null, null, null, null},
-//    {"O +ve", null, null, null, null, null},
-//    {"A neg", null, null, null, null, null},
-//    {"B neg", null, null, null, null, null},
-//    {"AB neg", null, null, null, null, null},
-//    {"O neg", null, null, null, null, null},
-//    {"Total", null, null, null, null, null},
-//    {"Untested", null, null, null, null, null},
-//    {null, null, null, null, "Grand Total", null}};
-//    DefaultTableModel bloodStockDtm = new DefaultTableModel(bloodStockData, bloodStockTitle);
-    String[] componentStockTitle = {"Component", "A +ve", "A neg", "B +ve", "B neg", "AB +ve", "AB neg", "O +ve", "O neg", "UG", "Total"};
-//    Object[][] componenetStockData = {{"Platelets", null, null, null, null, null, null, null, null, null, null},
-//    {"FFP", null, null, null, null, null, null, null, null, null, null},
-//    {"CRYO", null, null, null, null, null, null, null, null, null, null},
-//    {"Plasma/CSP", null, null, null, null, null, null, null, null, null, null}};
-    DefaultTableModel componenetStockDtm = new DefaultTableModel(componentStockTitle, 0);
 
-    private void setDailyStockBalance() {
-        ResultSet rst;
-        try {
-            rst = BloodGroupDA.getAllGroups();
-            int groupCount = BloodGroupDA.getGroupCount();
-            int[] tot = new int[groupCount-1];
-            int i = 0;
-            while (rst.next()) {
-                String bloodGroup = rst.getString("GroupName");
-                String bloodType = "Fresh blood";
-                if(!bloodGroup.equalsIgnoreCase("UG")){
-                    int unX = BloodStockController.getUnX(bloodGroup,bloodType);
-                    int x = BloodStockController.getX(bloodGroup,bloodType);
-                    int specialReservation = BloodStockController.getSpecialReservation(bloodGroup,bloodType);
-                    int underObservation = BloodStockController.getUnderObservation(bloodGroup,bloodType);
-                    int total = unX + x + specialReservation + underObservation;
-                    tot[i++]=total;
-                    String[] row = {bloodGroup,""+unX,""+x,""+specialReservation,""+underObservation,""+total};
-                    bloodStockDtm.addRow(row);
-                }
-            }
-            int totalOfTested = 0;
-            for (int j = 0; j < tot.length; j++) {
-                totalOfTested += tot[j];
-            }
-            String[] totalRow = {"Total","","","","",""+totalOfTested};
-            bloodStockDtm.addRow(totalRow);
-                        
-            int totalOfUntested = BloodStockController.getUntestedTotal("UG","Fresh blood");
-            String[] untestedRow = {"Untested","","","","",""+totalOfUntested};
-            bloodStockDtm.addRow(untestedRow);
-            
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
+    boolean isBloodStockEntered;
     /**
      * Creates new form Nurse
      */
     public Nurse() throws IOException {
 
-        try {
             this.setName("Blood Bank Management System");
             initComponents();
             File imgfile = new File("..\\BBMS\\src\\images\\drop.png");
@@ -134,35 +65,210 @@ public class Nurse extends javax.swing.JFrame {
             BufferedImage bi = ImageIO.read(imgStream);
             ImageIcon myImg = new ImageIcon(bi);
             this.setIconImage(myImg.getImage());
-
-            ResultSet rst = BloodPacketDA.getExpiredBloodPackets(sqldate);
-            String packetID = null;
-            String bloodType = null;
-            String bloodGroup = null;
-            int count = 0;
-            while (rst.next()) {
-                packetID = rst.getString("packetID");
-                bloodType = rst.getString("bloodType");
-                bloodGroup = rst.getString("bloodGroup");
-                String[] ar = {packetID, bloodType, bloodGroup};
-                dtm.addRow(ar);
-                count++;
-            }
-            totalTxt.setText("" + count);
-
-            setDailyStockBalance();
-
             setLocationRelativeTo(null);
+            update(null, null);
+        
+    }
+
+    private void setToBeDiscardedBlood() throws ClassNotFoundException, SQLException {
+        ResultSet rst = BloodPacketDA.getExpiredBloodPackets(sqlCurrentDate);
+        String packetID = null;
+        String bloodType = null;
+        String bloodGroup = null;
+        int count = 0;
+        while (rst.next()) {
+            packetID = rst.getString("packetID");
+            bloodType = rst.getString("bloodType");
+            bloodGroup = rst.getString("bloodGroup");
+            String[] ar = {packetID, bloodType, bloodGroup};
+            dtm.addRow(ar);
+            count++;
+        }
+        totalTxt.setText("" + count);
+    }
+
+    public JDesktopPane getDesktop() {
+        return this.NurseDesktop;
+    }
+
+    public void update(Observable o, Object arg) {
+        
+        try {
+            
+            int resultBalance = 0;
+            
+            setToBeDiscardedBlood();
+            
+            isBloodStockEntered = BloodStockController.isBloodStockEntered(sqlCurrentDate);
+            int bloodStockEntered;
+            if (!isBloodStockEntered) {
+                System.out.println("Blood Stock is not entered!");
+                bloodStockEntered = 0;
+            }else{
+                System.out.println("Blood Stock is entered!");
+                bloodStockEntered = 1;
+            }
+            
+            bloodStockDtm = new DefaultTableModel(bloodStockTitle, 0);
+            bloodStockTable.setModel(bloodStockDtm);
+            ResultSet rst;
+            try {
+                rst = BloodGroupDA.getAllGroups();
+                int groupCount = BloodGroupDA.getGroupCount();
+                int[] tot = new int[groupCount - 1];
+                int i = 0;
+                int resultBloodStock = 0;
+                while (rst.next()) {
+                    String bloodGroup = rst.getString("GroupName");
+                    String bloodType = "Fresh blood";
+                    if (!bloodGroup.equalsIgnoreCase("UG")) {
+                        int unX = BloodStockController.getUnX(bloodGroup, bloodType);
+                        int x = BloodStockController.getX(bloodGroup, bloodType);
+                        int specialReservation = BloodStockController.getSpecialReservation(bloodGroup, bloodType);
+                        int underObservation = BloodStockController.getUnderObservation(bloodGroup, bloodType);
+                        int total = unX + x + specialReservation + underObservation;
+                        tot[i++] = total;
+                        String[] row = {bloodGroup, "" + unX, "" + x, "" + specialReservation, "" + underObservation, "" + total};
+                        bloodStockDtm.addRow(row);
+                        if (bloodStockEntered == 0){
+                            BloodStockHistory bloodHistory = new BloodStockHistory(sqlCurrentDate, bloodGroup, unX, x, specialReservation, underObservation, total);
+                            resultBloodStock += BloodStockController.addBloodStockHistory(bloodHistory);
+                        }else{
+                            
+                            ///////////////////////////////////////////////////////////////////////////////////
+                            
+                        }
+                    }
+                    
+                }
+                int totalOfTested = 0;
+                for (int j = 0; j < tot.length; j++) {
+                    totalOfTested += tot[j];
+                }
+                String[] totalRow = {"Total", "", "", "", "", "" + totalOfTested};
+                bloodStockDtm.addRow(totalRow);
+                
+                int totalOfUntested = BloodStockController.getUntestedTotal("UG", "Fresh blood");
+                String[] untestedRow = {"Untested", "", "", "", "", "" + totalOfUntested};
+                bloodStockDtm.addRow(untestedRow);
+                if (bloodStockEntered == 0){
+                    BloodStockHistory bloodHistory = new BloodStockHistory(sqlCurrentDate, "UG", -1, -1, -1, -1, totalOfUntested);
+                    resultBloodStock += BloodStockController.addBloodStockHistory(bloodHistory);
+                }else{
+                    
+                    //////////////////////////////////////////////////////////////////////////
+                }
+                
+                if(resultBloodStock == groupCount){
+                    JOptionPane.showMessageDialog(null, "Blood stock updated successfully");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error in updating blood stock");
+                }
+                
+                int lastRow = bloodStockDtm.getRowCount();
+                if (lastRow >= 0) {
+                    String[] grandTotalRow = {"","","","","Grand Total",""+(totalOfTested+totalOfUntested)};
+                    bloodStockDtm.addRow(grandTotalRow);
+                }
+                
+                if(bloodStockEntered == 0){
+                    Balance balance = new Balance(sqlCurrentDate, "Fresh blood", (totalOfTested+totalOfUntested));
+                    resultBalance += BloodStockController.addBalanceHistory(balance);
+                }else{
+                    
+                    //////////////////////////////////////////////////////////////////////////////
+                    
+                }
+                
+                setDailyComponentBalance(bloodStockEntered, resultBalance);
+                
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
-    public JDesktopPane getDesktop() {
-        return this.NurseDesktop;
+    DefaultTableModel componenetStockDtm;
+
+    private void setDailyComponentBalance(int bloodStockEntered, int resultBalance) throws ClassNotFoundException, SQLException {
+
+        int groupCount = BloodGroupDA.getGroupCount();
+        String[] componentStockTitle = new String[groupCount + 2];
+        String[] groupName = new String[groupCount];
+        
+        int resultComponent = 0;
+
+        componentStockTitle[0] = "Componenet";
+        componentStockTitle[groupCount + 1] = "Total";
+        int groupCounter = 1;
+
+        ResultSet rstGroups = BloodGroupDA.getAllGroups();
+        while (rstGroups.next()) {
+            String group = rstGroups.getString("GroupName");
+            componentStockTitle[groupCounter] = group;
+            groupName[groupCounter - 1] = group;
+            groupCounter++;
+        }
+
+        componenetStockDtm = new DefaultTableModel(componentStockTitle, 0);
+        componentStockTable.setModel(componenetStockDtm);
+
+        ResultSet rstTypes = BloodTypeDA.getAllTypes();
+        
+        int typeCount = 0;
+        while (rstTypes.next()) {
+            typeCount++;
+            String type = rstTypes.getString("BloodType");
+            if (!type.equalsIgnoreCase("Fresh blood")) {
+                String[] row = new String[groupCount + 2];
+                row[0] = type;
+                int rowTotal = 0;
+                int rowElementCount = 1;
+                
+                for (int i = 0; i < groupCount; i++) {
+                    int packetCount = BloodStockController.getComponenetPacketCount(type, groupName[i]);
+                    if (packetCount >= 0) {
+                        rowTotal += packetCount;
+                        row[rowElementCount] = "" + packetCount;
+                    }
+                    rowElementCount++;
+                    if (bloodStockEntered == 0){
+                        ComponentStockHistory componentStock = new ComponentStockHistory(sqlCurrentDate, type, groupName[i], packetCount);
+                        resultComponent += BloodStockController.addComponentStockHistory(componentStock);
+                    }
+                }
+                row[groupCount + 1] = "" + rowTotal;
+                componenetStockDtm.addRow(row);
+                if(bloodStockEntered == 0){
+                    Balance balance = new Balance(sqlCurrentDate, type, rowTotal);
+                    resultBalance += BloodStockController.addBalanceHistory(balance);
+                }else{
+                    
+                    //////////////////////////////////////////////////////////////////////////////
+                    
+                }
+            }
+            
+        }
+        if(resultComponent == ((typeCount-1)*groupCount)){
+            JOptionPane.showMessageDialog(null, "Component Stock Updated successfully");
+        }else{
+            JOptionPane.showMessageDialog(null, "Error occured when updating component stock");
+        }
+        
+        if(resultBalance == typeCount ){
+            JOptionPane.showMessageDialog(null, "Balance Updated successfully");
+        }else{
+            JOptionPane.showMessageDialog(null, "Error occured when updating Balance");
+        }
     }
 
     /**
@@ -327,7 +433,14 @@ public class Nurse extends javax.swing.JFrame {
 
         componentStockTable.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         componentStockTable.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        componentStockTable.setModel(componenetStockDtm);
+        componentStockTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
         componentStockTable.setEnabled(false);
         jScrollPane15.setViewportView(componentStockTable);
 
@@ -346,28 +459,28 @@ public class Nurse extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(16, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(12, 12, 12))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addContainerGap(16, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane15, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
 
         NurseDesktop.add(jPanel2);
-        jPanel2.setBounds(220, 0, 690, 450);
+        jPanel2.setBounds(220, 0, 690, 470);
 
         jLayeredPane1.add(NurseDesktop);
         NurseDesktop.setBounds(200, 60, 1170, 650);
@@ -612,21 +725,13 @@ public class Nurse extends javax.swing.JFrame {
 }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-        try {
+        
             StockBalance stock = new StockBalance();
             stock.setClosable(true);
             NurseDesktop.add(stock);
-            stock.setBounds(0, 0, 1190, 650);
             NurseDesktop.setRequestFocusEnabled(true);
-            stock.setMaximum(true);
-            Dimension desktopSize = NurseDesktop.getSize();
-            Dimension jInternalFrameSize = stock.getSize();
-            stock.setLocation((desktopSize.width - jInternalFrameSize.width) / 2, 0);
             stock.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
 }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
@@ -743,7 +848,7 @@ public class Nurse extends javax.swing.JFrame {
         expiredBloodPacketsTable.setModel(dtm);
 
         try {
-            ResultSet rst = BloodPacketDA.getExpiredBloodPackets(sqldate);
+            ResultSet rst = BloodPacketDA.getExpiredBloodPackets(sqlCurrentDate);
             String packetID = null;
             String bloodType = null;
             String bloodGroup = null;
@@ -757,7 +862,7 @@ public class Nurse extends javax.swing.JFrame {
                 count++;
             }
             totalTxt.setText("" + count);
-            setDailyStockBalance();
+            update(null, null);
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
@@ -774,14 +879,14 @@ public class Nurse extends javax.swing.JFrame {
             if (reply == JOptionPane.YES_OPTION) {
                 try {
                     String packID = "" + dtm.getValueAt(row, 0);
-                    int discarded = BloodPacketDA.discardPacket(packID, sqldate);
+                    int discarded = BloodPacketDA.discardPacket(packID, sqlCurrentDate);
                     if (discarded == 1) {
                         JOptionPane.showMessageDialog(null, "Blood packet discarded succesfully!");
                         dtm = new DefaultTableModel(title, 0);
                         expiredBloodPacketsTable.setModel(dtm);
 
                         try {
-                            ResultSet rst = BloodPacketDA.getExpiredBloodPackets(sqldate);
+                            ResultSet rst = BloodPacketDA.getExpiredBloodPackets(sqlCurrentDate);
                             String packetID = null;
                             String bloodType = null;
                             String bloodGroup = null;
@@ -800,7 +905,7 @@ public class Nurse extends javax.swing.JFrame {
                         } catch (SQLException ex) {
                             Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        setDailyStockBalance();
+                        update(null,null);
                     } else {
                         JOptionPane.showMessageDialog(null, "Error while discarding blood packet!");
                     }
@@ -924,4 +1029,5 @@ public class Nurse extends javax.swing.JFrame {
     private javax.swing.JButton refreshBtn;
     private javax.swing.JTextField totalTxt;
     // End of variables declaration//GEN-END:variables
+
 }

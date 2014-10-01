@@ -18,7 +18,7 @@ import controller.anu.EmployeeController;
 import controller.anu.RequesteeDA;
 import controller.anu.TestController;
 import controller.anu.TestResultController;
-import idgenerator.IDGenerator;
+import controller.IDGenerator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;

@@ -764,7 +764,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
 
             String comment = commentTxt.getText();
             
-            BloodPacket newPacket = new BloodPacket(packetID, nic, null, sqlDateE, sqlDateE, bloodType, (byte)0, (byte)0, (byte)0, campID, (byte)0, bloodGroup, null, null, null, comment, null);
+            BloodPacket newPacket = new BloodPacket(packetID, nic, null, sqlDateC, sqlDateE, bloodType, (byte)0, (byte)0, (byte)0, campID, (byte)0, bloodGroup, null, null, null, comment, null);
 
             int added = BloodPacketDA.addPacket(newPacket);
             if (added == 1) {

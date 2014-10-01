@@ -14,7 +14,7 @@ import controller.anu.BloodPacketDA;
 import controller.anu.BulkIssueController;
 import controller.anu.IssueController;
 import controller.anu.ReturnedLogController;
-import idgenerator.IDGenerator;
+import controller.IDGenerator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
