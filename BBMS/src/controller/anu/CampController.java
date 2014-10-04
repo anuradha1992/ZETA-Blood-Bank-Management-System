@@ -29,6 +29,17 @@ public class CampController {
         }
     }
     
+    public static String getCampName(String campID) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodCamp where CampID = '"+campID+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+        if(rst.next()){
+            return rst.getString("Place");
+        }else{
+            return null;
+        }
+    }
+    
     public static ResultSet getCamps() throws ClassNotFoundException, SQLException {
         String query = "Select * From BloodCamp";
         Connection connection = DBConnection.getConnectionToDB();

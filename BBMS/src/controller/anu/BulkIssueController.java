@@ -18,15 +18,12 @@ import java.sql.SQLException;
  */
 public class BulkIssueController {
     
-    public static String getIssuedTo(String issueID) throws ClassNotFoundException, SQLException {
+    public static ResultSet getBulkIssueDetails(String issueID) throws ClassNotFoundException, SQLException {
         
         String query = "Select * From BulkIssue where IssueID = '"+issueID+"'";
         Connection connection = DBConnection.getConnectionToDB();
-        ResultSet rst = DBHandler.getData(connection, query);
-        while(rst.next()){
-            return rst.getString("Requester");
-        }
-        return null;
+        return DBHandler.getData(connection, query);
+        
     }
     
 }

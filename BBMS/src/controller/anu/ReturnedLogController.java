@@ -39,6 +39,14 @@ public class ReturnedLogController {
         int res = DBHandler.setData(connection, query);
         return res;
     }
+    
+    public static int deleteReturnedLog(String returnID) throws ClassNotFoundException, SQLException {
+        String query = "Delete from ReturnedLog where ReturnedID = '"+returnID+"'";
+            
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
 
     public static ResultSet getResultIDs() throws ClassNotFoundException, SQLException {
         String query = "Select * From ReturnedLog order by returnedID";
@@ -46,14 +54,20 @@ public class ReturnedLogController {
         return DBHandler.getData(connection, query);
     }
     
-    public static ResultSet getReturnedLog(String packetID) throws ClassNotFoundException, SQLException {
+    public static ResultSet getReturnedLogbyID(String packetID) throws ClassNotFoundException, SQLException {
         String query = "Select * From ReturnedLog where packetID='"+packetID+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+    }
+    
+    public static ResultSet getReturnedLogbyDate(java.sql.Date date) throws ClassNotFoundException, SQLException {
+        String query = "Select * From ReturnedLog R INNER JOIN BloodPacket B where ReturnedDate='"+date+"' AND R.PacketID=B.PacketID";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
     }
 
     public static int updateReturnedLog(ReturnedLog log) throws ClassNotFoundException, SQLException {
-        String query = "Update ReturnedLog set returnedDate='" + log.getReturnedDate() + "', packetID = '"+log.getPacketID()+"', reason='"+log.getReason()+"' where returnedID='" + log.getReturnedID() + "'";
+        String query = "Update ReturnedLog set returnedDate='" + log.getReturnedDate() + "', reason='"+log.getReason()+"' where returnedID='" + log.getReturnedID() + "'";
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;

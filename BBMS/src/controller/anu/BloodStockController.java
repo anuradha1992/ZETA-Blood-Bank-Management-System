@@ -33,18 +33,47 @@ public class BloodStockController {
         return res;
     }
 
-//    public static int updateBloodStockHistory(BloodStockHistory history) throws ClassNotFoundException, SQLException {
-//        String query;
-//        if(history.getSpec_res() >= 0 && history.getUnderobs() >= 0 && history.getUnx() >= 0 && history.getX() >= 0){
-//            query = "Update BloodStockHistory set Unx = '"+history.getUnx()+"'x"++"Spec_res,Underobs,total) values ('" +history.getStockDate() + "','"+history.getBloodGroup()+"','"+history.getUnx() + "','"+history.getX()+"','"+history.getSpec_res()+"','"+history.getUnderobs()+"','"+history.getTotal()+"')";
-//        }
-//        else{
-//            query = "Insert into BloodStockHistory(StockDate,BloodGroup,total) values ('" +history.getStockDate() + "','"+history.getBloodGroup()+"','"+history.getTotal()+"')";
-//        }
-//        Connection connection = DBConnection.getConnectionToDB();
-//        int res = DBHandler.setData(connection, query);
-//        return res;
-//    }
+    public static int updateBloodStockHistory(BloodStockHistory history) throws ClassNotFoundException, SQLException {
+        String query;
+        if(history.getSpec_res() >= 0 && history.getUnderobs() >= 0 && history.getUnx() >= 0 && history.getX() >= 0){
+            query = "Update BloodStockHistory set Unx = '"+history.getUnx()+"', x='"+history.getX()+"', Spec_res = '"+history.getSpec_res()+"', Underobs = '"+history.getUnderobs()+"', total='"+history.getTotal()+"' where StockDate ='" +history.getStockDate() + "' AND BloodGroup = '"+history.getBloodGroup()+"'";
+        }
+        else{
+            query = "Update BloodStockHistory set total = '"+history.getTotal()+"'  where StockDate ='" +history.getStockDate() + "' AND BloodGroup = '"+history.getBloodGroup()+"'";        
+        }
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
+    
+    public static int addComponentStockHistory(ComponentStockHistory history) throws ClassNotFoundException, SQLException {
+        String query = "Insert into ComponentStockHistory(StockDate,BloodType,BloodGroup,qty) values ('" + history.getStockDate() + "','" + history.getBloodType() + "','" + history.getBloodGroup() + "','" + history.getQty() + "')";
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
+    
+    public static int updateComponentStockHistory(ComponentStockHistory history) throws ClassNotFoundException, SQLException {
+        String query = "Update ComponentStockHistory set qty ='"+history.getQty()+"' where StockDate ='" +history.getStockDate() + "' AND BloodGroup = '"+history.getBloodGroup()+"' AND BloodType ='"+history.getBloodType()+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
+    
+    public static int addBalanceHistory(Balance balance) throws ClassNotFoundException, SQLException {
+        String query = "Insert into Balance(StockDate,BloodType,Balance) values ('" + balance.getStockDate() + "','" + balance.getBloodType() + "','" + balance.getBalance() + "')";
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
+    
+    public static int updateBalanceHistory(Balance balance) throws ClassNotFoundException, SQLException {
+        String query = "Update Balance set Balance ='"+balance.getBalance()+"' where StockDate ='" +balance.getStockDate() + "' AND BloodType ='"+balance.getBloodType()+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
+    
     public static ResultSet getBloodStockHistory(Date stockdate) throws ClassNotFoundException, SQLException {
         String query = "Select * From BloodStockHistory where StockDate = '" + stockdate + "'";
         Connection connection = DBConnection.getConnectionToDB();
@@ -56,6 +85,19 @@ public class BloodStockController {
         String query = "Select * From ComponentStockHistory where StockDate = '" + stockdate + "'";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
+
+    }
+    
+    public static int getDailyComponentStockHistory(Date stockdate, String type, String group) throws ClassNotFoundException, SQLException {
+        String query = "Select * From ComponentStockHistory where StockDate = '" + stockdate + "' AND BloodType = '"+type+"' AND BloodGroup='"+group+"'";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+        
+        while (rst.next()) {
+            int qty = rst.getInt("qty");
+            return qty;
+        }
+        return -1;
 
     }
 
@@ -75,19 +117,9 @@ public class BloodStockController {
         return -1;
     }
 
-    public static int addComponentStockHistory(ComponentStockHistory history) throws ClassNotFoundException, SQLException {
-        String query = "Insert into ComponentStockHistory(StockDate,BloodType,BloodGroup,qty) values ('" + history.getStockDate() + "','" + history.getBloodType() + "','" + history.getBloodGroup() + "','" + history.getQty() + "')";
-        Connection connection = DBConnection.getConnectionToDB();
-        int res = DBHandler.setData(connection, query);
-        return res;
-    }
+    
 
-    public static int addBalanceHistory(Balance balance) throws ClassNotFoundException, SQLException {
-        String query = "Insert into Balance(StockDate,BloodType,Balance) values ('" + balance.getStockDate() + "','" + balance.getBloodType() + "','" + balance.getBalance() + "')";
-        Connection connection = DBConnection.getConnectionToDB();
-        int res = DBHandler.setData(connection, query);
-        return res;
-    }
+    
 
     public static boolean isBloodStockEntered(java.sql.Date date) throws ClassNotFoundException, SQLException {
         String query1 = "Select * From BloodStockHistory where StockDate = '" + date + "'";

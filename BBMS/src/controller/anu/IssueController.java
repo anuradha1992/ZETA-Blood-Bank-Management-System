@@ -29,4 +29,12 @@ public class IssueController {
         return null;
     }
     
+    public static ResultSet getIssuedDetails(String issueID) throws ClassNotFoundException, SQLException {
+        
+        String query = "Select * From Issue I NATURAL JOIN SampleDetail S where I.IssueID = '"+issueID+"' AND I.SampleID=S.RequestNo";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+        
+    }
+    
 }

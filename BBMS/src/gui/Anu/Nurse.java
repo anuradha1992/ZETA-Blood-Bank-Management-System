@@ -15,9 +15,7 @@ import controller.anu.BloodPacketDA;
 import controller.anu.BloodStockController;
 import controller.anu.BloodTypeDA;
 import gui.ChangePassword;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -65,6 +63,7 @@ public class Nurse extends javax.swing.JFrame implements Observer {
             BufferedImage bi = ImageIO.read(imgStream);
             ImageIcon myImg = new ImageIcon(bi);
             this.setIconImage(myImg.getImage());
+            setTitle("Karapitiya Blood Bank Management System");
             setLocationRelativeTo(null);
             update(null, null);
         
@@ -96,6 +95,7 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         try {
             
             int resultBalance = 0;
+            int updateBalance = 0;
             
             setToBeDiscardedBlood();
             
@@ -118,6 +118,7 @@ public class Nurse extends javax.swing.JFrame implements Observer {
                 int[] tot = new int[groupCount - 1];
                 int i = 0;
                 int resultBloodStock = 0;
+                int updateBloodStock = 0;
                 while (rst.next()) {
                     String bloodGroup = rst.getString("GroupName");
                     String bloodType = "Fresh blood";
@@ -134,8 +135,9 @@ public class Nurse extends javax.swing.JFrame implements Observer {
                             BloodStockHistory bloodHistory = new BloodStockHistory(sqlCurrentDate, bloodGroup, unX, x, specialReservation, underObservation, total);
                             resultBloodStock += BloodStockController.addBloodStockHistory(bloodHistory);
                         }else{
-                            
-                            ///////////////////////////////////////////////////////////////////////////////////
+                            //////////////////////////////////////////////////////////////////////////////////
+                            BloodStockHistory bloodHistory = new BloodStockHistory(sqlCurrentDate, bloodGroup, unX, x, specialReservation, underObservation, total);
+                            updateBloodStock += BloodStockController.updateBloodStockHistory(bloodHistory);
                             
                         }
                     }
@@ -156,10 +158,13 @@ public class Nurse extends javax.swing.JFrame implements Observer {
                     resultBloodStock += BloodStockController.addBloodStockHistory(bloodHistory);
                 }else{
                     
-                    //////////////////////////////////////////////////////////////////////////
+                    BloodStockHistory bloodHistory = new BloodStockHistory(sqlCurrentDate, "UG", -1, -1, -1, -1, totalOfUntested);
+                    updateBloodStock += BloodStockController.updateBloodStockHistory(bloodHistory);
                 }
                 
                 if(resultBloodStock == groupCount){
+                    JOptionPane.showMessageDialog(null, "Blood stock added successfully");
+                }else if(updateBloodStock == groupCount){
                     JOptionPane.showMessageDialog(null, "Blood stock updated successfully");
                 }else{
                     JOptionPane.showMessageDialog(null, "Error in updating blood stock");
@@ -177,10 +182,12 @@ public class Nurse extends javax.swing.JFrame implements Observer {
                 }else{
                     
                     //////////////////////////////////////////////////////////////////////////////
+                    Balance balance = new Balance(sqlCurrentDate, "Fresh blood", (totalOfTested+totalOfUntested));
+                    updateBalance += BloodStockController.updateBalanceHistory(balance);
                     
                 }
                 
-                setDailyComponentBalance(bloodStockEntered, resultBalance);
+                setDailyComponentBalance(bloodStockEntered, resultBalance, updateBalance);
                 
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
@@ -198,13 +205,14 @@ public class Nurse extends javax.swing.JFrame implements Observer {
 
     DefaultTableModel componenetStockDtm;
 
-    private void setDailyComponentBalance(int bloodStockEntered, int resultBalance) throws ClassNotFoundException, SQLException {
+    private void setDailyComponentBalance(int bloodStockEntered, int resultBalance, int updateBalance) throws ClassNotFoundException, SQLException {
 
         int groupCount = BloodGroupDA.getGroupCount();
         String[] componentStockTitle = new String[groupCount + 2];
         String[] groupName = new String[groupCount];
         
         int resultComponent = 0;
+        int updateComponent = 0;
 
         componentStockTitle[0] = "Componenet";
         componentStockTitle[groupCount + 1] = "Total";
@@ -243,6 +251,10 @@ public class Nurse extends javax.swing.JFrame implements Observer {
                     if (bloodStockEntered == 0){
                         ComponentStockHistory componentStock = new ComponentStockHistory(sqlCurrentDate, type, groupName[i], packetCount);
                         resultComponent += BloodStockController.addComponentStockHistory(componentStock);
+                    }else{
+                        //////////////////////////////////////////////////////////////////////////////
+                        ComponentStockHistory componentStock = new ComponentStockHistory(sqlCurrentDate, type, groupName[i], packetCount);
+                        updateComponent += BloodStockController.updateComponentStockHistory(componentStock);
                     }
                 }
                 row[groupCount + 1] = "" + rowTotal;
@@ -253,19 +265,25 @@ public class Nurse extends javax.swing.JFrame implements Observer {
                 }else{
                     
                     //////////////////////////////////////////////////////////////////////////////
+                    Balance balance = new Balance(sqlCurrentDate, type, rowTotal);
+                    updateBalance += BloodStockController.updateBalanceHistory(balance);
                     
                 }
             }
             
         }
         if(resultComponent == ((typeCount-1)*groupCount)){
+            JOptionPane.showMessageDialog(null, "Component Stock Added successfully");
+        }else if(updateComponent == ((typeCount-1)*groupCount)){
             JOptionPane.showMessageDialog(null, "Component Stock Updated successfully");
         }else{
             JOptionPane.showMessageDialog(null, "Error occured when updating component stock");
         }
         
         if(resultBalance == typeCount ){
-            JOptionPane.showMessageDialog(null, "Balance Updated successfully");
+            JOptionPane.showMessageDialog(null, "Balance added successfully");
+        }else if(updateBalance == typeCount){
+            JOptionPane.showMessageDialog(null, "Balance updated successfully");
         }else{
             JOptionPane.showMessageDialog(null, "Error occured when updating Balance");
         }
@@ -289,7 +307,6 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         expiredBloodPacketsTable = new javax.swing.JTable();
-        refreshBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         totalTxt = new javax.swing.JTextField();
         discardBtn = new javax.swing.JButton();
@@ -300,36 +317,29 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jScrollPane15 = new javax.swing.JScrollPane();
         componentStockTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jButton22 = new javax.swing.JButton();
         jButton37 = new javax.swing.JButton();
-        bloodReturnBtn = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
         jButton8 = new javax.swing.JButton();
-        addRequesteeBtn = new javax.swing.JButton();
-        addRequestorBtn = new javax.swing.JButton();
         addBloodTypesBtn = new javax.swing.JButton();
         addBloodGroupBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton33 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jButton34 = new javax.swing.JButton();
         jButton39 = new javax.swing.JButton();
-        jButton40 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
         jButton41 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel8 = new javax.swing.JLabel();
         jButton36 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
-        jSeparator4 = new javax.swing.JSeparator();
-        jLabel9 = new javax.swing.JLabel();
-        jButton35 = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
+        addRequesteeBtn = new javax.swing.JButton();
+        bloodReturnBtn = new javax.swing.JButton();
+        addRequestorBtn = new javax.swing.JButton();
+        titlePanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Candy Vivian Icon 02.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -356,19 +366,12 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         NurseDesktop.add(jButton20);
         jButton20.setBounds(1280, 420, 90, 90);
 
-        jPanel1.setBackground(new java.awt.Color(255, 0, 51));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Packets to be discarded"));
 
         expiredBloodPacketsTable.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         expiredBloodPacketsTable.setModel(dtm);
         jScrollPane1.setViewportView(expiredBloodPacketsTable);
-
-        refreshBtn.setText("Refresh");
-        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshBtnActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Total");
 
@@ -389,42 +392,37 @@ public class Nurse extends javax.swing.JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(totalTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(discardBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(totalTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(discardBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(refreshBtn)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(discardBtn, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                .addGap(13, 13, 13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(discardBtn))
+                .addGap(16, 16, 16))
         );
 
         NurseDesktop.add(jPanel1);
-        jPanel1.setBounds(900, 160, 270, 480);
+        jPanel1.setBounds(860, 160, 310, 490);
 
-        jCalendar1.setBackground(new java.awt.Color(255, 0, 0));
-        jCalendar1.setForeground(new java.awt.Color(255, 0, 0));
+        jCalendar1.setBackground(new java.awt.Color(0, 0, 0));
+        jCalendar1.setForeground(new java.awt.Color(255, 255, 255));
         NurseDesktop.add(jCalendar1);
-        jCalendar1.setBounds(902, 0, 270, 160);
+        jCalendar1.setBounds(862, 0, 310, 160);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 51, 255), new java.awt.Color(102, 255, 255), new java.awt.Color(51, 153, 255)), "Daily Blood and Component Stock Balance Register"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Daily Blood and Component Stock Balance Register"));
 
         bloodStockTable.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         bloodStockTable.setModel(bloodStockDtm);
@@ -465,7 +463,7 @@ public class Nurse extends javax.swing.JFrame implements Observer {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(16, Short.MAX_VALUE))))
+                        .addContainerGap(18, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,17 +478,10 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         );
 
         NurseDesktop.add(jPanel2);
-        jPanel2.setBounds(220, 0, 690, 470);
+        jPanel2.setBounds(170, 0, 690, 470);
 
         jLayeredPane1.add(NurseDesktop);
         NurseDesktop.setBounds(200, 60, 1170, 650);
-
-        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Vijaya", 1, 36)); // NOI18N
-        jLabel1.setText("Karapitiya Blood Bank Management System - Nurse Form");
-        jLabel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
-        jLayeredPane1.add(jLabel1);
-        jLabel1.setBounds(360, 0, 710, 60);
 
         jButton22.setText("Inhouse/Mobile");
         jButton22.addActionListener(new java.awt.event.ActionListener() {
@@ -501,7 +492,6 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jLayeredPane1.add(jButton22);
         jButton22.setBounds(0, 100, 200, 30);
 
-        jButton37.setBackground(new java.awt.Color(255, 0, 51));
         jButton37.setText("Blood Recieval");
         jButton37.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -511,24 +501,8 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jLayeredPane1.add(jButton37);
         jButton37.setBounds(0, 130, 200, 30);
 
-        bloodReturnBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I03.png"))); // NOI18N
-        bloodReturnBtn.setToolTipText("Mark returned blood packets");
-        bloodReturnBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
-        bloodReturnBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bloodReturnBtnActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(bloodReturnBtn);
-        bloodReturnBtn.setBounds(300, 0, 60, 60);
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/final1.png"))); // NOI18N
-        jLabel6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(102, 255, 255), new java.awt.Color(51, 153, 255)));
-        jLayeredPane1.add(jLabel6);
-        jLabel6.setBounds(1310, 0, 60, 76);
-
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I05.jpg"))); // NOI18N
-        jButton8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        jButton8.setBorder(null);
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -537,31 +511,9 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jLayeredPane1.add(jButton8);
         jButton8.setBounds(240, 0, 60, 60);
 
-        addRequesteeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I04.png"))); // NOI18N
-        addRequesteeBtn.setToolTipText("Requestees");
-        addRequesteeBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
-        addRequesteeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addRequesteeBtnActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(addRequesteeBtn);
-        addRequesteeBtn.setBounds(180, 0, 60, 60);
-
-        addRequestorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I07.jpg"))); // NOI18N
-        addRequestorBtn.setToolTipText("Requestors");
-        addRequestorBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
-        addRequestorBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addRequestorBtnActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(addRequestorBtn);
-        addRequestorBtn.setBounds(120, 0, 60, 60);
-
-        addBloodTypesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I08.png"))); // NOI18N
+        addBloodTypesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I05.jpg"))); // NOI18N
         addBloodTypesBtn.setToolTipText("Blood Types");
-        addBloodTypesBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        addBloodTypesBtn.setBorder(null);
         addBloodTypesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBloodTypesBtnActionPerformed(evt);
@@ -570,9 +522,9 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jLayeredPane1.add(addBloodTypesBtn);
         addBloodTypesBtn.setBounds(60, 0, 60, 60);
 
-        addBloodGroupBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I02.png"))); // NOI18N
+        addBloodGroupBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I07.jpg"))); // NOI18N
         addBloodGroupBtn.setToolTipText("Blood Groups");
-        addBloodGroupBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 153, 255)));
+        addBloodGroupBtn.setBorder(null);
         addBloodGroupBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBloodGroupBtnActionPerformed(evt);
@@ -581,13 +533,6 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jLayeredPane1.add(addBloodGroupBtn);
         addBloodGroupBtn.setBounds(0, 0, 60, 60);
 
-        jButton2.setFont(new java.awt.Font("Monotype Corsiva", 1, 20)); // NOI18N
-        jButton2.setText("View Daily Issue/Requests");
-        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 102, 255)));
-        jLayeredPane1.add(jButton2);
-        jButton2.setBounds(1070, 0, 240, 60);
-
-        jButton33.setBackground(new java.awt.Color(255, 0, 51));
         jButton33.setText("Blood Discard");
         jButton33.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -595,14 +540,14 @@ public class Nurse extends javax.swing.JFrame implements Observer {
             }
         });
         jLayeredPane1.add(jButton33);
-        jButton33.setBounds(0, 430, 200, 30);
+        jButton33.setBounds(0, 420, 200, 30);
 
         jLabel5.setFont(new java.awt.Font("Monotype Corsiva", 3, 18)); // NOI18N
         jLabel5.setText("Statistics");
         jLayeredPane1.add(jLabel5);
-        jLabel5.setBounds(60, 280, 140, 21);
+        jLabel5.setBounds(60, 270, 140, 21);
         jLayeredPane1.add(jSeparator1);
-        jSeparator1.setBounds(0, 300, 200, 2);
+        jSeparator1.setBounds(0, 290, 200, 2);
 
         jButton34.setText("Blood Return");
         jButton34.addActionListener(new java.awt.event.ActionListener() {
@@ -611,9 +556,8 @@ public class Nurse extends javax.swing.JFrame implements Observer {
             }
         });
         jLayeredPane1.add(jButton34);
-        jButton34.setBounds(0, 340, 200, 30);
+        jButton34.setBounds(0, 330, 200, 30);
 
-        jButton39.setBackground(new java.awt.Color(255, 0, 51));
         jButton39.setText("Blood Issue");
         jButton39.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -621,23 +565,7 @@ public class Nurse extends javax.swing.JFrame implements Observer {
             }
         });
         jLayeredPane1.add(jButton39);
-        jButton39.setBounds(0, 370, 200, 30);
-
-        jButton40.setText("Discarded Blood Graph");
-        jButton40.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton40ActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(jButton40);
-        jButton40.setBounds(0, 630, 200, 30);
-
-        jLabel7.setFont(new java.awt.Font("Monotype Corsiva", 3, 18)); // NOI18N
-        jLabel7.setText("Charts");
-        jLayeredPane1.add(jLabel7);
-        jLabel7.setBounds(60, 600, 140, 21);
-        jLayeredPane1.add(jSeparator2);
-        jSeparator2.setBounds(0, 620, 200, 2);
+        jButton39.setBounds(0, 360, 200, 30);
 
         jButton41.setText("Blood Recieval");
         jButton41.addActionListener(new java.awt.event.ActionListener() {
@@ -646,7 +574,7 @@ public class Nurse extends javax.swing.JFrame implements Observer {
             }
         });
         jLayeredPane1.add(jButton41);
-        jButton41.setBounds(0, 400, 200, 30);
+        jButton41.setBounds(0, 390, 200, 30);
 
         jButton25.setText("Blood Return");
         jButton25.addActionListener(new java.awt.event.ActionListener() {
@@ -657,12 +585,12 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jLayeredPane1.add(jButton25);
         jButton25.setBounds(0, 160, 200, 30);
         jLayeredPane1.add(jSeparator3);
-        jSeparator3.setBounds(0, 230, 200, 2);
+        jSeparator3.setBounds(0, 220, 200, 2);
 
         jLabel8.setFont(new java.awt.Font("Monotype Corsiva", 3, 18)); // NOI18N
         jLabel8.setText("Items");
         jLayeredPane1.add(jLabel8);
-        jLabel8.setBounds(70, 210, 130, 21);
+        jLabel8.setBounds(70, 200, 130, 21);
 
         jButton36.setText("Item Stock");
         jButton36.addActionListener(new java.awt.event.ActionListener() {
@@ -671,9 +599,8 @@ public class Nurse extends javax.swing.JFrame implements Observer {
             }
         });
         jLayeredPane1.add(jButton36);
-        jButton36.setBounds(0, 240, 200, 30);
+        jButton36.setBounds(0, 230, 200, 30);
 
-        jButton18.setBackground(new java.awt.Color(255, 0, 51));
         jButton18.setText("Blood Stock");
         jButton18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -681,23 +608,7 @@ public class Nurse extends javax.swing.JFrame implements Observer {
             }
         });
         jLayeredPane1.add(jButton18);
-        jButton18.setBounds(0, 310, 200, 30);
-        jLayeredPane1.add(jSeparator4);
-        jSeparator4.setBounds(0, 500, 200, 2);
-
-        jLabel9.setFont(new java.awt.Font("Monotype Corsiva", 3, 18)); // NOI18N
-        jLabel9.setText("Other");
-        jLayeredPane1.add(jLabel9);
-        jLabel9.setBounds(70, 480, 130, 21);
-
-        jButton35.setText("Issue Register");
-        jButton35.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton35ActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(jButton35);
-        jButton35.setBounds(0, 520, 200, 30);
+        jButton18.setBounds(0, 300, 200, 30);
         jLayeredPane1.add(jSeparator5);
         jSeparator5.setBounds(0, 90, 200, 2);
 
@@ -705,6 +616,61 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         jLabel10.setText("Data Entry");
         jLayeredPane1.add(jLabel10);
         jLabel10.setBounds(50, 70, 140, 21);
+
+        addRequesteeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I03.png"))); // NOI18N
+        addRequesteeBtn.setToolTipText("Requestees");
+        addRequesteeBtn.setBorder(null);
+        addRequesteeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRequesteeBtnActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(addRequesteeBtn);
+        addRequesteeBtn.setBounds(120, 0, 60, 60);
+
+        bloodReturnBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I03.png"))); // NOI18N
+        bloodReturnBtn.setToolTipText("Mark returned blood packets");
+        bloodReturnBtn.setBorder(null);
+        bloodReturnBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bloodReturnBtnActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(bloodReturnBtn);
+        bloodReturnBtn.setBounds(300, 0, 60, 60);
+
+        addRequestorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/I07.jpg"))); // NOI18N
+        addRequestorBtn.setToolTipText("Requestors");
+        addRequestorBtn.setBorder(null);
+        addRequestorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRequestorBtnActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(addRequestorBtn);
+        addRequestorBtn.setBounds(180, 0, 60, 60);
+
+        titlePanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Monotype Corsiva", 1, 36)); // NOI18N
+        jLabel1.setText("           Karapitiya Blood Bank Management System");
+
+        javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
+        titlePanel.setLayout(titlePanelLayout);
+        titlePanelLayout.setHorizontalGroup(
+            titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        titlePanelLayout.setVerticalGroup(
+            titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titlePanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jLayeredPane1.add(titlePanel);
+        titlePanel.setBounds(360, 0, 1010, 60);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -744,19 +710,8 @@ public class Nurse extends javax.swing.JFrame implements Observer {
 
 }//GEN-LAST:event_jButton25ActionPerformed
 
-    private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
-        IssueRegister issue = new IssueRegister(NurseDesktop.getSize());
-
-        issue.setClosable(true);
-        issue.setMaximizable(true);
-        NurseDesktop.add(issue);
-        NurseDesktop.setRequestFocusEnabled(true);
-        issue.show();
-}//GEN-LAST:event_jButton35ActionPerformed
-
     private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton36ActionPerformed
-        ItemManagement items = new ItemManagement();
-
+        ItemManagement items = new ItemManagement(this);
         items.setClosable(true);
         NurseDesktop.add(items);
         NurseDesktop.setRequestFocusEnabled(true);
@@ -843,34 +798,6 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         discardedBlood.show();
     }//GEN-LAST:event_jButton33ActionPerformed
 
-    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
-        dtm = new DefaultTableModel(title, 0);
-        expiredBloodPacketsTable.setModel(dtm);
-
-        try {
-            ResultSet rst = BloodPacketDA.getExpiredBloodPackets(sqlCurrentDate);
-            String packetID = null;
-            String bloodType = null;
-            String bloodGroup = null;
-            int count = 0;
-            while (rst.next()) {
-                packetID = rst.getString("packetID");
-                bloodType = rst.getString("bloodType");
-                bloodGroup = rst.getString("bloodGroup");
-                String[] ar = {packetID, bloodType, bloodGroup};
-                dtm.addRow(ar);
-                count++;
-            }
-            totalTxt.setText("" + count);
-            update(null, null);
-
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_refreshBtnActionPerformed
-
     private void discardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discardBtnActionPerformed
         int row = expiredBloodPacketsTable.getSelectedRow();
 
@@ -937,14 +864,6 @@ public class Nurse extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton39ActionPerformed
 
-    private void jButton40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton40ActionPerformed
-        BloodCollectionChartInterface chart = new BloodCollectionChartInterface();
-        chart.setClosable(true);
-        NurseDesktop.add(chart);
-        NurseDesktop.setRequestFocusEnabled(true);
-        chart.show();
-    }//GEN-LAST:event_jButton40ActionPerformed
-
     private void jButton41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton41ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton41ActionPerformed
@@ -992,17 +911,14 @@ public class Nurse extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton25;
     private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton34;
-    private javax.swing.JButton jButton35;
     private javax.swing.JButton jButton36;
     private javax.swing.JButton jButton37;
     private javax.swing.JButton jButton39;
-    private javax.swing.JButton jButton40;
     private javax.swing.JButton jButton41;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton8;
@@ -1011,10 +927,7 @@ public class Nurse extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -1022,11 +935,9 @@ public class Nurse extends javax.swing.JFrame implements Observer {
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JButton refreshBtn;
+    private javax.swing.JPanel titlePanel;
     private javax.swing.JTextField totalTxt;
     // End of variables declaration//GEN-END:variables
 

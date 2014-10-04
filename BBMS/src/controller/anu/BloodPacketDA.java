@@ -4,6 +4,7 @@
  */
 package controller.anu;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import connection.DBConnection;
 import connection.DBHandler;
 import java.sql.Connection;
@@ -32,13 +33,37 @@ public class BloodPacketDA {
         return res;
     }
     
-    public static int addRecievedPacket(BloodPacket packet) throws ClassNotFoundException, SQLException {
+    public static int updatePacket(BloodPacket packet) throws ClassNotFoundException, SQLException {
         String query;
         
-            query = "Insert into BloodPacket(packetID,nic,recievedID,dateOfDonation,dateOfExpiry,BloodType,BloodGroup,Comment) values ('" + packet.getPacketID() + "','" + packet.getNic() +"','" + packet.getRecievedID() + "','" + packet.getDateOfDonation() + "','" + packet.getDateOfExpiry() + "','" + packet.getBloodType() + "','" + packet.getBloodGroup() + "','" + packet.getComment() + "')";
+        if (packet.getCampID() == null) {
+            query = "Update BloodPacket set nic = '"+packet.getNic()+"', dateOfDonation = '"+packet.getDateOfDonation()+"', dateOfExpiry = '"+packet.getDateOfExpiry()+"', BloodType = '"+packet.getBloodType()+"', campID=NULL, BloodGroup='"+packet.getBloodGroup()+"', Comment = '"+packet.getComment()+"' where packetID = '"+packet.getPacketID()+"'";
+        }else{
+            query = "Update BloodPacket set nic = '"+packet.getNic()+"', dateOfDonation = '"+packet.getDateOfDonation()+"', dateOfExpiry = '"+packet.getDateOfExpiry()+"', BloodType = '"+packet.getBloodType()+"', campID='"+packet.getCampID()+"', BloodGroup='"+packet.getBloodGroup()+"', Comment = '"+packet.getComment()+"' where packetID = '"+packet.getPacketID()+"'";
 
+        }
         
+        
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
+    
+    public static int addRecievedPacket(BloodPacket packet) throws ClassNotFoundException, SQLException {
+        String query = "Insert into BloodPacket(packetID,nic,recievedID,dateOfDonation,dateOfExpiry,BloodType,BloodGroup,Comment) values ('" + packet.getPacketID() + "','" + packet.getNic() +"','" + packet.getRecievedID() + "','" + packet.getDateOfDonation() + "','" + packet.getDateOfExpiry() + "','" + packet.getBloodType() + "','" + packet.getBloodGroup() + "','" + packet.getComment() + "')";
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
+    }
+    
+    public static int unmarkReturnedBloodPacket(String packetID, boolean isPatientIssue, String issueID) throws ClassNotFoundException, SQLException {
+        String query;
+        if (isPatientIssue) {
+            query = "Update BloodPacket set PatientIssueID = '"+issueID+"', ReturnID = NULL where PacketID='"+packetID+"'";
+        }else{
+            query = "Update BloodPacket set BulkIssueID = '"+issueID+"', ReturnID = NULL where PacketID='"+packetID+"'";
 
+        }
         Connection connection = DBConnection.getConnectionToDB();
         int res = DBHandler.setData(connection, query);
         return res;
@@ -46,6 +71,12 @@ public class BloodPacketDA {
 
     public static ResultSet getAllBloodPackets() throws ClassNotFoundException, SQLException {
         String query = "Select * From BloodPacket";
+        Connection connection = DBConnection.getConnectionToDB();
+        return DBHandler.getData(connection, query);
+    }
+    
+    public static ResultSet getBloodPackets(String packetID) throws ClassNotFoundException, SQLException {
+        String query = "Select * From BloodPacket B NATURAL JOIN Donor D where packetID = '"+packetID+"' AND B.Nic = D.nic";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
     }
@@ -72,6 +103,13 @@ public class BloodPacketDA {
         String query = "Select * From BloodPacket where isReturned = 1";
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
+    }
+    
+    public static int deletePacket(String packetID) throws ClassNotFoundException, SQLException {
+        String query = "Delete from BloodPacket where packetID = '" + packetID + "'";
+        Connection connection = DBConnection.getConnectionToDB();
+        int res = DBHandler.setData(connection, query);
+        return res;
     }
 
     public static int discardPacket(String packetID, Date discardedDate) throws ClassNotFoundException, SQLException {

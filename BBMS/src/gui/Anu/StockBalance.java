@@ -10,7 +10,9 @@
  */
 package gui.Anu;
 
+import controller.anu.BloodGroupDA;
 import controller.anu.BloodStockController;
+import controller.anu.BloodTypeDA;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,12 +20,15 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,23 +41,6 @@ public class StockBalance extends javax.swing.JInternalFrame {
 
     String[] bloodStockTitle = {"Blood Group", "Un X matched", "X matched", "Special Reservations", "Under Observation", "Total"};
     DefaultTableModel dailyBloodStockDtm = new DefaultTableModel(bloodStockTitle, 0);
-
-    String[] componentStockTitle = {"Component", "A +ve", "A neg", "B +ve", "B neg", "AB +ve", "AB neg", "O +ve", "O neg", "UG", "Total"};
-    DefaultTableModel dailyComponentStockDtm = new DefaultTableModel(componentStockTitle, 0);
-
-    String[] bloodTitle = {"", "Fresh blood","CRYO","FFP"};
-    Object[][] bloodData = {{"Balance", null,null,null},
-    {"Inhouse", null,null,null},
-    {"Mobile", null,null,null},
-    {"", null,null,null},
-    {"Return", null,null,null},
-    {"Recieve", null,null,null},
-    {"", null,null,null},
-    {"Issue", null,null,null},
-    {"", null,null,null},
-    {"Discard", null,null,null},
-    {"Total", null,null,null}};
-    DefaultTableModel bloodDtm = new DefaultTableModel(bloodData, bloodTitle);
 
     /**
      * Creates new form StockBalance
@@ -71,13 +59,12 @@ public class StockBalance extends javax.swing.JInternalFrame {
             DailyBloodStockDate.setDate(today);
 
             //setDailyBloodStock();
-
         } catch (IOException ex) {
             Logger.getLogger(StockBalance.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void setDailyBloodStock() {
+    private void setDailyBloodStock() throws ParseException {
 
         dailyBloodStockDtm = new DefaultTableModel(bloodStockTitle, 0);
         DailyBloodStockTable.setModel(dailyBloodStockDtm);
@@ -138,7 +125,7 @@ public class StockBalance extends javax.swing.JInternalFrame {
                 String[] grandTotal = {"", "", "", "", "Grand Total", "" + (bloodTotal + ungroupedTotal)};
                 dailyBloodStockDtm.addRow(grandTotal);
             }
-
+            setDailyComponentBalance(sqlDateC);
             setDailyBloodStockDetails(sqlDateC);
 
         } catch (ClassNotFoundException ex) {
@@ -148,65 +135,231 @@ public class StockBalance extends javax.swing.JInternalFrame {
         }
     }
 
-    private void setDailyBloodStockDetails(java.sql.Date sqlDateC) {
+    String[] componentStockTitle = {"Component", "A +ve", "A neg", "B +ve", "B neg", "AB +ve", "AB neg", "O +ve", "O neg", "UG", "Total"};
+    DefaultTableModel dailyComponentStockDtm = new DefaultTableModel(componentStockTitle, 0);
+
+    String[] bloodTitle = {"", "Fresh blood", "CRYO", "FFP"};
+    Object[][] bloodData = {{"Balance", null, null, null},
+    {"Inhouse", null, null, null},
+    {"Mobile", null, null, null},
+    {"", null, null, null},
+    {"Return", null, null, null},
+    {"Recieve", null, null, null},
+    {"", null, null, null},
+    {"Issue", null, null, null},
+    {"", null, null, null},
+    {"Discard", null, null, null},
+    {"Total", null, null, null}};
+    DefaultTableModel bloodDtm = new DefaultTableModel(bloodData, bloodTitle);
+
+    String[] bloodTitle2 = {"", "Plasma", "CSP", "Platelets"};
+    Object[][] bloodData2 = {{"Balance", null, null, null},
+    {"Inhouse", null, null, null},
+    {"Mobile", null, null, null},
+    {"", null, null, null},
+    {"Return", null, null, null},
+    {"Recieve", null, null, null},
+    {"", null, null, null},
+    {"Issue", null, null, null},
+    {"", null, null, null},
+    {"Discard", null, null, null},
+    {"Total", null, null, null}};
+    DefaultTableModel bloodDtm2 = new DefaultTableModel(bloodData, bloodTitle);
+
+    private void setDailyBloodStockDetails(java.sql.Date sqlDateC) throws ParseException {
 
         try {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -1);
-            String yesterday = dateFormat.format(cal.getTime());
-            java.util.Date utilYesterday = cal.getTime();
-            dateFormat.format(utilYesterday);
-            java.sql.Date sqlYesterday = new java.sql.Date(utilYesterday.getTime());
 
-            System.out.println("Yesterday = " + yesterday);
-            int balance = BloodStockController.getBalanceStockHistoryByType(sqlYesterday, "Fresh blood");
-            
-            if(balance >= 0){
-                bloodDtm.setValueAt(""+balance, 0, 1);
-                
-                int inhouse = BloodStockController.getInhouseBloodCount("Fresh blood", sqlDateC);
-                bloodDtm.setValueAt(""+inhouse, 1, 1);
-                
-                int mobile = BloodStockController.getMobileBloodCount("Fresh blood", sqlDateC);
-                bloodDtm.setValueAt(""+mobile, 2, 1);
-                
-                bloodDtm.setValueAt(""+(balance+inhouse+mobile), 3, 1);
-                
-                int returned = BloodStockController.getReturnBloodCount("Fresh blood", sqlDateC);
-                bloodDtm.setValueAt(""+returned, 4, 1);
-                
-                int recieved = BloodStockController.getRecievedBloodCount("Fresh blood", sqlDateC);
-                bloodDtm.setValueAt(""+recieved, 5, 1);
-                
-                bloodDtm.setValueAt(""+(balance+inhouse+mobile+returned+recieved), 6, 1);
-                
-                int patientIssued = BloodStockController.getPatientIssuedBloodCount("Fresh blood", sqlDateC);
-                int bulkIssued = BloodStockController.getBulkIssuedBloodCount("Fresh blood", sqlDateC);
-                
-                int issued = 0;
-                if(patientIssued >=0 && bulkIssued >= 0){
-                    issued = patientIssued+bulkIssued;
+            ArrayList<String> bloodTypes = new ArrayList<String>();
+
+            ResultSet rstTypes = BloodTypeDA.getAllTypes();
+            while (rstTypes.next()) {
+                bloodTypes.add(rstTypes.getString("BloodType"));
+            }
+
+            int typeCount = BloodTypeDA.getTypeCount();
+            String[] typeTitle1;
+            String[] typeTitle2;
+
+            if ((typeCount % 2) == 0) {
+                typeTitle1 = new String[(typeCount + 2) / 2];
+                typeTitle2 = new String[(typeCount + 2) / 2];
+            } else {
+                typeTitle1 = new String[(typeCount + 2) / 2];
+                typeTitle2 = new String[((typeCount + 2) / 2) + 1];
+            }
+
+            typeTitle1[0] = "";
+            typeTitle2[0] = "";
+
+            int counter = 0;
+            for (int i = 1; i < typeTitle1.length; i++) {
+                typeTitle1[i] = bloodTypes.get(counter);
+                counter++;
+            }
+            for (int i = 1; i < typeTitle2.length; i++) {
+                typeTitle2[i] = bloodTypes.get(counter);
+                counter++;
+            }
+
+            bloodDtm = new DefaultTableModel(bloodData, typeTitle1);
+            DailyBloodDetailTable1.setModel(bloodDtm);
+            bloodDtm2 = new DefaultTableModel(bloodData, typeTitle2);
+            DailyBloodDetailTable2.setModel(bloodDtm2);
+
+            int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String prevDay = dateFormat.format(DailyBloodStockDate.getDate().getTime() - MILLIS_IN_DAY);
+            java.util.Date parsed = dateFormat.parse(prevDay);
+
+            java.sql.Date sqlYesterday = new java.sql.Date(parsed.getTime());
+
+            System.out.println("Yesterday = " + sqlYesterday);
+
+            for (int i = 1; i < typeTitle1.length; i++) {
+                //=======================================================================================================
+                int balance = BloodStockController.getBalanceStockHistoryByType(sqlYesterday, typeTitle1[i]);
+
+                if (balance >= 0) {
+                    bloodDtm.setValueAt("" + balance, 0, i);
+
+                    int inhouse = BloodStockController.getInhouseBloodCount(typeTitle1[i], sqlDateC);
+                    bloodDtm.setValueAt("" + inhouse, 1, i);
+
+                    int mobile = BloodStockController.getMobileBloodCount(typeTitle1[i], sqlDateC);
+                    bloodDtm.setValueAt("" + mobile, 2, i);
+
+                    bloodDtm.setValueAt("" + (balance + inhouse + mobile), 3, i);
+
+                    int returned = BloodStockController.getReturnBloodCount(typeTitle1[i], sqlDateC);
+                    bloodDtm.setValueAt("" + returned, 4, i);
+
+                    int recieved = BloodStockController.getRecievedBloodCount(typeTitle1[i], sqlDateC);
+                    bloodDtm.setValueAt("" + recieved, 5, i);
+
+                    bloodDtm.setValueAt("" + (balance + inhouse + mobile + returned + recieved), 6, i);
+
+                    int patientIssued = BloodStockController.getPatientIssuedBloodCount(typeTitle1[i], sqlDateC);
+                    int bulkIssued = BloodStockController.getBulkIssuedBloodCount(typeTitle1[i], sqlDateC);
+
+                    int issued = 0;
+                    if (patientIssued >= 0 && bulkIssued >= 0) {
+                        issued = patientIssued + bulkIssued;
+                    }
+
+                    bloodDtm.setValueAt("" + issued, 7, i);
+
+                    bloodDtm.setValueAt("" + (balance + inhouse + mobile + returned + recieved - issued), 8, i);
+
+                    int discarded = BloodStockController.getDiscardedBloodCount(typeTitle1[i], sqlDateC);
+                    bloodDtm.setValueAt("" + discarded, 9, i);
+
+                    bloodDtm.setValueAt("" + (balance + inhouse + mobile + returned + recieved - issued - discarded), 10, i);
+
                 }
-                
-                bloodDtm.setValueAt(""+issued, 7, 1);
-                
-                bloodDtm.setValueAt(""+(balance+inhouse+mobile+returned+recieved-issued), 8, 1);
-                
-                int discarded = BloodStockController.getDiscardedBloodCount("Fresh blood", sqlDateC);
-                bloodDtm.setValueAt(""+discarded, 9, 1);
-                
-                bloodDtm.setValueAt(""+(balance+inhouse+mobile+returned+recieved-issued-discarded), 10, 1);
-                
+                //==============================================================================================
             }
             
+            for (int i = 1; i < typeTitle2.length; i++) {
+                //=======================================================================================================
+                int balance = BloodStockController.getBalanceStockHistoryByType(sqlYesterday, typeTitle2[i]);
+
+                if (balance >= 0) {
+                    bloodDtm2.setValueAt("" + balance, 0, i);
+
+                    int inhouse = BloodStockController.getInhouseBloodCount(typeTitle2[i], sqlDateC);
+                    bloodDtm2.setValueAt("" + inhouse, 1, i);
+
+                    int mobile = BloodStockController.getMobileBloodCount(typeTitle2[i], sqlDateC);
+                    bloodDtm2.setValueAt("" + mobile, 2, i);
+
+                    bloodDtm2.setValueAt("" + (balance + inhouse + mobile), 3, i);
+
+                    int returned = BloodStockController.getReturnBloodCount(typeTitle2[i], sqlDateC);
+                    bloodDtm2.setValueAt("" + returned, 4, i);
+
+                    int recieved = BloodStockController.getRecievedBloodCount(typeTitle2[i], sqlDateC);
+                    bloodDtm2.setValueAt("" + recieved, 5, i);
+
+                    bloodDtm2.setValueAt("" + (balance + inhouse + mobile + returned + recieved), 6, i);
+
+                    int patientIssued = BloodStockController.getPatientIssuedBloodCount(typeTitle2[i], sqlDateC);
+                    int bulkIssued = BloodStockController.getBulkIssuedBloodCount(typeTitle2[i], sqlDateC);
+
+                    int issued = 0;
+                    if (patientIssued >= 0 && bulkIssued >= 0) {
+                        issued = patientIssued + bulkIssued;
+                    }
+
+                    bloodDtm2.setValueAt("" + issued, 7, i);
+
+                    bloodDtm2.setValueAt("" + (balance + inhouse + mobile + returned + recieved - issued), 8, i);
+
+                    int discarded = BloodStockController.getDiscardedBloodCount(typeTitle2[i], sqlDateC);
+                    bloodDtm2.setValueAt("" + discarded, 9, i);
+
+                    bloodDtm2.setValueAt("" + (balance + inhouse + mobile + returned + recieved - issued - discarded), 10, i);
+
+                }
+                //==============================================================================================
+            }
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(StockBalance.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(StockBalance.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
 
+    }
+    
+    private void setDailyComponentBalance(java.sql.Date date) throws ClassNotFoundException, SQLException {
+
+        int groupCount = BloodGroupDA.getGroupCount();
+        String[] componentStockTitle = new String[groupCount + 2];
+        String[] groupName = new String[groupCount];
+        
+        componentStockTitle[0] = "Componenet";
+        componentStockTitle[groupCount + 1] = "Total";
+        int groupCounter = 1;
+
+        ResultSet rstGroups = BloodGroupDA.getAllGroups();
+        while (rstGroups.next()) {
+            String group = rstGroups.getString("GroupName");
+            componentStockTitle[groupCounter] = group;
+            groupName[groupCounter - 1] = group;
+            groupCounter++;
+        }
+
+        dailyComponentStockDtm = new DefaultTableModel(componentStockTitle, 0);
+        DailyComponenetStockTable.setModel(dailyComponentStockDtm);
+
+        ResultSet rstTypes = BloodTypeDA.getAllTypes();
+        
+        int typeCount = 0;
+        while (rstTypes.next()) {
+            typeCount++;
+            String type = rstTypes.getString("BloodType");
+            if (!type.equalsIgnoreCase("Fresh blood")) {
+                String[] row = new String[groupCount + 2];
+                row[0] = type;
+                int rowTotal = 0;
+                int rowElementCount = 1;
+                
+                for (int i = 0; i < groupCount; i++) {
+                    int packetCount = BloodStockController.getDailyComponentStockHistory(date, type, groupName[i]);
+                    if (packetCount >= 0) {
+                        rowTotal += packetCount;
+                        row[rowElementCount] = "" + packetCount;
+                    }
+                    rowElementCount++;
+                }
+                row[groupCount + 1] = "" + rowTotal;
+                dailyComponentStockDtm.addRow(row);
+                
+            }
+            
+        }
+       
     }
 
     /**
@@ -226,7 +379,7 @@ public class StockBalance extends javax.swing.JInternalFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         DailyBloodStockTable = new javax.swing.JTable();
         jScrollPane9 = new javax.swing.JScrollPane();
-        jTable9 = new javax.swing.JTable();
+        DailyComponenetStockTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         DailyBloodDetailTable1 = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -256,22 +409,21 @@ public class StockBalance extends javax.swing.JInternalFrame {
         });
 
         DailyBloodStockTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 51, 255)));
-        DailyBloodStockTable.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         DailyBloodStockTable.setModel(dailyBloodStockDtm);
         DailyBloodStockTable.setEnabled(false);
         jScrollPane4.setViewportView(DailyBloodStockTable);
 
-        jTable9.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jTable9.setModel(dailyComponentStockDtm);
-        jTable9.setEnabled(false);
-        jScrollPane9.setViewportView(jTable9);
+        DailyComponenetStockTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 102, 255)));
+        DailyComponenetStockTable.setModel(dailyComponentStockDtm);
+        DailyComponenetStockTable.setEnabled(false);
+        jScrollPane9.setViewportView(DailyComponenetStockTable);
 
         DailyBloodDetailTable1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 51, 255)));
         DailyBloodDetailTable1.setModel(bloodDtm);
         jScrollPane2.setViewportView(DailyBloodDetailTable1);
 
         DailyBloodDetailTable2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 255), new java.awt.Color(0, 0, 255), new java.awt.Color(153, 255, 255), new java.awt.Color(0, 51, 255)));
-        DailyBloodDetailTable2.setModel(bloodDtm);
+        DailyBloodDetailTable2.setModel(bloodDtm2);
         jScrollPane3.setViewportView(DailyBloodDetailTable2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -313,9 +465,9 @@ public class StockBalance extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Daily Blood and Component Stock Balance", jPanel1);
@@ -328,7 +480,7 @@ public class StockBalance extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -343,7 +495,11 @@ public class StockBalance extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_DailyBloodStockDateMousePressed
 
     private void DailyBloodStockDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_DailyBloodStockDatePropertyChange
-        setDailyBloodStock();
+        try {
+            setDailyBloodStock();
+        } catch (ParseException ex) {
+            Logger.getLogger(StockBalance.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_DailyBloodStockDatePropertyChange
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -351,6 +507,7 @@ public class StockBalance extends javax.swing.JInternalFrame {
     private javax.swing.JTable DailyBloodDetailTable2;
     private com.toedter.calendar.JDateChooser DailyBloodStockDate;
     private javax.swing.JTable DailyBloodStockTable;
+    private javax.swing.JTable DailyComponenetStockTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JPanel jPanel1;
@@ -359,6 +516,5 @@ public class StockBalance extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable9;
     // End of variables declaration//GEN-END:variables
 }

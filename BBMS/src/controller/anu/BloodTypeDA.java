@@ -47,5 +47,15 @@ public class BloodTypeDA {
         Connection connection = DBConnection.getConnectionToDB();
         return DBHandler.getData(connection, query);
     }
+    
+    public static int getTypeCount() throws ClassNotFoundException, SQLException {
+        String query = "Select count(*) From BloodType";
+        Connection connection = DBConnection.getConnectionToDB();
+        ResultSet rst = DBHandler.getData(connection, query);
+        while(rst.next()){
+            return rst.getInt("count(*)");
+        }
+        return -1;
+    }
 
 }

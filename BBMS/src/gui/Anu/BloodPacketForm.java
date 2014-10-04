@@ -10,6 +10,7 @@
  */
 package gui.Anu;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import controller.anu.BloodGroupDA;
 import controller.anu.BloodPacketDA;
 import controller.anu.BloodTypeDA;
@@ -35,9 +36,13 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
     /**
      * Creates new form BloodPacketForm
      */
+    Calendar currenttime = Calendar.getInstance();
+    java.util.Date today = new java.util.Date((currenttime.getTime()).getTime());
+    
     public BloodPacketForm() {
         initComponents();
         
+        setPacketIDCombo(searchPacketIDCombo);
         setBloodGroupCombo(groupCombo);
         setBloodGroupCombo(searchBloodGroupCombo);
         setBloodTypeCombo(bloodTypeCombo);
@@ -47,10 +52,10 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         setCampNameCombo(CampNameCombo);
         setCampNameCombo(searchCampNameCombo);
         
-        Calendar currenttime = Calendar.getInstance();
-        java.util.Date today = new java.util.Date((currenttime.getTime()).getTime());
         dateOfCollectionCalendar.setDate(today);
         dateOfExpiryCalendar.setDate(today);
+        
+        clearSearchFields();
     }
     
     private void resetAdd(){
@@ -58,6 +63,27 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         inhouseRadioBtn.setSelected(true);
         MobileRadioBtn.setSelected(false);
         commentTxt.setText("");
+    }
+    
+    private void setPacketIDCombo(JComboBox combo) {
+        try {
+            combo.removeAllItems();
+            ResultSet rst = null;
+            rst = BloodPacketDA.getAllBloodPackets();
+
+            while (rst.next()) {
+                String packetID = rst.getString("PacketID");
+                if(packetID.startsWith("KP")){
+                    combo.addItem(packetID);
+                }
+                
+            }
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void setBloodTypeCombo(JComboBox combo) {
@@ -101,7 +127,11 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
             rst = DonorDA.getAllDonors();
 
             while (rst.next()) {
-                combo.addItem(rst.getString("nic"));
+                String nic = rst.getString("nic");
+                if(!nic.endsWith("-")){
+                    combo.addItem(nic);
+                }
+                
             }
 
         } catch (ClassNotFoundException ex) {
@@ -126,6 +156,32 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void makeUpdateFieldsActive(){
+        searchDonorNicCombo.setEnabled(true);
+        searchBloodTypeCombo.setEnabled(true);
+        searchBloodGroupCombo.setEnabled(true);
+        searchDateOfCollectionCalendar.setEnabled(true);
+        searchDateOfExpiryCalendar.setEnabled(true);
+        searchInhouseRadioBtn.setEnabled(true);
+        searchMobileRadioBtn.setEnabled(true);
+        searchCampNameCombo.setEnabled(true);
+        searchCommentText.setEnabled(true);
+        updateBtn.setEnabled(true);
+    }
+    
+    private void makeUpdateFieldsInactive(){
+        searchDonorNicCombo.setEnabled(false);
+        searchBloodTypeCombo.setEnabled(false);
+        searchBloodGroupCombo.setEnabled(false);
+        searchDateOfCollectionCalendar.setEnabled(false);
+        searchDateOfExpiryCalendar.setEnabled(false);
+        searchInhouseRadioBtn.setEnabled(false);
+        searchMobileRadioBtn.setEnabled(false);
+        searchCampNameCombo.setEnabled(false);
+        searchCommentText.setEnabled(false);
+        updateBtn.setEnabled(false);
     }
 
     /**
@@ -170,13 +226,12 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         jLabel52 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        searchPackIDText = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         searchDonorText = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
+        campNameLabel = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         searchBloodGroupCombo = new javax.swing.JComboBox();
         deleteBtn = new javax.swing.JButton();
@@ -193,6 +248,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         jLabel33 = new javax.swing.JLabel();
         searchCommentText = new javax.swing.JTextField();
         editBtn = new javax.swing.JButton();
+        searchPacketIDCombo = new javax.swing.JComboBox();
 
         jTabbedPane3.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
 
@@ -451,18 +507,13 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Packet ID");
 
-        searchPackIDText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchPackIDTextActionPerformed(evt);
-            }
-        });
-
         jLabel25.setText("Donor NIC");
 
         jLabel26.setText("Date of expiry");
 
         jLabel27.setText("Donor Name");
 
+        searchDonorText.setCaretColor(new java.awt.Color(255, 255, 255));
         searchDonorText.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         searchDonorText.setEnabled(false);
         searchDonorText.addActionListener(new java.awt.event.ActionListener() {
@@ -473,10 +524,11 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
 
         jLabel28.setText("Date of collection");
 
-        jLabel29.setText("Campaign Name");
+        campNameLabel.setText("Campaign Name");
 
         jLabel30.setText("Blood Group");
 
+        searchBloodGroupCombo.setForeground(new java.awt.Color(255, 255, 255));
         searchBloodGroupCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Blood Groups" }));
         searchBloodGroupCombo.setEnabled(false);
         searchBloodGroupCombo.addActionListener(new java.awt.event.ActionListener() {
@@ -507,6 +559,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         searchDateOfExpiryCalendar.setDateFormatString("yyyy-MM-dd");
         searchDateOfExpiryCalendar.setEnabled(false);
 
+        searchCampNameCombo.setForeground(new java.awt.Color(255, 255, 255));
         searchCampNameCombo.setEnabled(false);
         searchCampNameCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -516,9 +569,11 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
 
         jLabel31.setText("Blood Type");
 
+        searchBloodTypeCombo.setForeground(new java.awt.Color(255, 255, 255));
         searchBloodTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Blood types" }));
         searchBloodTypeCombo.setEnabled(false);
 
+        searchDonorNicCombo.setForeground(new java.awt.Color(255, 255, 255));
         searchDonorNicCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Donor NICs" }));
         searchDonorNicCombo.setEnabled(false);
         searchDonorNicCombo.addActionListener(new java.awt.event.ActionListener() {
@@ -526,11 +581,16 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                 searchDonorNicComboActionPerformed(evt);
             }
         });
+        searchDonorNicCombo.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                searchDonorNicComboPropertyChange(evt);
+            }
+        });
 
         jLabel32.setText("Inhouse/Mobile");
 
         buttonGroup2.add(searchInhouseRadioBtn);
-        searchInhouseRadioBtn.setSelected(true);
+        searchInhouseRadioBtn.setForeground(new java.awt.Color(255, 255, 255));
         searchInhouseRadioBtn.setText("Inhouse");
         searchInhouseRadioBtn.setEnabled(false);
         searchInhouseRadioBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -540,6 +600,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         });
 
         buttonGroup2.add(searchMobileRadioBtn);
+        searchMobileRadioBtn.setForeground(new java.awt.Color(255, 255, 255));
         searchMobileRadioBtn.setText("Mobile");
         searchMobileRadioBtn.setEnabled(false);
         searchMobileRadioBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -555,6 +616,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
 
         jLabel33.setText("Comment");
 
+        searchCommentText.setCaretColor(new java.awt.Color(255, 255, 255));
         searchCommentText.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         searchCommentText.setEnabled(false);
         searchCommentText.addActionListener(new java.awt.event.ActionListener() {
@@ -570,6 +632,17 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
             }
         });
 
+        searchPacketIDCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchPacketIDComboActionPerformed(evt);
+            }
+        });
+        searchPacketIDCombo.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                searchPacketIDComboPropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -582,7 +655,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
@@ -610,18 +683,22 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                         .addComponent(searchMobileRadioBtn)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(searchCampNameCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(searchCommentText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(searchDateOfExpiryCalendar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                                        .addComponent(searchDateOfCollectionCalendar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(searchDonorNicCombo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(searchPackIDText))
-                        .addGap(24, 24, 24)
+                                    .addComponent(searchCampNameCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(searchCommentText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(searchDateOfExpiryCalendar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                                                .addComponent(searchDateOfCollectionCalendar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(searchDonorNicCombo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(24, 24, 24))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(searchPacketIDCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(188, 188, 188))))
         );
@@ -630,33 +707,13 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchPackIDText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(editBtn))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(searchBloodTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(searchBloodGroupCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(searchDonorNicCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12)
-                                .addComponent(searchDonorText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(searchCommentText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(13, 13, 13)
                         .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchDateOfCollectionCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -671,10 +728,37 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                             .addComponent(searchMobileRadioBtn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(campNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchCampNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(editBtn)
+                                .addGap(10, 10, 10))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(searchPacketIDCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(searchBloodTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(searchBloodGroupCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(searchDonorNicCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(searchDonorText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(40, 40, 40)
+                                        .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addGap(202, 202, 202)
+                                .addComponent(searchCommentText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteBtn)
@@ -703,10 +787,10 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
                 .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
-        jTabbedPane3.addTab("Update Blood Packet", jPanel2);
+        jTabbedPane3.addTab("Search/Update Blood Packet", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -770,6 +854,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
             if (added == 1) {
                 JOptionPane.showMessageDialog(null, "Added Succesfully");
                 resetAdd();
+                setPacketIDCombo(searchPacketIDCombo);
             } else {
                 JOptionPane.showMessageDialog(null, "Error!");
             }
@@ -795,20 +880,73 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_commentTxtActionPerformed
 
-    private void searchPackIDTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPackIDTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchPackIDTextActionPerformed
-
     private void searchDonorTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchDonorTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchDonorTextActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        // TODO add your handling code here:
+        int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected Blood Packet?", "Delete Blood Packet", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                try {
+                    String pakcketID = ""+searchPacketIDCombo.getSelectedItem();
+                    int res = BloodPacketDA.deletePacket(pakcketID);
+                    if(res==1){
+                        JOptionPane.showMessageDialog(null, "Blood Packet Deleted Successfully..");
+                        setPacketIDCombo(searchPacketIDCombo);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Error occured while deleting blood packet");
+                    }
+                }catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Nurse.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Cannot delete this Blood Packet as it has other records associated with it. Delete those records first to delete this packet from the system.");
+                }
+            }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
-        // TODO add your handling code here:
+            try {
+            String packetID = ""+searchPacketIDCombo.getSelectedItem();
+            String nic = "" + searchDonorNicCombo.getSelectedItem();
+            String bloodGroup = "" + searchBloodGroupCombo.getSelectedItem();
+            String bloodType = "" + searchBloodTypeCombo.getSelectedItem();
+
+            /*Collection date*/
+            java.util.Date dateC = searchDateOfCollectionCalendar.getDate();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String dateCollection = df.format(dateC);
+            java.sql.Date sqlDateC = new java.sql.Date(dateC.getTime());
+
+            /*Expiry date*/
+            java.util.Date dateE = searchDateOfExpiryCalendar.getDate();
+            String dateExpiry = df.format(dateE);
+            java.sql.Date sqlDateE = new java.sql.Date(dateE.getTime());
+
+            String campName = "";
+            String campID = null;
+
+            if (searchMobileRadioBtn.isSelected()) {
+                campName = "" + searchCampNameCombo.getSelectedItem();
+                campID = CampController.getCampID(campName);
+            }
+
+            String comment = searchCommentText.getText();
+            
+            BloodPacket newPacket = new BloodPacket(packetID, nic, null, sqlDateC, sqlDateE, bloodType, (byte)0, (byte)0, (byte)0, campID, (byte)0, bloodGroup, null, null, null, comment, null);
+
+            int updated = BloodPacketDA.updatePacket(newPacket);
+            if (updated == 1) {
+                JOptionPane.showMessageDialog(null, "Updated successfully");
+                setPacketIDCombo(searchPacketIDCombo);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error occured while updating blood packet");
+            }
+
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Error occured while updating blood packet");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error occured while updating blood packet");
+        }
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void searchCampNameComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchCampNameComboActionPerformed
@@ -820,7 +958,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_searchCommentTextActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-        // TODO add your handling code here:
+        makeUpdateFieldsActive();
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void searchBloodGroupComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBloodGroupComboActionPerformed
@@ -847,7 +985,19 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_donorNicComboActionPerformed
 
     private void searchDonorNicComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchDonorNicComboActionPerformed
-        // TODO add your handling code here:
+        String donorName;
+        try {
+            System.out.println("" + searchDonorNicCombo.getSelectedItem());
+            donorName = DonorDA.getDonorName("" + searchDonorNicCombo.getSelectedItem());
+            
+            if (donorName != null) {
+                searchDonorText.setText(donorName);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_searchDonorNicComboActionPerformed
 
     private void donorNicComboPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_donorNicComboPropertyChange
@@ -867,11 +1017,13 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_donorNicComboPropertyChange
 
     private void searchMobileRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMobileRadioBtnActionPerformed
-        searchCampNameCombo.setEnabled(true);
+        searchCampNameCombo.setVisible(true);
+        campNameLabel.setVisible(true);
     }//GEN-LAST:event_searchMobileRadioBtnActionPerformed
 
     private void searchInhouseRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchInhouseRadioBtnActionPerformed
-        searchCampNameCombo.setEnabled(false);
+        searchCampNameCombo.setVisible(false);
+        campNameLabel.setVisible(false);
     }//GEN-LAST:event_searchInhouseRadioBtnActionPerformed
 
     private void MobileRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MobileRadioBtnActionPerformed
@@ -886,6 +1038,138 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
         CampNameCombo.setEnabled(true);
     }//GEN-LAST:event_inhouseRadioBtnActionPerformed
 
+    private void searchPacketIDComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPacketIDComboActionPerformed
+        makeUpdateFieldsInactive();
+        ResultSet rst;
+        try {
+            clearSearchFields();
+            rst = BloodPacketDA.getBloodPackets(""+searchPacketIDCombo.getSelectedItem());
+
+            while(rst.next()){
+                searchDonorNicCombo.setSelectedItem(rst.getString("nic"));
+                searchDonorText.setText(rst.getString("name"));
+                searchBloodTypeCombo.setSelectedItem(rst.getString("BloodType"));
+                searchBloodGroupCombo.setSelectedItem(rst.getString("BloodGroup"));
+
+                java.sql.Date sqlDateOfDonation = rst.getDate("DateOfDonation");
+                java.util.Date utilDateOfDonation = new java.util.Date(sqlDateOfDonation.getTime());
+                searchDateOfCollectionCalendar.setDate(utilDateOfDonation);
+
+                java.sql.Date sqlDateOfExpiry = rst.getDate("DateOfExpiry");
+                java.util.Date utilDateOfExpiry = new java.util.Date(sqlDateOfExpiry.getTime());
+                searchDateOfExpiryCalendar.setDate(utilDateOfExpiry);
+
+                if(rst.getString("CampID")==null){
+                    searchInhouseRadioBtn.setSelected(true);
+                    searchMobileRadioBtn.setSelected(false);
+                    searchCampNameCombo.setVisible(false);
+                    campNameLabel.setVisible(false);
+                }else{
+                    searchInhouseRadioBtn.setSelected(false);
+                    searchMobileRadioBtn.setSelected(true);
+                    searchCampNameCombo.setVisible(true);
+                    campNameLabel.setVisible(true);
+                    String campID = rst.getString("CampID");
+                    String campName = CampController.getCampName(campID);
+                    if(campName != null){
+                        searchCampNameCombo.setSelectedItem(campName);
+                    }
+                    
+                }
+
+                searchCommentText.setText(rst.getString("Comment"));
+
+            }
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_searchPacketIDComboActionPerformed
+
+    private void searchPacketIDComboPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_searchPacketIDComboPropertyChange
+        makeUpdateFieldsInactive();
+        ResultSet rst;
+        try {
+            clearSearchFields();
+            rst = BloodPacketDA.getBloodPackets(""+searchPacketIDCombo.getSelectedItem());
+
+            while(rst.next()){
+                searchDonorNicCombo.setSelectedItem(rst.getString("nic"));
+                searchDonorText.setText(rst.getString("name"));
+                searchBloodTypeCombo.setSelectedItem(rst.getString("BloodType"));
+                searchBloodGroupCombo.setSelectedItem(rst.getString("BloodGroup"));
+
+                java.sql.Date sqlDateOfDonation = rst.getDate("DateOfDonation");
+                java.util.Date utilDateOfDonation = new java.util.Date(sqlDateOfDonation.getTime());
+                searchDateOfCollectionCalendar.setDate(utilDateOfDonation);
+
+                java.sql.Date sqlDateOfExpiry = rst.getDate("DateOfExpiry");
+                java.util.Date utilDateOfExpiry = new java.util.Date(sqlDateOfExpiry.getTime());
+                searchDateOfExpiryCalendar.setDate(utilDateOfExpiry);
+
+                if(rst.getString("CampID")==null){
+                    searchInhouseRadioBtn.setSelected(true);
+                    searchMobileRadioBtn.setSelected(false);
+                    searchCampNameCombo.setVisible(false);
+                    campNameLabel.setVisible(false);
+                }else{
+                    searchInhouseRadioBtn.setSelected(false);
+                    searchMobileRadioBtn.setSelected(true);
+                    searchCampNameCombo.setVisible(true);
+                    campNameLabel.setVisible(true);
+                    String campID = rst.getString("CampID");
+                    String campName = CampController.getCampName(campID);
+                    if(campName != null){
+                        searchCampNameCombo.setSelectedItem(campName);
+                    }
+                }
+
+                searchCommentText.setText(rst.getString("Comment"));
+
+            }
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_searchPacketIDComboPropertyChange
+
+    private void searchDonorNicComboPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_searchDonorNicComboPropertyChange
+        String donorName;
+        try {
+            System.out.println("" + searchDonorNicCombo.getSelectedItem());
+            donorName = DonorDA.getDonorName("" + searchDonorNicCombo.getSelectedItem());
+            
+            if (donorName != null) {
+                searchDonorText.setText(donorName);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(BloodPacketForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_searchDonorNicComboPropertyChange
+
+    private void clearSearchFields(){
+        searchDonorNicCombo.setSelectedItem(searchDonorNicCombo.getItemAt(0));
+        searchDonorText.setText("");
+        searchBloodTypeCombo.setSelectedItem(searchBloodTypeCombo.getItemAt(0));
+        searchBloodGroupCombo.setSelectedItem(searchBloodGroupCombo.getItemAt(0));
+        
+        searchDateOfCollectionCalendar.setDate(today);
+        searchDateOfExpiryCalendar.setDate(today);
+        
+        searchInhouseRadioBtn.setSelected(false);
+        searchMobileRadioBtn.setSelected(false);
+        searchCampNameCombo.setSelectedItem(searchCampNameCombo.getItemAt(0));
+        
+        searchCommentText.setText("");
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CampNameCombo;
     private javax.swing.JRadioButton MobileRadioBtn;
@@ -893,6 +1177,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox bloodTypeCombo;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JLabel campNameLabel;
     private javax.swing.JTextField commentTxt;
     private com.toedter.calendar.JDateChooser dateOfCollectionCalendar;
     private com.toedter.calendar.JDateChooser dateOfExpiryCalendar;
@@ -910,7 +1195,6 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
@@ -941,7 +1225,7 @@ public class BloodPacketForm extends javax.swing.JInternalFrame {
     private javax.swing.JTextField searchDonorText;
     private javax.swing.JRadioButton searchInhouseRadioBtn;
     private javax.swing.JRadioButton searchMobileRadioBtn;
-    private javax.swing.JTextField searchPackIDText;
+    private javax.swing.JComboBox searchPacketIDCombo;
     private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }
